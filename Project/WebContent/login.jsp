@@ -24,7 +24,7 @@ if(mem != null && !mem.getId().equals("")){
 %>
 <script type="text/javascript">
 	
-	location.href = "bbslist.jsp";
+	location.href = "nologinindexs.jsp";
 </script>
 <% 
 }else{

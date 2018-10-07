@@ -84,7 +84,7 @@ mem = (MemberDto)ologin;
       
       <ul id="nav-top" class="nav navbar-nav navbar-right">
         <li><a href="#" class="page-scroll">Home</a></li>
-        <li><a href="bbslist.jsp" class="page-scroll">MyPage</a></li>
+        <li><a href="userbbs.jsp" class="page-scroll">MyPage</a></li>
         <li><a href="#" class="page-scroll">Blog</a></li>
         <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li>
       
@@ -153,151 +153,68 @@ mem = (MemberDto)ologin;
       </div>
 </div>
 
-
-
-<!-- about us Page
+<!-- latest news block
     ==========================================-->
-<section id="about-us-block" class="text-center">
+
+<section id="latest-news-block">
   <div class="container">
-    <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <div id="testimonial" class="owl-carousel owl-theme">
-          <div class="item"> <img src="img/team/01.jpg">
-            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-            <p><strong>Dean Martin</strong> CEO Acme Inc.</p>
-          </div>
-          <div class="item"> <img src="img/team/02.jpg">
-            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-            <p><strong>Rima Martin</strong> CEO Food Inc.</p>
-          </div>
-          <div class="item"> <img src="img/team/03.jpg">
-            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-            <p><strong>Joe Martin</strong> CEO Chat Inc.</p>
-          </div>
-        </div>
-      </div>
+    <div class="row"> 
+      <!--section-title-->
+      <div class="section-title text-center wow fadeInUp">
+        <h2>GAME</h2>
+        <a href="blog.html">See the blog</a></div>
+      <!--/section-title--> 
+      
+      <!--home article-->
+      <article class="col-md-3 col-sm-6 col-xs-12">
+        <header class="entry-header"> <a href="blog-post.html"><img src="img/04-screenshot.jpg" alt="image 1"></a>
+          <a href="blog-post.html"><h6>BASEBALL 숫자 맞추기 게임으로 돈을 벌어보세요!</h6></a>
+           <a href="#">Web-design</a> , <a href="#">Front-end</a> </header></a>
+      </article>
+      <!--/home article --> 
+      
+      <!--home article-->
+      <article class="col-md-3 col-sm-6 col-xs-12">
+        <header class="entry-header"> <img src="img/02-screenshot.jpg" alt="image 1"> <a href="#">
+          <h6>Responsive Website in 2017 – 
+            Step by Step Guide</h6>
+          </a> <a href="#">Web-design</a> </header>
+      </article>
+      <!--/home article --> 
+      
+      <!--home article-->
+      <article class="col-md-3 col-sm-6 col-xs-12">
+        <header class="entry-header"> <img src="img/03-screenshot.jpg" alt="image 1"> <a href="#">
+          <h6>10 Incredible Quotes To Guide Your Life</h6>
+          </a> <a href="#">Web-design</a> , <a href="#">Front-end</a> </header>
+      </article>
+      <!--/home article --> 
+      
+      <!--home article-->
+      <article class="col-md-3 col-sm-6 col-xs-12">
+        <header class="entry-header"> <img src="img/01-screenshot.jpg" alt="image 1"> <a href="#">
+          <h6>HEADING 6 in use here</h6>
+          </a> <a href="#">Web-design</a> </header>
+      </article>
+      <!--/home article --> 
+      
     </div>
   </div>
 </section>
+
+
 
 <!-- contact us Page
     ==========================================-->
 <section id="home-contact-block">
   <div class="container">
     <div class="row wow fadeInUp">
-      <p>Increase leads, build a professional website and be awesome..</p>
-      <a href="#">Contact us</a> </div>
+      <p>게임을 하기 위해선 포인트 충전이 필요합니다.</p>
+      <a href="#">포인트 충전하기</a> </div>
   </div>
 </section>
 
-<!-- our works block
-    ==========================================-->
-<section id="our-work-block">
-  <div class="container">
-    <div class="row"> 
-      <!--section-title-->
-      <div class="section-title text-center wow fadeInUp">
-        <h2>Our work</h2>
-        <a href="portfolio.html">go to portfolio</a></div>
-      <!--/section-title-->
-      <div class="clearfix"></div>
-      <div class="works">
-        <ul class="grid">
-          <li>
-            <figure><img src="img/01-screenshot.jpg" alt="Screenshot 01">
-              <figcaption>
-                <div class="caption-content">
-                  <h6>Codetowp branding</h6>
-                  <hr>
-                  <a href="#">Design</a>/ <a href="#">brand</a>
-                  <ul class="work-more">
-                    <li><a href="img/01-screenshot.jpg"><i class="fa fa-search"></i></a></li>
-                    <li><a href="portfolio-inner.html"><i class="fa fa-link"></i></a></li>
-                  </ul>
-                </div>
-              </figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure><img src="img/02-screenshot.jpg" alt="Screenshot 01">
-              <figcaption>
-                <div class="caption-content">
-                  <h6>Optimised For Design</h6>
-                  <hr>
-                  <a href="#">Design</a>/ <a href="#">brand</a>
-                  <ul class="work-more">
-                    <li><a href="#"><i class="fa fa-search"></i></a></li>
-                    <li><a href="#"><i class="fa fa-link"></i></a></li>
-                  </ul>
-                </div>
-              </figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure><img src="img/03-screenshot.jpg" alt="Screenshot 01">
-              <figcaption>
-                <div class="caption-content">
-                  <h6>Optimised For Design</h6>
-                  <hr>
-                  <a href="#">Design</a>/ <a href="#">brand</a>
-                  <ul class="work-more">
-                    <li><a href="#"><i class="fa fa-search"></i></a></li>
-                    <li><a href="#"><i class="fa fa-link"></i></a></li>
-                  </ul>
-                </div>
-              </figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure><img src="img/04-screenshot.jpg" alt="Screenshot 01">
-              <figcaption>
-                <div class="caption-content">
-                  <h6>Optimised For Design</h6>
-                  <hr>
-                  <a href="#">Design</a>/ <a href="#">brand</a>
-                  <ul class="work-more">
-                    <li><a href="#"><i class="fa fa-search"></i></a></li>
-                    <li><a href="#"><i class="fa fa-link"></i></a></li>
-                  </ul>
-                </div>
-              </figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure><img src="img/05-screenshot.jpg" alt="Screenshot 01">
-              <figcaption>
-                <div class="caption-content">
-                  <h6>Optimised For Design</h6>
-                  <hr>
-                  <a href="#">Design</a>/ <a href="#">brand</a>
-                  <ul class="work-more">
-                    <li><a href="#"><i class="fa fa-search"></i></a></li>
-                    <li><a href="#"><i class="fa fa-link"></i></a></li>
-                  </ul>
-                </div>
-              </figcaption>
-            </figure>
-          </li>
-          <li>
-            <figure><img src="img/06-screenshot.jpg" alt="Screenshot 01">
-              <figcaption>
-                <div class="caption-content">
-                  <h6>Optimised For Design</h6>
-                  <hr>
-                  <a href="#">Design</a>/ <a href="#">brand</a>
-                  <ul class="work-more">
-                    <li><a href="#"><i class="fa fa-search"></i></a></li>
-                    <li><a href="#"><i class="fa fa-link"></i></a></li>
-                  </ul>
-                </div>
-              </figcaption>
-            </figure>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- the process block
     ==========================================-->
@@ -400,6 +317,30 @@ mem = (MemberDto)ologin;
   </div>
 </section>
 
+<!-- about us Page
+    ==========================================-->
+<section id="about-us-block" class="text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div id="testimonial" class="owl-carousel owl-theme">
+          <div class="item"> <img src="img/team/01.jpg">
+            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
+            <p><strong>Dean Martin</strong> CEO Acme Inc.</p>
+          </div>
+          <div class="item"> <img src="img/team/02.jpg">
+            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
+            <p><strong>Rima Martin</strong> CEO Food Inc.</p>
+          </div>
+          <div class="item"> <img src="img/team/03.jpg">
+            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
+            <p><strong>Joe Martin</strong> CEO Chat Inc.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- Company counter section
     ==========================================-->
 <section id="company-counter" style="background-image:url(img/count-bg.jpg);">
@@ -437,55 +378,116 @@ mem = (MemberDto)ologin;
 <section id="testimonials-block" class="text-center">
   
 </section>
-
-<!-- latest news block
+<!-- our works block
     ==========================================-->
-
-<section id="latest-news-block">
+<section id="our-work-block">
   <div class="container">
     <div class="row"> 
       <!--section-title-->
       <div class="section-title text-center wow fadeInUp">
-        <h2>Latest news</h2>
-        <a href="blog.html">See the blog</a></div>
-      <!--/section-title--> 
-      
-      <!--home article-->
-      <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <a href="blog-post.html"><img src="img/04-screenshot.jpg" alt="image 1"></a>
-          <a href="blog-post.html"><h6>10 Incredible Quotes To Guide Your Life</h6></a>
-           <a href="#">Web-design</a> , <a href="#">Front-end</a> </header></a>
-      </article>
-      <!--/home article --> 
-      
-      <!--home article-->
-      <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <img src="img/02-screenshot.jpg" alt="image 1"> <a href="#">
-          <h6>Responsive Website in 2017 – 
-            Step by Step Guide</h6>
-          </a> <a href="#">Web-design</a> </header>
-      </article>
-      <!--/home article --> 
-      
-      <!--home article-->
-      <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <img src="img/03-screenshot.jpg" alt="image 1"> <a href="#">
-          <h6>10 Incredible Quotes To Guide Your Life</h6>
-          </a> <a href="#">Web-design</a> , <a href="#">Front-end</a> </header>
-      </article>
-      <!--/home article --> 
-      
-      <!--home article-->
-      <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <img src="img/01-screenshot.jpg" alt="image 1"> <a href="#">
-          <h6>HEADING 6 in use here</h6>
-          </a> <a href="#">Web-design</a> </header>
-      </article>
-      <!--/home article --> 
-      
+        <h2>GAME</h2>
+        <a href="portfolio.html">go to portfolio</a></div>
+      <!--/section-title-->
+      <div class="clearfix"></div>
+      <div class="works">
+        <ul class="grid">
+          <li>
+            <figure><img src="img/01-screenshot.jpg" alt="Screenshot 01">
+              <figcaption>
+                <div class="caption-content">
+                  <h6>Codetowp branding</h6>
+                  <hr>
+                  <a href="#">Design</a>/ <a href="#">brand</a>
+                  <ul class="work-more">
+                    <li><a href="img/01-screenshot.jpg"><i class="fa fa-search"></i></a></li>
+                    <li><a href="portfolio-inner.html"><i class="fa fa-link"></i></a></li>
+                  </ul>
+                </div>
+              </figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure><img src="img/02-screenshot.jpg" alt="Screenshot 01">
+              <figcaption>
+                <div class="caption-content">
+                  <h6>Optimised For Design</h6>
+                  <hr>
+                  <a href="#">Design</a>/ <a href="#">brand</a>
+                  <ul class="work-more">
+                    <li><a href="#"><i class="fa fa-search"></i></a></li>
+                    <li><a href="#"><i class="fa fa-link"></i></a></li>
+                  </ul>
+                </div>
+              </figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure><img src="img/03-screenshot.jpg" alt="Screenshot 01">
+              <figcaption>
+                <div class="caption-content">
+                  <h6>Optimised For Design</h6>
+                  <hr>
+                  <a href="#">Design</a>/ <a href="#">brand</a>
+                  <ul class="work-more">
+                    <li><a href="#"><i class="fa fa-search"></i></a></li>
+                    <li><a href="#"><i class="fa fa-link"></i></a></li>
+                  </ul>
+                </div>
+              </figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure><img src="img/04-screenshot.jpg" alt="Screenshot 01">
+              <figcaption>
+                <div class="caption-content">
+                  <h6>Optimised For Design</h6>
+                  <hr>
+                  <a href="#">Design</a>/ <a href="#">brand</a>
+                  <ul class="work-more">
+                    <li><a href="#"><i class="fa fa-search"></i></a></li>
+                    <li><a href="#"><i class="fa fa-link"></i></a></li>
+                  </ul>
+                </div>
+              </figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure><img src="img/05-screenshot.jpg" alt="Screenshot 01">
+              <figcaption>
+                <div class="caption-content">
+                  <h6>Optimised For Design</h6>
+                  <hr>
+                  <a href="#">Design</a>/ <a href="#">brand</a>
+                  <ul class="work-more">
+                    <li><a href="#"><i class="fa fa-search"></i></a></li>
+                    <li><a href="#"><i class="fa fa-link"></i></a></li>
+                  </ul>
+                </div>
+              </figcaption>
+            </figure>
+          </li>
+          <li>
+            <figure><img src="img/06-screenshot.jpg" alt="Screenshot 01">
+              <figcaption>
+                <div class="caption-content">
+                  <h6>Optimised For Design</h6>
+                  <hr>
+                  <a href="#">Design</a>/ <a href="#">brand</a>
+                  <ul class="work-more">
+                    <li><a href="#"><i class="fa fa-search"></i></a></li>
+                    <li><a href="#"><i class="fa fa-link"></i></a></li>
+                  </ul>
+                </div>
+              </figcaption>
+            </figure>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
+
+
 <footer id="bottom-footer">
   <div class="container">
     <div class="row wow fadeInUp">
