@@ -83,8 +83,8 @@ mem = (MemberDto)ologin;
       <!--nav icon end-->
       
       <ul id="nav-top" class="nav navbar-nav navbar-right">
-        <li><a href="index2.jsp" class="page-scroll">Home</a></li>
-        <li><a href="mypage.jsp" class="page-scroll">MyPage</a></li>
+        <li><a href="#" class="page-scroll">Home</a></li>
+        <li><a href="bbslist.jsp" class="page-scroll">MyPage</a></li>
         <li><a href="#" class="page-scroll">Blog</a></li>
         <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li>
       
