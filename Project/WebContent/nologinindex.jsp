@@ -178,7 +178,7 @@ mem = (MemberDto)ologin;
       
       <!--home article-->
       <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <a href="blog-post.html"><img src="img/04-screenshot.jpg" alt="image 1"></a>
+        <header class="entry-header"> <a href="baseballgame.jsp"><img src="img/04-screenshot.jpg" alt="image 1"></a>
           <a href="blog-post.html"><h6>BASEBALL 숫자 맞추기 게임으로 돈을 벌어보세요!</h6></a>
            <a href="#">Web-design</a> , <a href="#">Front-end</a> </header></a>
       </article>
