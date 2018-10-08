@@ -54,18 +54,24 @@ request.setCharacterEncoding("utf-8");
 </head>
 
 <body>
-<%-- <%
+ <%
 Object ologin = session.getAttribute("login");
 MemberDto mem = null;
 String nav_bar = "";
 if(ologin == null){
 	nav_bar = "";
+	%>
+		<script type="text/javascript">
+			alert("로그인이 필요합니다.");
+			location.href="index.jsp";
+		</script>
+	<%
 	return;
 }
 
 mem = (MemberDto)ologin;
 %>
-  --%>
+
 <!-- Navigation
     ==========================================-->
 <nav id="top-menu" class="navbar navbar-default navbar-fixed-top">
@@ -73,7 +79,7 @@ mem = (MemberDto)ologin;
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
-      <a class="navbar-brand" href="index.html"><img src="img/logo-top.png" class="img-responsive"><span>HANSTRIP</span></a> </div>
+      <a class="navbar-brand" href="index.html"><img src="img/logo-top.png" class="img-responsive"><span>TOTO</span></a> </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
@@ -86,7 +92,8 @@ mem = (MemberDto)ologin;
         <li><a href="#" class="page-scroll">Home</a></li>
         <li><a href="userbbs.jsp" class="page-scroll">MyPage</a></li>
         <li><a href="#" class="page-scroll">Blog</a></li>
-        <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li>
+        <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
+        <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
       
       </ul>        
           <!--search form-->         
@@ -122,13 +129,16 @@ mem = (MemberDto)ologin;
 <section id="home-banner" style="background-image: url(img/b-1.jpg);">
   <div class="content">
     <div class="container"  data-wow-duration="1s"> <span class="wow fadeIn">Dcrazed says</span>
-      <h1 class="wow fadeInUp"><span>HANSTRIP</span> </h1>
+      <h1 class="wow fadeInUp"><span>TOTO</span> </h1>
     </div>
   </div>
   <div class="arrow bounce"> <i class="fa fa-arrow-down fa-2x"></i> </div>
 </section>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+
+<!--  Modal login Page
+======================================================== -->
+<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -151,7 +161,7 @@ mem = (MemberDto)ologin;
           </div>
         </div>
       </div>
-</div>
+</div> -->
 
 <!-- latest news block
     ==========================================-->

@@ -23,6 +23,7 @@
 body {
 	background: url(./image/back.jpg) no-repeat center top;
 }
+
 </style> 
 
 </head>

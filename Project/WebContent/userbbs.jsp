@@ -38,7 +38,24 @@ request.setCharacterEncoding("utf-8");
 <link href="css/owl.carousel.css" rel="stylesheet" media="screen">
 <link href="css/owl.theme.css" rel="stylesheet" media="screen">
 <link href="css/animate.css" rel="stylesheet" media="screen">
+<style type="text/css">
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+.bd .bg_f_f9 {
+    background: -webkit-gradient(linear,0% 0%,0% 100%,from(#FFF),to(#F9F9F9));
+    background: linear-gradient(to bottom,#FFF 0%,#F9F9F9 100%);
+}
+.fr{
+	float: right;
+}
+.fl{
+	float: left;
+}
 
+</style>
 <!-- Stylesheet
     ================================================== -->
 <link rel="stylesheet" type="text/css"  href="style.css">
@@ -127,19 +144,21 @@ iCommentDao c_dao = CommentDao.getInstance();
   <div class="container">
   <div class="row"> 
       <!--blog posts container-->
-      <div class="col-md-offset-3 col-md-6 page-block">
+      <div class="col-md-offset-1 col-md-9 page-block">
         
 
 
 <table class="table">
-<col width="70"><col width="500"><col width="150">
+
 <tr>
-	<th>Num</th><th>Title</th><th>Writer</th><th>Read</th>
+	<th scope="col">Num</th><th scope="col">Title</th><th scope="col">Writer</th><th scope="col">Read</th>
 </tr>
+
 <%
 int count = 0;
 if(bbslist ==null || bbslist.size() == 0){
 	%>
+	
 	<tr>
 		<td colspan="3">No Item</td>
 	</tr>
@@ -170,12 +189,28 @@ if(bbslist ==null || bbslist.size() == 0){
 			<td><%=bbs.getId() %></td>
 			<td><%=bbs.getReadcount() %></td>
 		</tr>
+		
 		<%
 	}
 }
 %>
 
 </table>
+<div>
+	<div class="fl">
+		<div>
+			<input type="text" id="search" name="search" style="width:50px; height:30px">
+			<input type="button" id="searchBtn" name="searchBtn"  style="width:50px; height:30px" class="btn btn-primary" value="검색">
+			
+		</div>
+		
+		
+	</div>
+	<div class="fr">
+		<input type="button" id="writeBtn" name="writeBtn"  style="width:50px; height:30px" class="btn btn-primary" value="글쓰기">
+	</div>
+</div>
+<div>
 <jsp:include page="paging.jsp">
 	<jsp:param value="bbslist.jsp" name="actionPath"/>
 	<jsp:param value="<%=String.valueOf(paging.getNowPage()) %>" name="nowPage"/>
@@ -184,6 +219,7 @@ if(bbslist ==null || bbslist.size() == 0){
 	<jsp:param value="<%=String.valueOf(paging.getBlockCount()) %>" name="blockCount"/>
 	
 </jsp:include>
+</div>
 </div>
 </div>
 </div>
@@ -244,6 +280,10 @@ if(bbslist ==null || bbslist.size() == 0){
         $('.counter').counterUp({
             delay: 10,
             time: 1000
+        });
+        
+        $("#writeBtn").click(function(){
+        	location.href="bbswrite.jsp";
         });
     });
 </script> 

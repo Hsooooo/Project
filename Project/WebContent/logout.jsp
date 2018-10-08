@@ -13,7 +13,7 @@ session.invalidate();
 
 <script type="text/javascript">
 alert("logout!");
-location.href = "nologinindex.jsp";
+location.href = "index.jsp";
 
 </script>
 </body>
