@@ -1,8 +1,13 @@
+<%@page import="dao.MemberDao"%>
+<%@page import="dao.iMemberDao"%>
+<%@page import="dto.MemberDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <meta charset="UTF-8" />
 <title> 숫자 야구 게임 </title>
 <style type="text/css">
@@ -25,7 +30,7 @@ body, body * {
 </style>
 <script type="text/javascript">
 
-// 만든이 : http://tonks.tistory.com/115 
+
 
 var question = []; 
 var count = 0; 
@@ -77,6 +82,26 @@ function setQuestion ( lengths ) {
 
 function reStarting () { count = 0; question = []; } 
 
+/* ─────────────────────  시간별 라운드 재시작  ─────────────────────  */
+function timeRound(){
+	var d = new Date();
+	
+	var mm = d.getMinutes();
+	var ss = d.getSeconds();
+	
+	
+	if(mm % 5 == 0 && ss == "00"){
+		var dbqArr = setQuestion(4);
+		var dbqS = "";
+		for(var i = 0; i< dbqArr.length; i++){
+			dbqS += dbqArr[i];
+		}
+		location.href = "baseballgameAf.jsp?str="+dbqS;
+		question = dbqArr;
+	}
+	
+	
+}
 
 /*  ───────────────────   게임 진행할 함수   ───────────────────  */ 
 
@@ -84,11 +109,11 @@ function playOneRound ( tagList ) {
 
 	 var lengths = tagList.length; 
 
-	 if ( count == 0 ) { 
+	  if ( count == 0 ) { 
 		 while ( question.length < lengths ) question = setQuestion( lengths ); 
-	 } 
+	 }  
 
-
+	 
 	 var guess = []; 
 	 var bulls = cows = 0; 
 	 var final2; 
@@ -153,6 +178,28 @@ function playOneRound ( tagList ) {
 </script>
 </head>
 <body>
+<%
+Object ologin = session.getAttribute("login");
+MemberDto mem = null;
+if(ologin == null){
+	%>
+	<script type="text/javascript">
+		alert("Login Please");
+		location.href = "index.jsp";
+	</script>
+	<%
+	return;
+}
+
+mem = (MemberDto)ologin;
+int point = mem.getPoint();
+iMemberDao dao = MemberDao.getInstance();
+%>
+<div>
+	<h1>내 보유 포인트</h1>
+	point :<p id="pointHtml"> <%=point %></p>
+
+</div>
 <div style="float: left;">
 	 <p>0 ~ 9 중에서 숫자를 입력한 후, "결과 보기" 버튼을 누르세요. </p>
 
@@ -161,27 +208,37 @@ function playOneRound ( tagList ) {
 		 <input type="text" class="text" /><input type="text" class="text" />
 		 <input type="text" class="text" /><input type="text" class="text" />
 	 </form>
-
-	 <button onclick="bullsAndCows()"> 결과 보기 </button>
+	<p>베팅 포인트 </p>
+	<select id="betSel">
+		<option value="1000">1000</option>
+		<option value="2000">2000</option>
+		<option value="5000">5000</option>
+		<option value="10000">10000</option>
+		<option value="20000">20000</option>
+	</select>
+	<button id="betBtn" onclick="betOk()">베팅하기</button>
+	<br>
+	 <button id="resultBtn" onclick="bullsAndCows()" disabled> 결과 보기 </button>
 	 <button onclick="reStarting(); deleteText()"> 새로 시작하기 </button>
 
 	 <p id="check_Correct"></p>
 </div>
 
-<table style="float: left;width: 250px" border="1">
+
+<table style="float: left;width: 300px" border="1">
 	 <thead><tr><th colspan="3"> SCORE </th></tr></thead>
 
 	 <!-- ──────────────── 출력 부분 ──────────────── --> 
 	 <tbody id="tbodyArea">
-		 <tr><td> 1회 </td><td style="width: 60px;">&nbsp;</td><td style="width: 125px;">&nbsp;</td></tr>
-		 <tr><td> 2회 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 3회 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 4회 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 5회 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 6회 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 7회 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 8회 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 9회 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 50배 </td><td style="width: 60px;">&nbsp;</td><td style="width: 125px;">&nbsp;</td></tr>
+		 <tr><td> 10배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 5배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 3배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 2배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 1.5배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 1.2배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 원금 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 0.5배</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 	 </tbody>
 
 </table>
@@ -189,7 +246,24 @@ function playOneRound ( tagList ) {
 <p style="clear: both"><p>
 
 <script type="text/javascript">
-
+$("#betBtn").click(function(){
+	$("#resultBtn").attr('disabled',false);
+	$("#betBtn").attr('disabled',true);
+	$("#betSel").attr('disabled',true);
+	var betMinus = <%=mem.getPoint() %> - $("#betSel").val();
+	$("#pointHtml").html(betMinus);
+	$.ajax({
+		url:"baseballgameAf.jsp",
+		type:"get",
+		data:"point=" + $("#pointHtml").html() +"&id="+ <%=mem.getId() %>,
+		success : function(){ 
+            alert('성공!');
+		}, 
+		error : function(){ 
+         	alert('실패 ㅠㅠ'); 
+		}
+	});
+})
 /*  ─────────────────────  관련 태그들  ─────────────────────  */ 
 
 var formArea = document.getElementById( "formArea" ); 
@@ -280,6 +354,8 @@ function deleteText () {
 		 tdList[ 2 ].innerHTML = "&nbsp;"; 
 	 } 
 } 
+
+
 
 </script>
 </body>
