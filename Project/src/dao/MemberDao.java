@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 
 import db.DBClose;
 import db.DBConnection;
+import dto.BbsDto;
 import dto.MemberDto;
 
 public class MemberDao implements iMemberDao {
@@ -90,7 +91,7 @@ public class MemberDao implements iMemberDao {
 
 	@Override
 	public MemberDto login(MemberDto dto) {
-		String sql = " SELECT ID, NICKNAME, PHONE, AUTH "
+		String sql = " SELECT ID, NICKNAME, PHONE, POINT, MONEY, AUTH "
 				+ " FROM MEMBER "
 				+ " WHERE ID=? AND PWD=? ";
 		
@@ -117,9 +118,12 @@ public class MemberDao implements iMemberDao {
 				String id = rs.getString(1);
 				String nick = rs.getString(2);
 				String phone = rs.getString(3);
-				int auth = rs.getInt(4);
+				int point = rs.getInt(4);
 				
-				mem = new MemberDto(id, null, nick, phone, auth);
+				int money = rs.getInt(5);
+				int auth = rs.getInt(6);
+				
+				mem = new MemberDto(id, null, nick, phone, auth, point, money);
 			}
 			
 			System.out.println("3/6 login Success");
@@ -198,6 +202,35 @@ public class MemberDao implements iMemberDao {
 			
 			
 			return count>0?true:false;
+	}
+
+	@Override
+	public void baseballUpd(String id, int point) {
+		String sql = "UPDATE MEMBER SET POINT = "+point+" WHERE ID= '" + id + "'";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DBConnection.getConnection();
+			System.out.println("1/6 addRead Success");
+
+			psmt = conn.prepareStatement(sql);
+			System.out.println("2/6 addRead Success");
+
+			rs = psmt.executeQuery();
+			System.out.println("3/6 addRead Success");
+
+			System.out.println("4/6 addRead Success");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("addRead Fail");
+		} finally {
+			DBClose.close(psmt, conn, rs);
+		}
+		
 	}
 	
 	

@@ -8,4 +8,5 @@ public interface iMemberDao {
 	public MemberDto login(MemberDto dto);
 	public boolean nickCheck(String nick);
 	public boolean phoneCheck(String phone);
+	public void baseballUpd(String id,int point);
 }
