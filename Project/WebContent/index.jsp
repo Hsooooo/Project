@@ -7,7 +7,7 @@
 <title>Index</title>
 <!-- 
 <style type="text/css">
-.center{
+.center{r
 	margin: auto;
 	width: 60%;
 	border: 3px solid #8ac007;

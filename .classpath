@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="Project/WebContent/WEB-INF/lib/ojdbc6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-8.5.33/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/apache-tomcat-8.5.33/lib/websocket-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
