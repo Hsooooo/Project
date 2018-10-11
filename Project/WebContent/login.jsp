@@ -32,6 +32,7 @@ if(mem != null && !mem.getId().equals("")){
 	<script type="text/javascript">
 		alert("ID or Password Check Please");
 		location.href = "index.jsp";
+		///////location.href = "diceGame.jsp";
 	</script>
 
 <%
