@@ -10,9 +10,23 @@ Object ologin = session.getAttribute("login");
 MemberDto mem = null;
 mem = (MemberDto)ologin;
 
+String id = mem.getId();
+int point = mem.getPoint();
 
+iMemberDao dao = MemberDao.getInstance();
+boolean up = dao.diceUpdate(id, point);
+if(up){
+	System.out.println("[MEMBER] diceUpdate : 포인트 동기화 완료");
+} else {
+	System.out.println("![MEMBER] diceUpdate : 포인트 동기화 실패!");
+}
+
+
+///DICE 테이블 데이터 가져오기.
 iDiceDao dice = DiceDao.getInstance();
-DiceDto ddto=dice.ReDice(mem.getId()); // 가용포인트 갱신용
+DiceDto ddto=dice.reDice(mem.getId());
+System.out.println(ddto.getId() + ", " +ddto.getCurpoint());
+
 
 
  %>
@@ -82,7 +96,7 @@ $("select").on("change", function() { // 플레이어 수 선택하면 진입
 	
  $("#betpoint").on("click keyup input", function () { // 배팅할 포인트 입력하는 텍필 이벤트 감지
 	
-	var curpoint =<%=mem.getPoint()%>; // 가용포인트 저장
+	var curpoint =<%=ddto.getCurpoint()%>; // 가용포인트 저장
 	
 	if(curpoint==0){
 		$("#bet").prop("disabled", true); // 포인트 0이면 배팅 버튼 비활성화
@@ -116,6 +130,7 @@ $("#bet").click(function () { // 배팅 버튼 클릭시 진입
 	
 	
 	var alldata2 = { "id" : id, "betpoint" : betpoint};
+	//$("#info b").text(curpoint-betpoint); // 가용포인트 태그값을 가용포인트-배팅할 포인트 값으로 바꿈	
 	
 	$.ajax({
 		
@@ -219,7 +234,8 @@ $("#exit").click(function () { //게임 종료 버튼 클릭시 Dice 테이블�
 		type : "GET",
 		data : pointdata,
 		success : function (data) {
-			alert("포인트 동기화 완료");
+			alert("포인트" + totalpoint+" 동기화 완료");
+
 		
 			
 		},

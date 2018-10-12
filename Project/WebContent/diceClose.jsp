@@ -14,10 +14,10 @@ iMemberDao dao = MemberDao.getInstance();
 boolean updateS = dao.diceClose(id, totalpoint);
 
 if(updateS){
-	System.out.println("주사위게임 포인트 동기화 완료");
+	System.out.println("[MEMBER] diceUpdate : 포인트 동기화 완료(" + totalpoint + " 원)");
+
 } else {
-	System.out.println("!주사위게임 포인트 동기화 실패!");
-	
+	System.out.println("![MEMBER] diceUpdate : 포인트 동기화 실패!");	
 }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

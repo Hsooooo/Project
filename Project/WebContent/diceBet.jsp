@@ -11,15 +11,16 @@ int bet = Integer.parseInt(betpoint);
 
 
 iDiceDao dao = DiceDao.getInstance();
-boolean betS = dao.DiceBet(id, bet);
+boolean betS = dao.diceBet(id, bet);
 
 
 if(betS){
-	System.out.print("id : " + id + " betpoint : " + bet + "원 업데이트 성공" );
-	
+	System.out.print("[DICE] diceBet : 배팅, 차감 업데이트 성공 ( id : " + id + " betpoint : " + bet + "원)" );
+		
 	
 } else {
-	System.out.print("!!주사위 배팅 실패!!");
+	System.out.print("![DICE] diceBet : 배팅, 차감 업데이트 실패!");
+
 }
 %>    
     

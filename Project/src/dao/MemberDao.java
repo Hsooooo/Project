@@ -208,7 +208,7 @@ public class MemberDao implements iMemberDao {
 	//////////////////////////////////////////////////////////////////
 	//게임 종료시 member 테이블로 dice 게임 결과(최종 현재포인트) 업데이트 하기 위함
 	@Override
-	public boolean diceClose(String id, int totalpoint) { // diceGame 뷰에서 '그만하기'버튼 누르면 Dice 테이블의 curpoint가 여기로 동기화됨.
+	public boolean diceUpdate(String id, int totalpoint) { // diceGame 뷰에서 '그만하기'버튼 누르면 Dice 테이블의 curpoint가 여기로 동기화됨.
 		
 		String sql = " UPDATE MEMBER SET POINT = ? WHERE ID = ? ";
 		
