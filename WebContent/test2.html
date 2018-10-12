@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<fieldset>
+	<textarea id="mseeageWindow"  rows="10" cols="50" readonly="readonly">
+	<br/>
+	<input id="inputMessage" type="text"/>
+	<input type="submit" value="send" onclick="send()">
+	</textarea>
+	</fieldset>
+
+</body>
+
+	<script type="text/javascript">
+	 var textared = document.getElementById("mseeageWindow");
+	 var webSocket = new WebSocket('ws://localhost:8080/Websocket/echo')
+	 var inputWessage = document.getElementById("inputMessage");
+	 webScoekt.onerror = function(event) {
+		onErroe(event) 
+	 };
+	 webScoekt.onopen = function(event) {
+		 //onopen(event)
+		  if ("WebSocket" in window) {
+         ws.send("Message to send");
+         alert("Message is sent...");
+		 };
+		 
+	 webScoekt.onmessage = function(event) {
+		 //onmessage(event)
+         var received_msg = evt.data;
+         alert("Message is received...");
+		 };
+	function onWessage(event) {
+		textarea.value += "상대 : " + event.data = "\n";
+	}
+	
+	function onOpen(event) {
+		textarea.value += "연결 성공 \n";
+	}
+	
+	function onError(event) {
+		alert(enevt.data)
+	}
+	
+    ws.onclose = function() { 
+        
+        // websocket is closed.
+        alert("Connection is closed..."); 
+     };
+	 }else{
+         alert("WebSocket NOT supported by your Browser!");
+	 }
+	 
+	
+	</script>
+</html>
