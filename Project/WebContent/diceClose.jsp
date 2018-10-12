@@ -11,7 +11,7 @@ String totalpoint_ = request.getParameter("totalpoint");
 int totalpoint = Integer.parseInt(totalpoint_);
 
 iMemberDao dao = MemberDao.getInstance();
-boolean updateS = dao.diceClose(id, totalpoint);
+boolean updateS = dao.diceUpdate(id, totalpoint);
 
 if(updateS){
 	System.out.println("[MEMBER] diceUpdate : 포인트 동기화 완료(" + totalpoint + " 원)");

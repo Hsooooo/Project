@@ -8,7 +8,7 @@ String id = request.getParameter("id");
 String pwd = request.getParameter("pwd");
 
 iMemberDao dao = MemberDao.getInstance();
-MemberDto mem = dao.login(new MemberDto(id,pwd,null,null,0));
+MemberDto mem = dao.login(new MemberDto(id,pwd,null,null,0, 0, 0));
 %>    
 <!DOCTYPE html>
 <html>
