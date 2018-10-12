@@ -12,7 +12,7 @@
 	width: 60%;
 	border: 3px solid #8ac007;
 	padding: 10px;
-}
+}	
 </style>
  -->
 
