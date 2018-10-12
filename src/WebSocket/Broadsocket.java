@@ -65,12 +65,12 @@ public class Broadsocket {
 		onMessage("2", session);
 		onMessage("3", session);
 		this.ten = "2";
-		this.Int_user_send = 0;
-		this.random = (int)(Math.random() * 100) +1;
+		
 		}else if(ten == "2") {
 		//	System.out.println("else if ten = " + ten);
 	//	onMessage("1", session);
 			this.ten = "1";
+		this.Int_user_send = 0;
 		}
 		//System.out.println("onOpen =  ??"+session);
 			
