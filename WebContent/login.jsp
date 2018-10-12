@@ -25,7 +25,7 @@ if(mem != null && !mem.getId().equals("")){
 <script type="text/javascript">
 	
 	location.href = "nologinindex.jsp";
-</script>ㅉ
+</script>
 <% 
 }else{
 %>
