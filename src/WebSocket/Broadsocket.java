@@ -2,6 +2,7 @@ package WebSocket;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,10 +20,13 @@ public class Broadsocket {
 	static boolean Boo_user_send = false;
 	static int Int_user_send = 0;
 	static int random = (int)(Math.random() * 100) +1;
+	static HashMap<Session, Integer>  hmap = new HashMap<Session, Integer>();
+	
+	static int meltiroom = 0;
+	
 
 	private static Set<Session> clients = Collections
 			.synchronizedSet(new HashSet<Session>());
-
 	@OnMessage
 	public void onMessage(String message, Session session) throws IOException{
 		System.out.println("Broadsocekt message11 = " +message);
@@ -30,7 +34,6 @@ public class Broadsocket {
 			//int ii = (int)(Math.random() * 100)+1;
 			//System.out.println("ii = " + ii);
 			for (Session client : clients) {
-		
 		if(Int_user_send == 1) {
 			client.getBasicRemote().sendText(random+"");
 			
@@ -66,11 +69,17 @@ public class Broadsocket {
 		onMessage("3", session);
 		this.ten = "2";
 		
+		if(!(hmap.size()==0) || !(hmap == null)) {
+			
+		}
 		}else if(ten == "2") {
 		//	System.out.println("else if ten = " + ten);
 	//	onMessage("1", session);
 			this.ten = "1";
 		this.Int_user_send = 0;
+		this.random = (int)(Math.random() * 100) +1;
+		this.meltiroom++;
+		System.out.println("Broadsocket meltiroom = " + meltiroom);
 		}
 		//System.out.println("onOpen =  ??"+session);
 			
@@ -81,6 +90,8 @@ public class Broadsocket {
 			onMessage(null, session, false);
 			ten =true;
 			}*/
+		this.hmap.put(session, meltiroom);
+		System.out.println("Broadsocket map.size() = " + hmap.size());
 	}
 
 	@OnClose

@@ -101,9 +101,16 @@ New User?  <a href="regi.jsp" style="margin-left:30px;">회원가입</a>
 <input style="margin-left:100px;" type="submit" value="Login" />
 </div>
 </div>
-</form>
-
+</form>	
 </div> 
+<script type="text/javascript">
+/* 	if(confirm("예")){
+		dd
+		
+	} */
+	
+</script>
+
  
 </body>
 </html>
