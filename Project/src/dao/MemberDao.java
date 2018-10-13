@@ -90,10 +90,10 @@ public class MemberDao implements iMemberDao {
 
 	@Override
 	public MemberDto login(MemberDto dto) {
-		String sql = " SELECT ID, NICKNAME, PHONE, AUTH "
+		String sql = " SELECT * "
 				+ " FROM MEMBER "
 				+ " WHERE ID=? AND PWD=? ";
-		
+		System.out.println(sql);
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;

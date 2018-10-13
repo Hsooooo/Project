@@ -203,9 +203,9 @@ mem = (MemberDto)ologin;
       
       <!--home article-->
       <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <img src="img/01-screenshot.jpg" alt="image 1"> <a href="#">
-          <h6>HEADING 6 in use here</h6>
-          </a> <a href="#">Web-design</a> </header>
+        <header class="entry-header"><a href="yun_UpdonwReady.jsp"><img src="img/01-screenshot.jpg" alt="image 1"></a>
+          <a href ="yun_UpdonwReady.jsp"><h6>랜덤상대와 하는 up 다운게임</h6></a> 
+          <a href="yun_UpdonwReady.jsp">Web-design</a> </header>
       </article>
       <!--/home article --> 
       
