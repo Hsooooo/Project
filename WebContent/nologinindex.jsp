@@ -71,6 +71,7 @@ if(ologin == null){
 }
 
 mem = (MemberDto)ologin;
+System.out.println("nolonind mem = " + mem.toString());
 %>
 
 <!-- Navigation

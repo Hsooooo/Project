@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.sun.xml.internal.ws.api.model.MEP;
+
 import db.DBClose;
 import db.DBConnection;
 import dto.MemberDto;
@@ -22,8 +24,8 @@ public class MemberDao implements iMemberDao {
 	@Override
 	public boolean addMember(MemberDto dto) {
 		String sql =" INSERT INTO MEMBER "
-			+ " (ID, PWD, NICKNAME, PHONE, AUTH) "
-			+ " VALUES(?, ?, ?, ?, 0) ";
+			+ " (ID, PWD, NICKNAME, PHONE,Point, Money ,AUTH) "
+			+ " VALUES(?, ?, ?, ?,0 , 0, 0) ";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -113,13 +115,16 @@ public class MemberDao implements iMemberDao {
 			
 			rs = psmt.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				String id = rs.getString(1);
-				String nick = rs.getString(2);
-				String phone = rs.getString(3);
-				int auth = rs.getInt(4);
+				String pwd = rs.getString(2);
+				String nick = rs.getString(3);
+				String phone = rs.getString(4);
+				int point = rs.getInt(5);
+				int money = rs.getInt(6);
+				int auth = rs.getInt(7);
 				
-				mem = new MemberDto(id, null, nick, phone, auth);
+				mem = new MemberDto(id, pwd, nick, phone, point, money, auth);
 			}
 			
 			System.out.println("3/6 login Success");
@@ -195,10 +200,66 @@ public class MemberDao implements iMemberDao {
 			}finally {
 				DBClose.close(psmt, conn, null);
 			}
-			
-			
 			return count>0?true:false;
 	}
+
+	@Override
+	public MemberDto money_Update(MemberDto dto) {
+		System.out.println("===== money_Update start =======");
+		//update
+		String update_sql = " UPDATE MEMBER "
+				+ " SET point = ? "
+				+ " WHERE ID = ? ";
+		//select
+		String select_sql = " SELECT * "
+				+ " FROM MEMBER "
+				+ " WHERE ID = ? ";
+		
+		System.out.println("update_sql = " + update_sql);
+		System.out.println("select_sql = " + select_sql);
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		
+		try {
+			System.out.println("1/6 money_Update sesstion");
+			conn = DBConnection.getConnection();
+			System.out.println("2/6 money_Update sesstion");
+			psmt = conn.prepareStatement(update_sql);
+			psmt.setInt(1, dto.getPoint());
+			psmt.setString(2, dto.getId());
+			psmt.executeQuery();
+			System.out.println("3/6 money_Update sesstion");
+			psmt.clearParameters();
+			System.out.println("4/6 money_Update sesstion");
+			psmt = conn.prepareStatement(select_sql);
+			System.out.println("5/6 money_Update sesstion");
+			psmt.setString(1, dto.getId());
+			rs = psmt.executeQuery();
+			System.out.println("6/6 money_Update sesstion");
+			while(rs.next()) {
+				int i = 1;
+				dto = new MemberDto(rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getString(i++),
+						rs.getInt(i++),
+						rs.getInt(i++),
+						rs.getInt(i++));
+			}
+			System.out.println("OK~ money_Update sesstion");
+			
+		}catch(Exception e) {
+			System.out.println("money_Update fail");
+		}finally {
+			DBClose.close(psmt, conn, null);
+		}
+		System.out.println("===== money_Update END =======");
+		return dto;
+	}
+	
+	
 	
 	
 	

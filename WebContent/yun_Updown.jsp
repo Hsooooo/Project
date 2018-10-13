@@ -26,8 +26,9 @@
         <input type="submit" value="send" onclick="send()" />
     </fieldset>
    </div>
+   <br>
+ <span>  제한시간:<h5 id="time"></h5> </span>
    <script language='javascript'>
-
 function noEvent() {
     if (event.keyCode == 116) {
         event.keyCode= 2;
@@ -45,7 +46,10 @@ function noEvent() {
    <script type="text/javascript">
     var random = ""; //ten의 값이 정해지면 ten의 값을 바꿀수없에 해주는변수
     var ten = "my";
+    var limit = 30;
+    var _setInterval = setInterval("shbu()",1000);
     	$(".col-md-offset-1").hide();
+    	$("span").hide();
     
         var textarea = document.getElementById("messageWindow");
         // textarea 변수 안에 area입력값을 넣는다. 
@@ -53,74 +57,118 @@ function noEvent() {
         // webScoket 안에 서버를넣는다.
         var inputMessage = document.getElementById('inputMessage');
     webSocket.onerror = function(event) {
-    	//alert(2);
       onError(event);
     };
     webSocket.onopen = function(event) { // 처음 server에 연결됬을때 생기는 이벤트
-    //	alert("서버 연결완료");
-   // alert("onopen = " + event);
       onOpen(event);
     };
     
     webSocket.onmessage = function(event) { // 다른 client에서 message를 쏴주면 일로옴
-    	//alert("메세지를받았습니다");
-    	//alert("onmessage = " + event);
       onMessage(event);
     };
+    
     function onMessage(event) {
-    	// 이상하게 var 자료형으로 sendObejct로 쏴주는건 받을수가없다.
+    	// 제한시간 초기화
+    	limit=30;
+    	
+    	
     	if(event.data == "my" ||event.data == "you"){
     	ten = event.data;
-    	alert("ten = "+ten);
-    	//alert("if입니다.");
-    	//alert("if 의 random 입니다" + random);
+    	//alert("ten = "+ten);
     	}else if(random ==""){
-    		alert("random = " + event.data);
+    		setInterval("timer()",1000);
     		random = event.data;
-    		alert("random = "+random);
     		textarea.value += "상대를찾았습니다";
     		$("#loding").remove();
     		$(".col-md-offset-1").show();
-    	}else if(event.data == "넌 졌어 이색기야!@#&$*!"){
-    		<%
-    		System.out.println("제가 진거같습니다");
-    		%>
+    		$("span").show();
+    		
+    	}else if((event.data == "넌 졌어 이색기야!@#&$*!")||(ten=="my" && limit==0)){
+    		defeated();
+		
     	}
         textarea.value += "상대 : " + event.data + "\n";
-       // alert("onMessage = " + event.data);
     }
     
     function onOpen(event) {
-    	//alert("index.jsp = " + ten);
         textarea.value += "연결 성공\n";
     }
+    
     function onError(event) {
       alert(event.data);
     }
+    
     function send() {
     	if(ten == "my"){
         textarea.value += "나 : " + inputMessage.value + "\n";
         ten = inputMessage.value;
-         if(inputMessage.value == random){
+         if((inputMessage.value == random)||(ten=="you"&&limit==0)){
         	webSocket.send("넌 졌어 이색기야!@#&$*!");
         	alert("정답입니다.!");
         	alert("게임이 끝낫습니다.")
+			win();
         }else{
         	alert("틀렷습니다");
         }
         
-        //alert("broadcast ten = " + ten);
-        //alert("webSocket.send = " + inputMessage.value);
        webSocket.send(inputMessage.value);
        webSocket.send("my");
+       limit=30;
         inputMessage.value = "";
         ten = "you";
-		}else if(ten == "you"){
+		}
+    	else if(ten == "you"){
     		alert("상대반의 차례입니다.");
     	inputMessage.value = "";
-    	//ten = true;
     	}
     }
+    function timer() {
+    	document.getElementById("time").innerHTML = limit;
+    	limit--;
+    	}
+    	
+    
+   function defeated(){
+		$(function(){
+			$.ajax({
+				url:"yun_Updown.DB.jsp",
+				type:"get",
+				data:"result=defeated",
+				success:function(data, status, xhr){
+				},
+				error:function(){
+				}
+			});
+		});
+   }
+   
+   function win(){
+   	$.ajax({
+		url:"yun_Updown.DB.jsp",
+		type:"get",
+		data:"result=win",
+		success:function(data, status, xhr){
+			alert("접근성공")
+		},error:function(){
+			alert("통신실패")
+		}
+	})
+   }
+   
+   function shbu(){
+	   if(ten=="you" && limit == 0){
+		   $("#time").remove();
+		   win();
+		   clearInterval(_setInterval);
+	   }else if(ten=="my" && limit == 0){
+		   $("#time").remove();
+		   defeated();
+		   clearInterval(_setInterval);
+	   }
+   }
+ 
+
+
   </script>
 </body>
 

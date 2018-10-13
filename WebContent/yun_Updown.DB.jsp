@@ -1,3 +1,5 @@
+<%@page import="dao.MemberDao"%>
+<%@page import="dao.iMemberDao"%>
 <%@page import="dto.MemberDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -5,6 +7,7 @@
 <%
 MemberDto mem = (MemberDto)session.getAttribute("login");
 String _result = request.getParameter("result");
+System.out.println("yun_Updown.DB.jsp _result = " + _result);
 %>
 <html>
 <head>
@@ -13,9 +16,25 @@ String _result = request.getParameter("result");
 </head>
 <body>
 <%
-if(_result=="win"){
-	mem.set
+if(_result.equals("win")){
+	mem.setPoint(mem.getPoint()+9000);
+	System.out.println("win mem.tostring" + mem.toString());
+}else if(_result.equals("defeated")){
+	mem.setPoint(mem.getPoint()-10000);
+	System.out.println("defeated mem.tostring" + mem.toString());
 }
+iMemberDao dao = MemberDao.getInstance();
+mem = dao.money_Update(mem);
+
+//System.out.println("yun_update.DB mem = " + mem.toString());
+
+
+
+session.removeAttribute("login");
+// 기존에있는 내정보 를 삭제하고
+session.setAttribute("login", mem);
+// 새롭게 가져온 내저옵를 다시 쏴준다.
+
 %>
 </body>
 </html>
