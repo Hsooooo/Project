@@ -9,9 +9,11 @@
 request.setCharacterEncoding("utf-8");
 %>    
 <%
-String id = request.getParameter("id");
+
 String title = request.getParameter("title");
 String content = request.getParameter("content");
+String b_seqS = request.getParameter("b_seq");
+int b_seq = Integer.parseInt(b_seqS);
 
 %>
 <!DOCTYPE html>
@@ -23,7 +25,9 @@ String content = request.getParameter("content");
 <body>
 <%
 iBbsDao dao = BbsDao.getInstance();
-boolean isS = dao.insertBbs(new BbsDto(id,title,content));
+System.out.println(title);
+System.out.println(content);
+boolean isS = dao.updateBbs(title, content, b_seq);
 
 if(isS){
 %>

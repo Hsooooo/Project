@@ -80,7 +80,7 @@ function setQuestion ( lengths ) {
 
 /*  ─────────────────────  재시작용  ─────────────────────  */  
 
-function reStarting () { count = 0; question = []; } 
+function reStarting () {  question = []; } 
 
 /* ─────────────────────  시간별 라운드 재시작  ─────────────────────  */
 function timeRound(){
@@ -105,76 +105,80 @@ function timeRound(){
 
 /*  ───────────────────   게임 진행할 함수   ───────────────────  */ 
 
-function playOneRound ( tagList ) { 
 
-	 var lengths = tagList.length; 
+	function playOneRound(tagList) {
 
-	  if ( count == 0 ) { 
-		 while ( question.length < lengths ) question = setQuestion( lengths ); 
-	 }  
+		var lengths = tagList.length;
 
-	 
-	 var guess = []; 
-	 var bulls = cows = 0; 
-	 var final2; 
+		if (count == 0) {
+			while (question.length < lengths)
+				question = setQuestion(lengths);
+		}
 
-	 for ( var x = 0; x < lengths; x++ ){ guess[ x ] = tagList[ x ].value; }
+		var guess = [];
+		var bulls = cows = 0;
+		var final2;
 
+		for (var x = 0; x < lengths; x++) {
+			guess[x] = tagList[x].value;
+		}
 
-	 var questionText = question.join().replace( /,/g , "" ); 
-	 var guessText = guess.join().replace( /,/g , "" ); 
+		var questionText = question.join().replace(/,/g, "");
+		var guessText = guess.join().replace(/,/g, "");
 
-	 for ( var x = 0; x < lengths; x++ ) { 
+		for (var x = 0; x < lengths; x++) {
 
-		 var tag = tagList[ x ]; 
-		 var value = tag.value.replace( / /g, "" ); 
+			var tag = tagList[x];
+			var value = tag.value.replace(/ /g, "");
 
+			var position = guessText.search(value);
 
-		 var position = guessText.search( value ); 
+			if (!value || value > 9) {
+				tag.select();
+				return alertWindow(notice.notOne);
+			} else if (isNaN(value)) {
+				tag.select();
+				return alertWindow(notice.notNumber);
+			} else if (position > -1 && position != x) {
+				tag.select();
+				return alertWindow(notice.repeated);
+			}
 
-		 if ( !value || value > 9 ) { 
-			 tag.select(); 
-			 return alertWindow( notice.notOne ); 
-		 } 
-		 else if (  isNaN( value )  ) { 
-			 tag.select(); 
-			 return alertWindow( notice.notNumber ); 
-		 } 
-		 else if (  position > -1  && position != x ) { 
-			 tag.select(); 
-			 return alertWindow( notice.repeated ); 
-		 } 
+			position = questionText.search(value);
 
+			if (position == x) {
+				bulls += 1;
+			} else if (position > -1) {
+				cows += 1;
+			}
+		}
 
-		 position = questionText.search( value ); 
+		if (bulls < lengths && count == 8) {
+			final2 = "모두 잃었습니다.";
+		} else if (bulls == lengths) {
+			final2 = "정답입니다.";
+		}
 
-		 if ( position == x ){ bulls += 1; } 
-		 else if ( position > -1 ){ cows += 1; }  
-	 } 
+		questionText = question.join(", ");
+		guessText = guess.join(", ");
 
+		var score = {
+			count : count,
+			bulls : bulls,
+			cows : cows,
+			question : questionText,
+			guess : guessText,
+			final2 : final2
+		};
 
-	 if ( bulls < lengths && count == 8 ){ final2 = notice.incorrect; } 
-	 else if ( bulls == lengths ){ final2 = notice.correct; } 
+		if (final2 == "정답입니다.") {
+			reStarting();
+		} else {
+			count++;
+		}
 
-	 questionText = question.join( ", " ); 
-	 guessText = guess.join( ", " ); 
-
-
-	 var score = { 
-		 count: count, 
-		 bulls: bulls, 
-		 cows: cows, 
-		 question: questionText, 
-		 guess: guessText, 
-		 final2: final2 
-	 }; 
-
-
-	 if ( final2 ){ reStarting(); } 
-	 else { count++; } 
-
-	 return score; 
-} 
+		return score;
+	}
 </script>
 </head>
 <body>
@@ -216,7 +220,7 @@ iMemberDao dao = MemberDao.getInstance();
 		<option value="10000">10000</option>
 		<option value="20000">20000</option>
 	</select>
-	<button id="betBtn" onclick="betOk()">베팅하기</button>
+	<button id="betBtn">베팅하기</button>
 	<br>
 	 <button id="resultBtn" onclick="bullsAndCows()" disabled> 결과 보기 </button>
 	 <button onclick="reStarting(); deleteText()"> 새로 시작하기 </button>
@@ -231,14 +235,14 @@ iMemberDao dao = MemberDao.getInstance();
 	 <!-- ──────────────── 출력 부분 ──────────────── --> 
 	 <tbody id="tbodyArea">
 		 <tr><td> 50배 </td><td style="width: 60px;">&nbsp;</td><td style="width: 125px;">&nbsp;</td></tr>
+		 <tr><td> 20배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
 		 <tr><td> 10배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
 		 <tr><td> 5배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 3배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
 		 <tr><td> 2배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 1.5배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
 		 <tr><td> 1.2배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
 		 <tr><td> 원금 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
-		 <tr><td> 0.5배</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 0.5배 </td><td>&nbsp;</td><td>&nbsp;</td></tr>
+		 <tr><td> 0.2배</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 	 </tbody>
 
 </table>
@@ -246,24 +250,27 @@ iMemberDao dao = MemberDao.getInstance();
 <p style="clear: both"><p>
 
 <script type="text/javascript">
-$("#betBtn").click(function(){
-	$("#resultBtn").attr('disabled',false);
-	$("#betBtn").attr('disabled',true);
-	$("#betSel").attr('disabled',true);
-	var betMinus = <%=mem.getPoint() %> - $("#betSel").val();
-	$("#pointHtml").html(betMinus);
-	$.ajax({
-		url:"baseballgameAf.jsp",
-		type:"get",
-		data:"point=" + $("#pointHtml").html() +"&id="+ <%=mem.getId() %>,
-		success : function(){ 
-            alert('성공!');
-		}, 
-		error : function(){ 
-         	alert('실패 ㅠㅠ'); 
-		}
+jQuery(function(){
+	$("#betBtn").click(function(){
+		$("#resultBtn").attr('disabled',false);
+		$("#betBtn").attr('disabled',true);
+		$("#betSel").attr('disabled',true);
+		var betMinus = <%=mem.getPoint() %> - $("#betSel").val();
+		$("#pointHtml").html(betMinus);
+		var id = "<%=mem.getId() %>";
+		$.ajax({
+			url:"betAf.jsp",
+			type:"get",
+			data:"point=" + $("#pointHtml").html() + "&id=" + id,
+			success : function(){ 
+ 	           alert('성공!');
+			}, 
+			error : function(){ 
+ 	        	alert('실패 ㅠㅠ'); 
+			}
+		});
 	});
-})
+});
 /*  ─────────────────────  관련 태그들  ─────────────────────  */ 
 
 var formArea = document.getElementById( "formArea" ); 
@@ -307,7 +314,26 @@ function bullsAndCows () {
 	 var final2 = result.final2; 
 
 	 if ( final2 ) { 
-		 if ( strikes < inputList.length ){ text = final2 + "정답은 " + question + " 입니다."; } 
+		 if ( strikes == 4 ){ 
+			 alert("정답");
+			 var id = "<%=mem.getId() %>";
+			 $.ajax({
+					url:"baseballgameAf.jsp",
+					type:"get",
+					data:"point=" + $("#betSel").val() + "&id=" + id +"&count=" + count,
+					success : function(){
+						<%
+						ologin = session.getAttribute("login");
+						mem = (MemberDto)ologin;
+						%>
+		 	           $("#pointHtml").html(<%=mem.getPoint() %>);
+					}, 
+					error : function(){ 
+		 	        	alert('실패 ㅠㅠ'); 
+					}
+				});
+			 text = final2 + "정답은 " + question + " 입니다."; 
+		 } 
 		 else { text = final2; } 
 	 } 
 

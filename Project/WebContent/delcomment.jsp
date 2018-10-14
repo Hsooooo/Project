@@ -7,10 +7,11 @@
 request.setCharacterEncoding("utf-8");
 %>    
 <%
-String id = request.getParameter("id");
-String sb_seq = request.getParameter("b_seq");
-int b_seq = Integer.parseInt(sb_seq);
-String content = request.getParameter("content");
+
+String com_seqS = request.getParameter("c_seq");
+int com_seq = Integer.parseInt(com_seqS);
+String bbs_seqS = request.getParameter("b_seq");
+int bbs_seq = Integer.parseInt(bbs_seqS);
 %>
 <!DOCTYPE html>
 <html>
@@ -21,10 +22,11 @@ String content = request.getParameter("content");
 <body>
 <%
 iCommentDao dao = CommentDao.getInstance();
-dao.commentWrite(b_seq, id, content);
+dao.commentDel(com_seq);
+
 %>
 <script type="text/javascript">
-	location.href = "userbbsdetail.jsp?seq="+<%=b_seq%>;
+	location.href = "userbbsdetail.jsp?seq="+<%=bbs_seq%>;
 </script>
 
 

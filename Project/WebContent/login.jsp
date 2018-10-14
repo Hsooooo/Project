@@ -8,7 +8,7 @@ String id = request.getParameter("id");
 String pwd = request.getParameter("pwd");
 
 iMemberDao dao = MemberDao.getInstance();
-MemberDto mem = dao.login(new MemberDto(id,pwd,null,null,0));
+MemberDto mem = dao.login(new MemberDto(id,pwd));
 %>    
 <!DOCTYPE html>
 <html>
@@ -25,7 +25,7 @@ if(mem != null && !mem.getId().equals("")){
 <script type="text/javascript">
 	
 	location.href = "nologinindex.jsp";
-</script>ㅉ
+</script>
 <% 
 }else{
 %>

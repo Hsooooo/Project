@@ -91,8 +91,8 @@ mem = (MemberDto)ologin;
       
       <ul id="nav-top" class="nav navbar-nav navbar-right">
         <li><a href="#" class="page-scroll">Home</a></li>
-        <li><a href="userbbs.jsp" class="page-scroll">MyPage</a></li>
-        <li><a href="#" class="page-scroll">Blog</a></li>
+        <li><a href="mypage.jsp" class="page-scroll">MyPage</a></li>
+        <li><a href="userbbs.jsp" class="page-scroll">Community</a></li>
         <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
         <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
       
@@ -127,15 +127,22 @@ mem = (MemberDto)ologin;
 
 <!-- banner Page
     ==========================================-->
-<section id="home-banner" style="background-image: url(img/b-1.jpg);">
-  <div class="content">
+<!-- <section id="home-banner" style="background-image: url(img/b-1.jpg);">
+  <div class="content wow fdeInUp">
     <div class="container"  data-wow-duration="1s"> <span class="wow fadeIn">Dcrazed says</span>
       <h1 class="wow fadeInUp"><span>TOTO</span> </h1>
     </div>
   </div>
   <div class="arrow bounce"> <i class="fa fa-arrow-down fa-2x"></i> </div>
-</section>
+</section> -->
 
+<div id="page-banner" style="background-image: url(img/b-1.jpg);">
+  <div class="content  wow fdeInUp">
+    <div class="container ">
+      <h1>Hello TOTO</h1>
+    </div>
+  </div>
+</div>
 
 <!--  Modal login Page
 ======================================================== -->
@@ -186,9 +193,8 @@ mem = (MemberDto)ologin;
       
       <!--home article-->
       <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <img src="img/02-screenshot.jpg" alt="image 1"> <a href="#">
-          <h6>Responsive Website in 2017 – 
-            Step by Step Guide</h6>
+        <header class="entry-header"><a href="diceGame.jsp"> <img src="img/02-screenshot.jpg" alt="image 1"></a> <a href="#">
+          <h6>주사위 게임으로 돈을 벌어보세요!</h6>
           </a> <a href="#">Web-design</a> </header>
       </article>
       <!--/home article --> 

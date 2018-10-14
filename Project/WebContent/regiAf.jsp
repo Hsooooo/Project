@@ -26,7 +26,7 @@ String phone = request.getParameter("phone");
 <%
 iMemberDao dao = MemberDao.getInstance();
 System.out.println(id+","+pwd+","+nick+","+phone);
-boolean isS = dao.addMember(new MemberDto(id,pwd,nick,phone,0));
+boolean isS = dao.addMember(new MemberDto(id,pwd,nick,phone,0,0,0));
 
 if(isS){
 %>
