@@ -31,6 +31,7 @@ mem = dao.money_Update(mem);
 
 
 session.removeAttribute("login");
+System.out.println("삭제가안되나");
 // 기존에있는 내정보 를 삭제하고
 session.setAttribute("login", mem);
 // 새롭게 가져온 내저옵를 다시 쏴준다.

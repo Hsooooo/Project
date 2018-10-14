@@ -64,7 +64,6 @@ public class Broadsocket {
 		// 그이유는 서버가 클라이언트에 값을쏴줄때 자기제외하고 값을 쏴주기떄문이다.
 		if(ten == "my") {
 		this.hmap.put(session, meltiroom);
-		
 		onMessage("you", session);
 		this.Int_user_send ++;
 		onMessage(random+"", session);
@@ -75,6 +74,7 @@ public class Broadsocket {
 		}else if(ten == "you") {
 			this.ten = "my";
 		this.random = (int)(Math.random() * 100) +1;
+		System.out.println("random = " + random);
 		this.hmap.put(session, meltiroom);
 		System.out.println("hmmmmap22= " + hmap.get(session));
 		}
@@ -84,6 +84,7 @@ public class Broadsocket {
 	@OnClose
 	public void onClose(Session session) throws IOException {
 		// Remove session from the connected sessions set
+		System.out.println("언제사라지는지");
 		clients.remove(session);
 	}
 }
