@@ -17,8 +17,7 @@ public class DBConnection {
 
 	public static Connection getConnection() throws Exception {
 		Connection conn = null;
-		conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "Toto", "toto");
-		System.out.println("DB Connection Success!!");
+		conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "hr", "hr");
 
 		return conn;
 	}

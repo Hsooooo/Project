@@ -8,5 +8,9 @@ public interface iMemberDao {
 	public MemberDto login(MemberDto dto);
 	public boolean nickCheck(String nick);
 	public boolean phoneCheck(String phone);
+<<<<<<< HEAD
+	public MemberDto money_Update(MemberDto dto);
+=======
 	public void baseballUpd(String id,int point);
+>>>>>>> refs/remotes/origin/hs
 }
