@@ -16,17 +16,20 @@ location.href="index.jsp";
 System.out.println("yun_UdonwReady.jsp dto = " + mem.toString());
 }
 %>
-<h6>현재내정보:<%=mem.toString() %></h6>
 <head>
 <!-- Basic Page Needs
     ================================================== -->
+ 
 <meta charset="utf-8">
 <!--[if IE]><meta http-equiv="x-ua-compatible" content="IE=9" /><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact</title>
+<title>HANSOO - Home</title>
 <meta name="description" content="">
 <meta name="author" content="">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
 
+
+</script>
 <!-- Favicons
     ================================================== -->
 <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -53,7 +56,7 @@ System.out.println("yun_UdonwReady.jsp dto = " + mem.toString());
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="page">
+<body class="page" oncontextmenu="return false">
 <nav id="top-menu" class="navbar navbar-default navbar-fixed-top">
   <div class="container"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -118,8 +121,8 @@ System.out.println("yun_UdonwReady.jsp dto = " + mem.toString());
   <div class="container">
   <div class="row"> 
 <button onclick="fun(this)" value="start">게임시작!</button>
-<button>게임방법</button>
-<button>나가기</button>
+<button onclick="fun(this)" value="game_guide">게임방법</button>
+<button onclick="fun(this)" value="mian_view">이전으로</button>
 		<fieldset>
 			<textarea id="messageWindow" rows="10" cols="50" readonly="true" style="overflow-y: "></textarea>
 			<br /> <input id="inputMessage" type="text" /> <input type="submit"
@@ -128,7 +131,32 @@ System.out.println("yun_UdonwReady.jsp dto = " + mem.toString());
 	    </div>
   </div>
 </div>
-	
+	<script language='javascript'>
+function noEvent() {
+    if (event.keyCode == 116) {
+        event.keyCode= 2;
+        return false;
+    }
+    else if(event.ctrlKey && (event.keyCode==78 || event.keyCode == 82))
+    {
+        return false;
+    }
+}
+document.onkeydown = noEvent;
+</script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script type="text/javascript" src="js/bootstrap.js"></script> 
+<script type="text/javascript" src="js/SmoothScroll.js"></script> 
+<script type="text/javascript" src="js/jquery.isotope.js"></script> 
+<script src="js/owl.carousel.js"></script> 
+<script src="js/jquery.waypoints.min.js"></script> 
+<!-- Custom Javascripts
+    ================================================== --> 
+<script type="text/javascript" src="js/main.js"></script> 
+<script src="js/wow.min.js"></script> 
+
 <script type="text/javascript">
 var objDiv = document.getElementById("messageWindow"); 
 
@@ -152,7 +180,7 @@ webSocket.onmessage = function(event) { // 다른 client에서 message를 쏴주
 	}
 	
 function onOpen(event) {
-    textarea.value += "*********************주의상황*********************\n1.현재 페이지부터는 새로고침은 자제해주시기바랍니다.\n2.가급적이면 버튼시스템을 이용해주세요 .\n3.게임을 시작하면 게임끝날때까지  채팅기능이 제한됩니다./n4.게임 도중에 나갈시 자동으로 패배하게됩니다. \n대기실의 채팅방입니다. \n";
+    textarea.value += "*********************주의상황*********************\n1.현재 페이지부터는 새로고침이 불가능합니다.\n2.가급적이면 버튼시스템을 이용해주세요 .\n3.게임을 시작하면 게임끝날때까지  채팅기능이 제한됩니다.\n4.게임 도중에 나갈시 자동으로 패배하게됩니다. \n5.긴시간 매칭이 안잡히시면 매칭취소후 다시 매칭을 해주시기바랍니다.\n대기실의 채팅방입니다. \n";
     webSocket.send(<%=mem.getId()%>+ "님이 입장하셨습니다.");
 }
 
@@ -171,10 +199,13 @@ function onError(event) {
 	function fun(val){
 		if(val.value == "start"){
 			location.href="yun_Updown.jsp";
+		}else if(val.value == "mian_view"){
+			location.href="nologinindex.jsp";
+		}else if(val.value == "game_guide"){
+			alert("1.랜덤으로 매치된상대와 턴을두고 랜덤으로 정해진 숫자를 먼저 맞춘쪽이 승리합니다.\n2.랜덤볼은 금액수정이 불가능합니다.\n3.정해진 금액은 10000원이고 배당은 1.9배입니다.\n4.게임 도중 나가기누를시 자동으로 패배합니다.\n5.그럼 모두 재밌게 게임을 해주시기바랍니다.");
 		}
-	}
-	
 		
+	}
 	
 </script>
 </body>

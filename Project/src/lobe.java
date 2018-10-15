@@ -21,7 +21,7 @@ public class lobe {
 			.synchronizedSet(new HashSet<Session>());
 	@OnMessage
 	public void onMessage(String message, Session session) throws IOException{
-		System.out.println("Broadsocekt message11 = " +message);
+		//System.out.println("Broadsocekt message11 = " +message);
 		synchronized (clients) {
 			for (Session client : clients) {
 				if (!client.equals(session)) {
