@@ -13,5 +13,6 @@ public interface iBbsDao {
 	public void delBbs(int seq);
 	public boolean updateBbs(String title,String content, int seq);
 	public List<BbsDto> myBbsList(String id);
-	public List<BbsDto> getBbsPagingList(PagingBean paging, String searchWord);
+	public List<BbsDto> getBbsPagingList(PagingBean paging, String searchWord, int flag);
+	public int getMyBbsCount(String id);
 }

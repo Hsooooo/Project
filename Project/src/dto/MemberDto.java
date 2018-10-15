@@ -20,18 +20,49 @@ public class MemberDto implements Serializable {
 	private String nickname;
 	private String phone;
 	private int auth;
+	private int point;
+	private int money;
 	
 	
 	
 	
-	public MemberDto(String id, String pwd, String nickname, String phone, int auth) {
+	
+	public MemberDto(String id, String pwd, String nickname, String phone, int auth, int point, int money) {
 		super();
 		this.id = id;
 		this.pwd = pwd;
 		this.nickname = nickname;
 		this.phone = phone;
 		this.auth = auth;
+		this.point = point;
+		System.out.println(point);
+		this.money = money;
 	}
+	
+	
+	public MemberDto(String id, String pwd) {
+		super();
+		this.id = id;
+		this.pwd = pwd;
+	}
+
+
+	public int getPoint() {
+		return point;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
 	public String getId() {
 		return id;
 	}

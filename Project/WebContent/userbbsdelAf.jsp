@@ -10,8 +10,7 @@ request.setCharacterEncoding("utf-8");
 %>    
 <%
 
-String title = request.getParameter("title");
-String content = request.getParameter("content");
+
 String b_seqS = request.getParameter("b_seq");
 int b_seq = Integer.parseInt(b_seqS);
 
@@ -25,27 +24,18 @@ int b_seq = Integer.parseInt(b_seqS);
 <body>
 <%
 iBbsDao dao = BbsDao.getInstance();
-System.out.println(title);
-System.out.println(content);
-boolean isS = dao.updateBbs(title, content, b_seq);
 
-if(isS){
+
+dao.delBbs(b_seq);
+
+
 %>
 	<script type="text/javascript">
 		
-		location.href = "userbbsdetail.jsp?seq="+<%=b_seq%>;
+		location.href = "userbbs.jsp";
 	</script>
 
-<% 
-}else{
-%>
-	<script type="text/javascript">
-		alert("다시 기입해주십시오");
-		location.href = "userbbswrite.jsp";
-	</script>
-<%
-}
-%>
+
 
 </body>
 </html>

@@ -1,29 +1,18 @@
-
-<%@page import="dto.CommentDto"%>
+<%@page import="dto.CsBbsDto"%>
+<%@page import="dao.CsBbsDao"%>
+<%@page import="dao.iCsBbsDao"%>
 <%@page import="dto.BbsDto"%>
-<%@page import="dao.CommentDao"%>
-<%@page import="dao.iCommentDao"%>
-<%@page import="java.util.List"%>
 <%@page import="dao.BbsDao"%>
 <%@page import="dao.iBbsDao"%>
-<%@page import="dto.PagingBean"%>
 <%@page import="dto.MemberDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+
+    
 <%
 request.setCharacterEncoding("utf-8");
 %>    
-<%
-int seq = Integer.parseInt(request.getParameter("seq"));
-%>    
-<%
-iBbsDao dao = BbsDao.getInstance();
-BbsDto dto = dao.getBbs(seq);
-dao.addRead(seq);
-iCommentDao c_dao = CommentDao.getInstance();
-List<CommentDto> c_dto = c_dao.getCommentList(seq);
-%>
 <!doctype html>
 <html>
 <head>
@@ -41,7 +30,7 @@ List<CommentDto> c_dto = c_dao.getCommentList(seq);
 <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
 <!-- Bootstrap -->
-<link rel="stylesheet" type="text/css"  href="css/bootstrap.css"> 
+<link rel="stylesheet" type="text/css"  href="css/bootstrap.css?ver=1"> 
 
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
 
@@ -81,7 +70,7 @@ thead {
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="page">
+<body>
 <%
 Object ologin = session.getAttribute("login");
 MemberDto mem = null;
@@ -89,7 +78,7 @@ if(ologin == null){
 	%>
 	<script type="text/javascript">
 		alert("Login Please");
-		location.href = "nologinindex.jsp";
+		location.href = "index.jsp";
 	</script>
 	<%
 	return;
@@ -97,7 +86,6 @@ if(ologin == null){
 
 mem = (MemberDto)ologin;
 %>
-
 <!-- Navigation
     ==========================================-->
 <nav id="top-menu" class="navbar navbar-default navbar-fixed-top">
@@ -121,7 +109,7 @@ mem = (MemberDto)ologin;
         <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
         <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
       
-      </ul>      
+      </ul>
     </div>
     <!-- /.navbar-collapse --> 
   </div>
@@ -130,14 +118,13 @@ mem = (MemberDto)ologin;
 
 <!-- banner Page
     ==========================================-->
-<div id="page-banner" style="background-image: url(img/photo-typo.jpg);">
+<div id="page-banner" style="background-image: url(img/photo-typo2.jpg);">
   <div class="content  wow fdeInUp">
     <div class="container ">
       <h1>유저 게시판</h1>
     </div>
   </div>
 </div>
-
 <!--page body-->
 
 <div id="page-body">
@@ -147,160 +134,108 @@ mem = (MemberDto)ologin;
       <div class="col-md-offset-1 col-md-9 page-block">
         
 
+<h2>목록</h2>
 
 
-<div class="center">
-<form action="userbbseditAf.jsp" method="post">
-<input type="hidden" id="b_seq" name="b_seq" value="<%=dto.getSeq() %>">
+
+<%
+String sseq = request.getParameter("seq");
+int seq = Integer.parseInt(sseq.trim());
+
+iCsBbsDao dao = CsBbsDao.getInstance();
+CsBbsDto dto = dao.getBbs(seq);
+
+request.setAttribute("dto", dto);
+%>
+<h1>부모글</h1><br>
+<br>
+
 <table class="table">
+<col width="200"><col width="500">
+
 <tr>
-	<td><b>아이디</b></td>
-	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getId() %>" readOnly>
-	</td>
+	<td>Writer</td>
+	<td><%=dto.getId() %></td>
+<tr>
+<tr>
+	<td>Title</td>
+	<td><%=dto.getTitle() %></td>
 </tr>
 <tr>
-	<td><b>작성일</b></td>
-	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getWdate() %>" readOnly>
-	</td>
+	<td>작성일</td>
+	<td><%=dto.getWdate() %></td>
 </tr>
 <tr>
 	<td>조회수</td>
-	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getReadcount() %>" readOnly>
-	</td>
+	<td><%=dto.getReadcount() %></td>
 </tr>
 <tr>
-	<td>제목</td>
-	<td>
-		<input type="text" class="input-sm col-xs-4" id="title" name="title" size="20" value="<%=dto.getTitle() %>"  style="width:450px" >
-	</td>
+	<td>info</td>
+	<td><%=dto.getRef() %>-<%=dto.getStep() %>-<%=dto.getDepth() %></td>
 </tr>
-
-
 <tr>
-	<td colspan="2">내용</td>
+	<td colspan="2">Content</td>
 </tr>
 <tr>
 	<td colspan="2">
-		<textarea rows="25" cols="65" id="content" name="content"><%=dto.getContent() %></textarea>
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<div class="fr">
-		<button id="editBtn" name="editBtn"  class="btn btn-default btn-sm">
-				<span class="glyphicon glyphicon-pencil"></span>수정
-		</button>
-	</div>
+		<textarea rows="25" cols="45" id="content" name="content"><%=dto.getContent() %></textarea>
 	</td>
 </tr>
 </table>
-
-</form>
-
-
-</div>
-
-<div>
-<div class="fl">
-	
-      <button type="button" class="btn btn-default btn-sm" onclick="location.href='userbbs.jsp'">Go List</button>
-</div>
-		
-</div>
-	<div class="fr">
-		<button id="writeBtn" name="writeBtn"  class="btn btn-default btn-sm">
-				<span class="glyphicon glyphicon-pencil"></span>글쓰기
-		</button>
-	</div>
-</div>
-<div>
-
 </div>
 </div>
 </div>
 </div>
+<hr>
 
 
-   <div class="clearfix"></div>
-<footer id="bottom-footer">
+<!--page body-->
+
+<div id="page-body">
   <div class="container">
-    <div class="row wow fdeInUp">
-      <div class="col-md-4 col-sm-4 col-xs-12"> 
-        <!--copyright-->
-        <p class="copyright">© 2018 <a href="https://dcrazed.com/">Grit</a>. All rights reserved</p>
-        <!--/copyright--> 
-      </div>
-      <!--bottom nav-->
-      <div class="col-md-4 col-sm-4 col-xs-12">
-        <nav class="bottom-nav">
-          <ul>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Privacy</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Pricing</a></li>
-          </ul>
-        </nav>
-      </div>
-      <!--/bottom nav--> 
-      
-      <!--powered by-->
-      <div class="col-md-4 col-sm-4 col-xs-12">
-        <ul class="social-link">
-          <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-          <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-          <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-          <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-        </ul>
-      </div>
-      <!--/powered by--> 
-      
-    </div>
-  </div>
-</footer>
+  <div class="row"> 
+      <!--blog posts container-->
+      <div class="col-md-offset-1 col-md-9 page-block">
+<div class="center">
+<form id="insertFrm" action="answerAf.jsp" method="post">
+<input type="hidden" name="seq" value="<%=dto.getSeq() %>">
+<h3>답글</h3>
+<table class="table">
+<col width="200"><col width="500">
+<tr>
+	<td>ID</td>
+	<td>
+		<input type="text" class="input-sm" id="id" name="id" size="50" value="<%=mem.getId() %>" readOnly>
+	</td>
+</tr>
+<tr>
+	<td>Title</td>
+	<td>
+		<input type="text" class="input-sm" id="title" name="title" size="50">
+	</td>
+</tr>
+<tr>
+	<td colspan="2">Content</td>
+</tr>
+<tr>
+	<td colspan="2">
+		<textarea rows="25" cols="45" id="content" name="content"></textarea>
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+		<input type="submit" value="답글 추가">
+	</td>
+</tr>
+</table>
+<input type="hidden" id="chk">
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+<a href="bbslist.jsp">글목록</a>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
-<!-- Include all compiled plugins (below), or include individual files as needed --> 
-<script type="text/javascript" src="js/bootstrap.js"></script> 
-
-<script type="text/javascript" src="js/SmoothScroll.js"></script> 
-<script type="text/javascript" src="js/jquery.isotope.js"></script> 
-<script src="js/owl.carousel.js"></script> 
-
-<script src="js/jquery.waypoints.min.js"></script> 
-<!-- Javascripts
-    ================================================== --> 
-<script type="text/javascript" src="js/main.js"></script> 
-<script src="js/wow.min.js"></script> 
-<script>
-    jQuery(document).ready(function( $ ) {
-    	var a = '<%=dto.getId() %>';
-    	var b = '<%=mem.getId() %>';
-    	
-    	if(a != b){
-    		$("#editBtn").hide();
-    		$("#delBtn").hide();
-    	}else{
-    		
-    		$("#editBtn").show();
-    		$("#delBtn").show();
-    		
-    	}
-    	
-        $('.counter').counterUp({
-            delay: 10,
-            time: 1000
-        });
-        
-       
-        
-    });
-</script> 
-<script>
-new WOW().init();
-</script>
 </body>
 </html>

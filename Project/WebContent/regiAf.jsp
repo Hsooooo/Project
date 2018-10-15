@@ -32,7 +32,7 @@ if(isS){
 %>
 	<script type="text/javascript">
 		alert("성공적으로 가입했습니다.");
-		location.href = "index.jsp";
+		location.href = "nologinindex.jsp";
 	</script>
 
 <% 

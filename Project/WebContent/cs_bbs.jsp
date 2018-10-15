@@ -1,5 +1,8 @@
 
-<%@page import="dto.CommentDto"%>
+<%@page import="dao.CsBbsDao"%>
+<%@page import="dao.iCsBbsDao"%>
+<%@page import="dto.CsBbsDto"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="dto.BbsDto"%>
 <%@page import="dao.CommentDao"%>
 <%@page import="dao.iCommentDao"%>
@@ -14,16 +17,20 @@
 <%
 request.setCharacterEncoding("utf-8");
 %>    
-<%
-int seq = Integer.parseInt(request.getParameter("seq"));
-%>    
-<%
-iBbsDao dao = BbsDao.getInstance();
-BbsDto dto = dao.getBbs(seq);
-dao.addRead(seq);
-iCommentDao c_dao = CommentDao.getInstance();
-List<CommentDto> c_dto = c_dao.getCommentList(seq);
-%>
+<%!
+public String arrow(int depth){
+	String rs = "<img src='./image/arrow.png' width='20px' height='20px'/>";
+	String nbsp = "&nbsp;&nbsp;&nbsp;&nbsp;";
+	String ts = "";
+	
+	for(int i=0;i< depth; i++){
+		ts += nbsp;
+	}
+	
+	return depth==0?"":ts+rs;
+}
+
+%>  
 <!doctype html>
 <html>
 <head>
@@ -32,7 +39,7 @@ List<CommentDto> c_dto = c_dao.getCommentList(seq);
 <meta charset="utf-8">
 <!--[if IE]><meta http-equiv="x-ua-compatible" content="IE=9" /><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>유저 게시판</title>
+<title>고객센터</title>
 <meta name="description" content="">
 <meta name="author" content="">
 
@@ -41,7 +48,7 @@ List<CommentDto> c_dto = c_dao.getCommentList(seq);
 <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
 <!-- Bootstrap -->
-<link rel="stylesheet" type="text/css"  href="css/bootstrap.css"> 
+<link rel="stylesheet" type="text/css"  href="css/bootstrap.css?ver=1"> 
 
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
 
@@ -97,7 +104,37 @@ if(ologin == null){
 
 mem = (MemberDto)ologin;
 %>
+<!--  페이징 정보 교환 -->
+<%
+PagingBean paging = new PagingBean();
+String nowPage = request.getParameter("nowPage");
+if(nowPage == null){ /* 처음으로 들어온페이지. */
+	//System.out.println("bbslist = 1");
+	paging.setNowPage(1);
+	//System.out.println(paging.getNowPage());
+}else{
+	paging.setNowPage(Integer.parseInt(request.getParameter("nowPage")));
+	//System.out.println("bbslist = 2");
+	//System.out.println(paging.getNowPage());
+}
+%>
+<%
+iCsBbsDao dao = CsBbsDao.getInstance();
+//List<BbsDto> bbslist = dao.getBbsList();
+List<CsBbsDto> bbslist = new ArrayList<>();
+String search = request.getParameter("search");
+System.out.println("bbslist search = " +  search);
+if(search==null){
+	bbslist = dao.getBbsPagingList(paging, "");
+//bbslist = (List<BbsDto>)request.getAttribute("bbslist");		
+}else{
+	int choice = Integer.parseInt(request.getParameter("choice"));
+	bbslist = dao.getBbsPagingList(paging, search);
+//List<BbsDto> bbslist = dao.getBbsList();
+}
 
+
+%>
 <!-- Navigation
     ==========================================-->
 <nav id="top-menu" class="navbar navbar-default navbar-fixed-top">
@@ -121,7 +158,7 @@ mem = (MemberDto)ologin;
         <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
         <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
       
-      </ul>      
+      </ul>
     </div>
     <!-- /.navbar-collapse --> 
   </div>
@@ -130,10 +167,10 @@ mem = (MemberDto)ologin;
 
 <!-- banner Page
     ==========================================-->
-<div id="page-banner" style="background-image: url(img/photo-typo.jpg);">
+<div id="page-banner" style="background-image: url(img/photo-typo2.jpg);">
   <div class="content  wow fdeInUp">
     <div class="container ">
-      <h1>유저 게시판</h1>
+      <h1>Q&A</h1>
     </div>
   </div>
 </div>
@@ -147,68 +184,77 @@ mem = (MemberDto)ologin;
       <div class="col-md-offset-1 col-md-9 page-block">
         
 
-
-
-<div class="center">
-<form action="userbbseditAf.jsp" method="post">
-<input type="hidden" id="b_seq" name="b_seq" value="<%=dto.getSeq() %>">
+<h2>목록</h2>
 <table class="table">
-<tr>
-	<td><b>아이디</b></td>
-	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getId() %>" readOnly>
-	</td>
+<thead>
+<tr class="table-primary">
+	<th scope="col" width="30">Num</th><th scope="col"width="200">Title</th><th scope="col" width="50">Writer</th><th scope="col" width="10">Read</th>
 </tr>
-<tr>
-	<td><b>작성일</b></td>
-	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getWdate() %>" readOnly>
-	</td>
-</tr>
-<tr>
-	<td>조회수</td>
-	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getReadcount() %>" readOnly>
-	</td>
-</tr>
-<tr>
-	<td>제목</td>
-	<td>
-		<input type="text" class="input-sm col-xs-4" id="title" name="title" size="20" value="<%=dto.getTitle() %>"  style="width:450px" >
-	</td>
-</tr>
-
-
-<tr>
-	<td colspan="2">내용</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<textarea rows="25" cols="65" id="content" name="content"><%=dto.getContent() %></textarea>
-	</td>
-</tr>
-<tr>
-	<td colspan="2">
-		<div class="fr">
-		<button id="editBtn" name="editBtn"  class="btn btn-default btn-sm">
-				<span class="glyphicon glyphicon-pencil"></span>수정
-		</button>
-	</div>
-	</td>
-</tr>
+</thead>
+<tbody>
+<%
+int count = 0;
+if(bbslist ==null || bbslist.size() == 0){
+	%>
+	
+	<tr>
+		<td colspan="3">No Item</td>
+	</tr>
+	<%
+}else{
+	for(int i=0;i<bbslist.size();i++){
+		CsBbsDto bbs = bbslist.get(i);
+		%>
+		<tr>
+			<td><%=i+1%></td>
+			<td style="text-align: left;">
+				<%=arrow(bbs.getDepth()) %>
+				<%
+				if(bbs.getDel() == 0){
+				%>
+					<a href="cs_bbsdetail.jsp?seq=<%=bbs.getSeq() %>"><%=bbs.getTitle() %></a>
+				<%
+				}else{
+				%>
+					Deleted Item
+				<%
+				}
+				%>
+				
+			</td>
+			<td><%=bbs.getId() %></td>
+			<td><%=bbs.getReadcount() %></td>
+		</tr>
+		
+		<%
+	}
+}
+%>
+</tbody>
 </table>
-
-</form>
-
-
-</div>
-
+<jsp:include page="paging.jsp">
+	<jsp:param value="cs_bbs.jsp" name="actionPath"/>
+	<jsp:param value="<%=String.valueOf(paging.getNowPage()) %>" name="nowPage"/>
+	<jsp:param value="<%=String.valueOf(paging.getTotalCount()) %>" name="totalCount"/>
+	<jsp:param value="<%=String.valueOf(paging.getCountPerPage()) %>" name="countPerPage"/>
+	<jsp:param value="<%=String.valueOf(paging.getBlockCount()) %>" name="blockCount"/>
+	
+</jsp:include>
 <div>
 <div class="fl">
-	
-      <button type="button" class="btn btn-default btn-sm" onclick="location.href='userbbs.jsp'">Go List</button>
-</div>
-		
+	<nav>
+    <div class="input-group">
+      <select class="custom-select custom-select-sm" id="choice">
+      	<option value="0">제목</option>
+      	<option value="1">작성자</option>
+      	<option value="2">내용</option>
+      </select>
+      <input type="text" class=" input-sm" aria-label="..." id="searchStr">
+      <button id="searchBtn" name="searchBtn"  class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-pencil"></span>검색
+	  </button>
+    </div><!-- /input-group -->
+	</nav>	
 </div>
 	<div class="fr">
 		<button id="writeBtn" name="writeBtn"  class="btn btn-default btn-sm">
@@ -222,7 +268,7 @@ mem = (MemberDto)ologin;
 </div>
 </div>
 </div>
-
+</div>
 
    <div class="clearfix"></div>
 <footer id="bottom-footer">
@@ -277,26 +323,19 @@ mem = (MemberDto)ologin;
 <script src="js/wow.min.js"></script> 
 <script>
     jQuery(document).ready(function( $ ) {
-    	var a = '<%=dto.getId() %>';
-    	var b = '<%=mem.getId() %>';
-    	
-    	if(a != b){
-    		$("#editBtn").hide();
-    		$("#delBtn").hide();
-    	}else{
-    		
-    		$("#editBtn").show();
-    		$("#delBtn").show();
-    		
-    	}
-    	
         $('.counter').counterUp({
             delay: 10,
             time: 1000
         });
         
-       
-        
+        $("#writeBtn").click(function(){
+        	location.href="cs_bbswrite.jsp";
+        });
+        $("#searchBtn").click(function(){
+        	var search = $("#searchStr").val();
+        	var choice = $("#choice").val();
+        	location.href="cs_bbs.jsp?search="+ search + "&choice="+ choice;
+        });
     });
 </script> 
 <script>

@@ -1,4 +1,7 @@
 
+<%@page import="dto.CsBbsDto"%>
+<%@page import="dao.CsBbsDao"%>
+<%@page import="dao.iCsBbsDao"%>
 <%@page import="dto.BbsDto"%>
 <%@page import="dao.BbsDao"%>
 <%@page import="dao.iBbsDao"%>
@@ -9,11 +12,9 @@
 request.setCharacterEncoding("utf-8");
 %>    
 <%
-
+String id = request.getParameter("id");
 String title = request.getParameter("title");
 String content = request.getParameter("content");
-String b_seqS = request.getParameter("b_seq");
-int b_seq = Integer.parseInt(b_seqS);
 
 %>
 <!DOCTYPE html>
@@ -24,16 +25,14 @@ int b_seq = Integer.parseInt(b_seqS);
 </head>
 <body>
 <%
-iBbsDao dao = BbsDao.getInstance();
-System.out.println(title);
-System.out.println(content);
-boolean isS = dao.updateBbs(title, content, b_seq);
+iCsBbsDao dao = CsBbsDao.getInstance();
+boolean isS = dao.insertBbs(new CsBbsDto(id,title,content));
 
 if(isS){
 %>
 	<script type="text/javascript">
 		
-		location.href = "userbbsdetail.jsp?seq="+<%=b_seq%>;
+		location.href = "cs_bbs.jsp";
 	</script>
 
 <% 

@@ -30,7 +30,7 @@ request.setCharacterEncoding("utf-8");
 <!-- Favicons
     ================================================== -->
 <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 <!-- Bootstrap -->
 <link rel="stylesheet" type="text/css"  href="css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
@@ -59,14 +59,17 @@ request.setCharacterEncoding("utf-8");
 Object ologin = session.getAttribute("login");
 MemberDto mem = null;
 String nav_bar = "";
-/* if(ologin == null){
-	nav_bar = ""; */
+if(ologin == null){
+	nav_bar = "";
 	%>
-		
+		<script type="text/javascript">
+			alert("로그인이 필요합니다.");
+			location.href="nologinindex.jsp";
+		</script>
 	<%
-/* 	return;
+	return;
 }
- */
+
 mem = (MemberDto)ologin;
 %>
 
@@ -77,7 +80,7 @@ mem = (MemberDto)ologin;
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
-      <a class="navbar-brand" href="index.html"><img src="img/logo-top5.png" class="img-responsive"><span>TOTO</span></a> </div>
+      <a class="navbar-brand" href="index.html"><img src="img/logo-top5.png" class="img-responsive"><span>Gambling!</span></a> </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
@@ -92,12 +95,16 @@ mem = (MemberDto)ologin;
         <li><a href="userbbs.jsp" class="page-scroll">Community</a></li>
         <li><a href="cs_bbs.jsp" class="page-scroll">Q&A</a></li>
         <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
-        <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li>
+        <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
       
       </ul>        
           <!--search form-->         
           <form method="get" action="/search" id="search">
-            <input name="q" type="text" size="40" placeholder="Search..." />
+            <ul class="nav">
+            	<li><p style="color:white">보유 액수 : <%=mem.getMoney() %><br>
+            		보유 포인트 : <%=mem.getPoint() %>
+            	</li>
+            </ul>
           </form>
           <!--/search form--> 
           
@@ -142,32 +149,6 @@ mem = (MemberDto)ologin;
   </div>
 </div>
 
-<!--  Modal login Page
-======================================================== -->
- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
-            <h4 class="modal-title" id="myModalLabel">Login</h4>
-          </div>
-          <div class="modal-body">
-          	<div class="form-group">
-       			 <label for="exampleInputId">ID</label>
-       			 <input type="text" class="form-control" id="id" name="id">
-      		</div>
-      		<div class="form-group">
-       			 <label for="exampleInputPass">Password</label>
-       			 <input type="password" class="form-control" id="pw" name="pw">
-      		</div> 
-		  </div>
-          <div class="modal-footer ">
-            <button type="button" id="loginBtn" class="btn btn-outline-secondary" data-dismiss="modal">Login</button>
-            <button type="button" id="joinBtn" class="btn btn-outline-secondary" data-dismiss="modal">Join</button>
-          </div>
-        </div>
-      </div>
-</div>
 
 <!-- latest news block
     ==========================================-->
@@ -221,11 +202,11 @@ mem = (MemberDto)ologin;
 
 <!-- contact us Page
     ==========================================-->
-<section id="home-contact-block" >
+<section id="home-contact-block">
   <div class="container">
     <div class="row wow fadeInUp">
-      <p>게임을 하기 위해선 회원가입이 필요합니다.</p>
-      <a href="regi.jsp">회원 가입하기</a> </div>
+      <p>게임을 하기 위해선 포인트 충전이 필요합니다.</p>
+      <a href="#">포인트 충전하기</a> </div>
   </div>
 </section>
 
@@ -246,20 +227,20 @@ mem = (MemberDto)ologin;
       <div> 
         <!--tab nav-->
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#concept" data-toggle="tab"><i class="fa fa-star-o"></i>
-                <h5>01. 회원가입</h5>
+            <li class="active"><a href="#concept" data-toggle="tab"><i class="fa fa-user-plus"></i>
+                <h5>회원가입</h5>
                 </a>
             </li>
-            <li><a href="#prototype" data-toggle="tab"><i class="fa fa-copy"></i>
-                <h5>02. Prototyping</h5>
+            <li><a href="#prototype" data-toggle="tab"><i class="fa fa-money"></i>
+                <h5>머니 충전</h5>
                 </a>
             </li>
-            <li><a href="#design" data-toggle="tab"><i class="fa fa-laptop"></i>
-                <h5>03. Design</h5>
+            <li><a href="#design" data-toggle="tab"><i class="fa fa-product-hunt"></i>
+                <h5>포인트 충전</h5>
                 </a>
             </li>
-            <li><a href="#development" data-toggle="tab"><i class="fa fa-code"></i>
-                <h5>04. Development</h5>
+            <li><a href="#development" data-toggle="tab"><i class="fa fa-gamepad"></i>
+                <h5>게임!</h5>
                 </a>
             </li>
         </ul>
@@ -274,9 +255,9 @@ mem = (MemberDto)ologin;
             <!--/tab img--> 
             <!--tab content-->
             <div class="col-md-7 process-content">
-              <h6>Professional website design</h6>
-              <p>Apes and spider monkeys move theirbody from branch to branch by swaying hands, but most monkeys do not. They just run and jump from branch to branch.</p>
-              <a href="#">Read More</a> </div>
+              <h6>게임을 즐기기 위해서 회원가입을 먼저 해주셔야 합니다.</h6>
+              <p>회원 가입시에 별다른 정보가 필요하지 않습니다. 첫 가입시 오천포인트 보너스!</p>
+              <a href="regi.jsp">회원 가입하기</a> </div>
             <!--/tab content-->             
           </div>
           <!--/tab nav item 1--> 
@@ -559,7 +540,7 @@ $(function(){
 		$("#myModal").modal();
 	});
 	$("#loginBtn").click(function(){
-		location.href="login.jsp?id="+$("#id").val() + "&pwd="+$("#pw").val();
+		location.href="login.jsp?id="+$("#id").val() + "&pw="+$("#pw").val();
 	});
 	$("#joinBtn").click(function(){
 		location.href="regi.jsp";

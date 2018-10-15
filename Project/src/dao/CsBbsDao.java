@@ -10,31 +10,31 @@ import java.util.List;
 import db.DBClose;
 import db.DBConnection;
 import dto.BbsDto;
+import dto.CsBbsDto;
 import dto.PagingBean;
 import dto.PagingUtil;
 
-public class BbsDao implements iBbsDao {
+public class CsBbsDao implements iCsBbsDao {
+	private static CsBbsDao csbbsdao = new CsBbsDao();
 
-	private static BbsDao bbsdao = new BbsDao();
-
-	private BbsDao() {
+	private CsBbsDao() {
 		DBConnection.initConnect();
 	}
 
-	public static BbsDao getInstance() {
-		return bbsdao;
+	public static CsBbsDao getInstance() {
+		return csbbsdao;
 	}
 
 	@Override
-	public List<BbsDto> getBbsList() {
-		String sql = " SELECT SEQ, ID, " + " TITLE, CONTENT, WDATE, " + " DEL, READCOUNT "
-				+ " FROM BBS " + "ORDER BY WDATE ";
+	public List<CsBbsDto> getBbsList() {
+		String sql = " SELECT SEQ, ID, REF, STEP, DEPTH, " + " TITLE, CONTENT, WDATE, PARENT, " + " DEL, READCOUNT "
+				+ " FROM CS_BBS " + "ORDER BY REF DESC, STEP ASC ";
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		List<BbsDto> list = new ArrayList<>();
+		List<CsBbsDto> list = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -47,7 +47,8 @@ public class BbsDao implements iBbsDao {
 			System.out.println("3/6 getBbsList Success");
 
 			while (rs.next()) {
-				BbsDto dto = new BbsDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				CsBbsDto dto = new CsBbsDto(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5),
+						rs.getString(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10), rs.getInt(11));
 
 				list.add(dto);
 
@@ -65,11 +66,12 @@ public class BbsDao implements iBbsDao {
 	}
 
 	@Override
-	public boolean insertBbs(BbsDto dto) {
-		String sql = " INSERT INTO BBS "
-				+ " (SEQ, ID, TITLE, CONTENT, WDATE, DEL, READCOUNT) "
-				+ " VALUES(SEQ_BBS.NEXTVAL, ?,"
-				+ " ?, ?, SYSDATE, 0, 0) ";
+	public boolean insertBbs(CsBbsDto dto) {
+		String sql = " INSERT INTO CS_BBS "
+				+ " (SEQ, ID, REF, STEP, DEPTH, TITLE, CONTENT, WDATE, PARENT, DEL, READCOUNT) "
+				+ " VALUES(SEQ_CS.NEXTVAL, ?," + " ( SELECT NVL(MAX(REF), 0)+1 FROM CS_BBS), " // ref
+				+ "0, 0," // step, depth
+				+ " ?, ?, SYSDATE, 0, 0, 0) ";
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -100,14 +102,14 @@ public class BbsDao implements iBbsDao {
 	}
 
 	@Override
-	public BbsDto getBbs(int seq) {
-		String sql = "SELECT * FROM BBS WHERE SEQ =" + seq;
+	public CsBbsDto getBbs(int seq) {
+		String sql = "SELECT * FROM CS_BBS WHERE SEQ =" + seq;
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		BbsDto dto = null;
+		CsBbsDto dto = null;
 
 		try {
 			conn = DBConnection.getConnection();
@@ -120,7 +122,8 @@ public class BbsDao implements iBbsDao {
 			System.out.println("3/6 getBbs Success");
 
 			while (rs.next()) {
-				dto = new BbsDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				dto = new CsBbsDto(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5),
+						rs.getString(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10), rs.getInt(11));
 
 			}
 
@@ -137,13 +140,13 @@ public class BbsDao implements iBbsDao {
 
 	@Override
 	public void addRead(int seq) {
-		String sql = "UPDATE BBS SET READCOUNT = READCOUNT +1 WHERE SEQ= " + seq;
+		String sql = "UPDATE CS_BBS SET READCOUNT = READCOUNT +1 WHERE SEQ= " + seq;
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		BbsDto dto = null;
+		CsBbsDto dto = null;
 
 		try {
 			conn = DBConnection.getConnection();
@@ -168,13 +171,13 @@ public class BbsDao implements iBbsDao {
 
 	@Override
 	public void delBbs(int seq) {
-		String sql = "UPDATE BBS SET DEL = 1 WHERE SEQ= " + seq;
+		String sql = "UPDATE CS_BBS SET DEL = 1 WHERE SEQ= " + seq;
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		BbsDto dto = null;
+		CsBbsDto dto = null;
 
 		try {
 			conn = DBConnection.getConnection();
@@ -199,13 +202,13 @@ public class BbsDao implements iBbsDao {
 
 	@Override
 	public boolean updateBbs(String title, String content, int seq) {
-		String sql = "UPDATE BBS SET TITLE = '" + title + "', CONTENT = '" + content + "' WHERE SEQ= " + seq;
+		String sql = "UPDATE CS_BBS SET TITLE = '" + title + "', CONTENT = '" + content + "' WHERE SEQ= " + seq;
 		boolean flag = false;
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		BbsDto dto = null;
+		CsBbsDto dto = null;
 
 		try {
 			conn = DBConnection.getConnection();
@@ -232,15 +235,15 @@ public class BbsDao implements iBbsDao {
 	}
 
 	@Override
-	public List<BbsDto> myBbsList(String id) {
-		String sql = " SELECT SEQ, ID, " + " TITLE, CONTENT, WDATE, " + " DEL, READCOUNT "
-				+ " FROM BBS WHERE ID= '" + id + "' " + "ORDER BY WDATE DESC ";
+	public List<CsBbsDto> myBbsList(String id) {
+		String sql = " SELECT SEQ, ID, REF, STEP, DEPTH, " + " TITLE, CONTENT, WDATE, PARENT, " + " DEL, READCOUNT "
+				+ " FROM CS_BBS WHERE ID= '" + id + "' " + "ORDER BY REF DESC, STEP ASC ";
 
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 
-		List<BbsDto> list = new ArrayList<>();
+		List<CsBbsDto> list = new ArrayList<>();
 
 		try {
 			conn = DBConnection.getConnection();
@@ -253,7 +256,8 @@ public class BbsDao implements iBbsDao {
 			System.out.println("3/6 getBbsList Success");
 
 			while (rs.next()) {
-				BbsDto dto =  new BbsDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				CsBbsDto dto = new CsBbsDto(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5),
+						rs.getString(6), rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10), rs.getInt(11));
 
 				list.add(dto);
 
@@ -270,32 +274,92 @@ public class BbsDao implements iBbsDao {
 		return list;
 	}
 
-	
+	@Override
+	public boolean answer(int seq, CsBbsDto bbs) {
+
+// update
+		String sql1 = " UPDATE CS_BBS " + " SET STEP=STEP+1 " + " WHERE REF=(SELECT REF FROM CS_BBS WHERE SEQ=?) " 
+				+ " 	AND STEP>(SELECT STEP FROM CS_BBS WHERE SEQ=?) ";
+
+// insert
+		String sql2 = " INSERT INTO CS_BBS " + " (SEQ, ID, REF, STEP, DEPTH, "
+				+ " TITLE, CONTENT, WDATE, PARENT, DEL, READCOUNT) " + " VALUES(SEQ_CS.NEXTVAL, ?, "
+				+ "			(SELECT REF FROM CS_BBS WHERE SEQ=?), " // REF
+				+ "			(SELECT STEP FROM CS_BBS WHERE SEQ=?)+1, " // STEP
+				+ "			(SELECT DEPTH FROM CS_BBS WHERE SEQ=?)+1, "// DEPTH
+				+ "			?, ?, SYSDATE, ?, 0, 0) ";
+
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		int count = 0;
+
+		try {
+			conn = DBConnection.getConnection();
+			conn.setAutoCommit(false);
+			System.out.println("1/6 S answer");
+
+			psmt = conn.prepareStatement(sql1); // update
+			psmt.setInt(1, seq);
+			psmt.setInt(2, seq);
+			System.out.println("2/6 S answer");
+
+			count = psmt.executeUpdate();
+			System.out.println("3/6 S answer");
+
+			psmt.clearParameters();
+
+			psmt = conn.prepareStatement(sql2); // insert
+			psmt.setString(1, bbs.getId()); // id
+			psmt.setInt(2, seq); // ref
+			psmt.setInt(3, seq); // step
+			psmt.setInt(4, seq); // depth
+			psmt.setString(5, bbs.getTitle());
+			psmt.setString(6, bbs.getContent());
+			psmt.setInt(7, seq);
+			System.out.println("4/6 S answer");
+
+			count = psmt.executeUpdate();
+			conn.commit();
+			System.out.println("5/6 S answer");
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} finally {
+
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			DBClose.close(psmt, conn, null);
+			System.out.println("6/6 S answer");
+		}
+
+		return count > 0 ? true : false;
+	}
 
 	@Override
-	public List<BbsDto> getBbsPagingList(PagingBean paging, String searchWord, int flag) {
+	public List<CsBbsDto> getBbsPagingList(PagingBean paging, String searchWord) {
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		
-		List<BbsDto> bbslist = new ArrayList<>();
+		List<CsBbsDto> bbslist = new ArrayList<>();
 		
 		String sWord = "%" + searchWord.trim() + "%";
 		
 		try {
 			conn = DBConnection.getConnection();
 			System.out.println("1/6 getBbsPagingList Success");
-			String sel = "";
-			if(flag == 0) {
-				sel = " TITLE ";
-			}else if(flag == 1){
-				sel = " ID ";
-			}else if(flag == 2) {
-				sel = " CONTENT ";
-			}
+			
 			String totalSql = " SELECT COUNT(SEQ) "
-					+ " FROM BBS "
-					+ " WHERE "+ sel + " LIKE '" + sWord + "' ";
+					+ " FROM CS_BBS "
+					+ " WHERE TITLE LIKE '" + sWord + "' ";
 			
 			psmt = conn.prepareStatement(totalSql);
 			rs = psmt.executeQuery();
@@ -311,21 +375,31 @@ public class BbsDao implements iBbsDao {
 			
 			String sql = " SELECT * FROM "
 					+ " (SELECT * FROM "
-					+ " 	(SELECT * FROM BBS"
-					+ "		WHERE "+ sel + " LIKE '" + sWord + "' "
-					+ "		ORDER BY WDATE ASC) "
+					+ " 	(SELECT * FROM CS_BBS"
+					+ "		WHERE TITLE LIKE '" + sWord + "' "
+					+ "		ORDER BY REF ASC, STEP DESC) "
 					+ " WHERE ROWNUM <=" + paging.getStartNum() + ""
-					+ "	ORDER BY WDATE DESC) "
+					+ "	ORDER BY REF DESC, STEP ASC) "
 					+ "	WHERE ROWNUM <=" + paging.getCountPerPage();
 			
 			psmt = conn.prepareStatement(sql);
 			System.out.println("2/6 getBbsPagingList Success");
-			System.out.println(sql);
+			
 			rs = psmt.executeQuery();
 			System.out.println("3/6 getBbsPagingList Success");
 			
 			while(rs.next()) {
-				BbsDto dto = new BbsDto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				CsBbsDto dto = new CsBbsDto(rs.getInt(1),
+										rs.getString(2),
+										rs.getInt(3),
+										rs.getInt(4),
+										rs.getInt(5),
+										rs.getString(6),
+										rs.getString(7),
+										rs.getString(8),
+										rs.getInt(9),
+										rs.getInt(10),
+										rs.getInt(11));
 				bbslist.add(dto);
 			}
 			System.out.println("4/6 getBbsPagingList Success");
@@ -338,9 +412,9 @@ public class BbsDao implements iBbsDao {
 	}
 
 	@Override
-	public int getMyBbsCount(String id) {
+	public int getMyCsCount(String id) {
 		String sql = " SELECT count(*) "
-				+ " FROM BBS WHERE ID= '" + id + "'";
+				+ " FROM CS_BBS WHERE ID= '" + id + "'";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -373,5 +447,6 @@ public class BbsDao implements iBbsDao {
 		}
 		return count;
 	}
-
+	
+	
 }

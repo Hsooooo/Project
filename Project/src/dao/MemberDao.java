@@ -207,11 +207,12 @@ public class MemberDao implements iMemberDao {
 	@Override
 	public void baseballUpd(String id, int point) {
 		String sql = "UPDATE MEMBER SET POINT = "+point+" WHERE ID= '" + id + "'";
-
+		
+		
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
-
+		MemberDto mem = null;
 		try {
 			conn = DBConnection.getConnection();
 			System.out.println("1/6 addRead Success");
@@ -221,8 +222,10 @@ public class MemberDao implements iMemberDao {
 
 			rs = psmt.executeQuery();
 			System.out.println("3/6 addRead Success");
-
+			
+			
 			System.out.println("4/6 addRead Success");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -231,8 +234,138 @@ public class MemberDao implements iMemberDao {
 			DBClose.close(psmt, conn, rs);
 		}
 		
+		
 	}
+
+	@Override
+	public MemberDto refreshBet(String id) {
+		String sql = " SELECT ID, NICKNAME, PHONE, POINT, MONEY, AUTH "
+				+ " FROM MEMBER "
+				+ " WHERE ID=?";
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		MemberDto mem = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			psmt = conn.prepareStatement(sql);
+			
+			System.out.println("1/6 login Success");
+			
+			psmt.setString(1, id);
+			
+			System.out.println("2/6 login Success");
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				String id2 = rs.getString(1);
+				String nick = rs.getString(2);
+				String phone = rs.getString(3);
+				int point = rs.getInt(4);
+				
+				int money = rs.getInt(5);
+				int auth = rs.getInt(6);
+				
+				mem = new MemberDto(id2, null, nick, phone, auth, point, money);
+			}
+			
+			System.out.println("3/6 login Success");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("login Fail");
+		}finally {
+			DBClose.close(psmt, conn, rs);
+		}
+		
+		return mem;
+	}
+
+	@Override
+	public boolean diceClose(String id, int totalpoint) {
+		String sql = " UPDATE MEMBER SET POINT = ? WHERE ID = ? ";
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		int count = 0;
+		
+		try {
+			conn = DBConnection.getConnection();
+			System.out.println("1/6 diceClose Success");
+			
+			psmt = conn.prepareStatement(sql);
+			System.out.println("2/6 diceClose Success");
+			
+			psmt.setInt(1, totalpoint);
+			psmt.setString(2, id);
+			System.out.println("3/6 diceClose Success");
+			
+			count = psmt.executeUpdate();
+			System.out.println("4/6 diceClose Success");
+			
+		} catch (Exception e) {
+			System.out.println("diceClose failed : " + e);
+			
+		} finally {
+			DBClose.close(psmt, conn, null);
+		}
+		
+		
+		return count > 0 ? true : false;
 	
+	}
+
+	@Override
+	public MemberDto getMember(String id) {
+		String sql = " SELECT ID, NICKNAME, PHONE, POINT, MONEY, AUTH "
+				+ " FROM MEMBER "
+				+ " WHERE ID=?";
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		MemberDto mem = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			psmt = conn.prepareStatement(sql);
+			
+			System.out.println("1/6 login Success");
+			
+			psmt.setString(1, id);
+			
+			System.out.println("2/6 login Success");
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				String id2 = rs.getString(1);
+				String nick = rs.getString(2);
+				String phone = rs.getString(3);
+				int point = rs.getInt(4);
+				
+				int money = rs.getInt(5);
+				int auth = rs.getInt(6);
+				
+				mem = new MemberDto(id2, null, nick, phone, auth, point, money);
+			}
+			
+			System.out.println("3/6 login Success");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("login Fail");
+		}finally {
+			DBClose.close(psmt, conn, rs);
+		}
+		
+		return mem;
+	}
 	
 	
 	

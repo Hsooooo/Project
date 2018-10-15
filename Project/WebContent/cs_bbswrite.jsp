@@ -14,16 +14,8 @@
 <%
 request.setCharacterEncoding("utf-8");
 %>    
-<%
-int seq = Integer.parseInt(request.getParameter("seq"));
-%>    
-<%
-iBbsDao dao = BbsDao.getInstance();
-BbsDto dto = dao.getBbs(seq);
-dao.addRead(seq);
-iCommentDao c_dao = CommentDao.getInstance();
-List<CommentDto> c_dto = c_dao.getCommentList(seq);
-%>
+   
+
 <!doctype html>
 <html>
 <head>
@@ -89,7 +81,7 @@ if(ologin == null){
 	%>
 	<script type="text/javascript">
 		alert("Login Please");
-		location.href = "nologinindex.jsp";
+		location.href = "index.jsp";
 	</script>
 	<%
 	return;
@@ -105,7 +97,7 @@ mem = (MemberDto)ologin;
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="loginindex.jsp"><img src="img/logo-top.png" class="img-responsive"><span>Grit</span></a> </div>
+      <a class="navbar-brand" href="nologinindex.jsp"><img src="img/logo-top.png" class="img-responsive"><span>Grit</span></a> </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
@@ -130,7 +122,7 @@ mem = (MemberDto)ologin;
 
 <!-- banner Page
     ==========================================-->
-<div id="page-banner" style="background-image: url(img/photo-typo.jpg);">
+<div id="page-banner" style="background-image: url(img/photo-typo2.jpg);">
   <div class="content  wow fdeInUp">
     <div class="container ">
       <h1>유저 게시판</h1>
@@ -150,31 +142,19 @@ mem = (MemberDto)ologin;
 
 
 <div class="center">
-<form action="userbbseditAf.jsp" method="post">
-<input type="hidden" id="b_seq" name="b_seq" value="<%=dto.getSeq() %>">
+<form id="insertFrm" action="cs_bbswriteAf.jsp" method="post">
+<h2>게시물 작성</h2>
 <table class="table">
 <tr>
 	<td><b>아이디</b></td>
 	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getId() %>" readOnly>
-	</td>
-</tr>
-<tr>
-	<td><b>작성일</b></td>
-	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getWdate() %>" readOnly>
-	</td>
-</tr>
-<tr>
-	<td>조회수</td>
-	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getReadcount() %>" readOnly>
+		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=mem.getId() %>" readOnly>
 	</td>
 </tr>
 <tr>
 	<td>제목</td>
 	<td>
-		<input type="text" class="input-sm col-xs-4" id="title" name="title" size="20" value="<%=dto.getTitle() %>"  style="width:450px" >
+		<input type="text" class="input-sm col-xs-4" id="title" name="title" size="50"   style="width:450px">
 	</td>
 </tr>
 
@@ -184,37 +164,31 @@ mem = (MemberDto)ologin;
 </tr>
 <tr>
 	<td colspan="2">
-		<textarea rows="25" cols="65" id="content" name="content"><%=dto.getContent() %></textarea>
+		<textarea rows="25" cols="65" id="content" name="content" ></textarea>
 	</td>
 </tr>
 <tr>
 	<td colspan="2">
-		<div class="fr">
-		<button id="editBtn" name="editBtn"  class="btn btn-default btn-sm">
-				<span class="glyphicon glyphicon-pencil"></span>수정
-		</button>
-	</div>
+		
+		<input type="submit" class="btn btn-default btn-sm" value="Edit">
 	</td>
 </tr>
 </table>
 
+
+
+
 </form>
-
-
 </div>
 
 <div>
 <div class="fl">
 	
-      <button type="button" class="btn btn-default btn-sm" onclick="location.href='userbbs.jsp'">Go List</button>
+      <button type="button" class="btn btn-default btn-sm" onclick="location.href='cs_bbs.jsp'">Go List</button>
 </div>
 		
 </div>
-	<div class="fr">
-		<button id="writeBtn" name="writeBtn"  class="btn btn-default btn-sm">
-				<span class="glyphicon glyphicon-pencil"></span>글쓰기
-		</button>
-	</div>
+	
 </div>
 <div>
 
@@ -276,28 +250,7 @@ mem = (MemberDto)ologin;
 <script type="text/javascript" src="js/main.js"></script> 
 <script src="js/wow.min.js"></script> 
 <script>
-    jQuery(document).ready(function( $ ) {
-    	var a = '<%=dto.getId() %>';
-    	var b = '<%=mem.getId() %>';
-    	
-    	if(a != b){
-    		$("#editBtn").hide();
-    		$("#delBtn").hide();
-    	}else{
-    		
-    		$("#editBtn").show();
-    		$("#delBtn").show();
-    		
-    	}
-    	
-        $('.counter').counterUp({
-            delay: 10,
-            time: 1000
-        });
-        
-       
-        
-    });
+   
 </script> 
 <script>
 new WOW().init();

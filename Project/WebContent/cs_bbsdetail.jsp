@@ -1,4 +1,7 @@
 
+<%@page import="dto.CsBbsDto"%>
+<%@page import="dao.iCsBbsDao"%>
+<%@page import="dao.CsBbsDao"%>
 <%@page import="dto.CommentDto"%>
 <%@page import="dto.BbsDto"%>
 <%@page import="dao.CommentDao"%>
@@ -18,11 +21,9 @@ request.setCharacterEncoding("utf-8");
 int seq = Integer.parseInt(request.getParameter("seq"));
 %>    
 <%
-iBbsDao dao = BbsDao.getInstance();
-BbsDto dto = dao.getBbs(seq);
+iCsBbsDao dao = CsBbsDao.getInstance();
+CsBbsDto dto = dao.getBbs(seq);
 dao.addRead(seq);
-iCommentDao c_dao = CommentDao.getInstance();
-List<CommentDto> c_dto = c_dao.getCommentList(seq);
 %>
 <!doctype html>
 <html>
@@ -130,7 +131,7 @@ mem = (MemberDto)ologin;
 
 <!-- banner Page
     ==========================================-->
-<div id="page-banner" style="background-image: url(img/photo-typo.jpg);">
+<div id="page-banner" style="background-image: url(img/photo-typo2.jpg);">
   <div class="content  wow fdeInUp">
     <div class="container ">
       <h1>유저 게시판</h1>
@@ -150,63 +151,65 @@ mem = (MemberDto)ologin;
 
 
 <div class="center">
-<form action="userbbseditAf.jsp" method="post">
-<input type="hidden" id="b_seq" name="b_seq" value="<%=dto.getSeq() %>">
+<form id="insertFrm" action="bbsEdit.jsp" method="post">
+<input type="hidden" id="seq" name="seq" value="<%=dto.getSeq() %>">
+<h2>문의글</h2>
 <table class="table">
 <tr>
 	<td><b>아이디</b></td>
 	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getId() %>" readOnly>
+		<%=dto.getId() %>
 	</td>
 </tr>
 <tr>
 	<td><b>작성일</b></td>
 	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getWdate() %>" readOnly>
+		<%=dto.getWdate() %>
 	</td>
 </tr>
 <tr>
-	<td>조회수</td>
+	<td><b>조회수</b></td>
 	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getReadcount() %>" readOnly>
+		<%=dto.getReadcount() %>
 	</td>
 </tr>
 <tr>
-	<td>제목</td>
+	<td><b>제목</b></td>
 	<td>
-		<input type="text" class="input-sm col-xs-4" id="title" name="title" size="20" value="<%=dto.getTitle() %>"  style="width:450px" >
+		<%=dto.getTitle() %>
 	</td>
 </tr>
 
 
 <tr>
-	<td colspan="2">내용</td>
+	<td colspan="2"><b>내용</b></td>
 </tr>
 <tr>
 	<td colspan="2">
-		<textarea rows="25" cols="65" id="content" name="content"><%=dto.getContent() %></textarea>
+		<textarea rows="25" cols="65" id="content" name="content" readOnly><%=dto.getContent() %></textarea>
 	</td>
 </tr>
 <tr>
 	<td colspan="2">
-		<div class="fr">
-		<button id="editBtn" name="editBtn"  class="btn btn-default btn-sm">
-				<span class="glyphicon glyphicon-pencil"></span>수정
-		</button>
-	</div>
+		
+		
+		<button type="button" class="btn btn-default btn-sm" id="editBtn">수정 </button>
+		<button type="button" class="btn btn-default btn-sm" id="bbsdelBtn">삭제</button>
+		<button type="button" class="btn btn-default btn-sm" id="answerBtn">답글</button>
 	</td>
 </tr>
 </table>
 
+
+
+
 </form>
-
-
 </div>
 
 <div>
 <div class="fl">
 	
-      <button type="button" class="btn btn-default btn-sm" onclick="location.href='userbbs.jsp'">Go List</button>
+      <button type="button" class="btn btn-default btn-sm" onclick="location.href='cs_bbs.jsp'">Go List</button>
 </div>
 		
 </div>
@@ -279,15 +282,21 @@ mem = (MemberDto)ologin;
     jQuery(document).ready(function( $ ) {
     	var a = '<%=dto.getId() %>';
     	var b = '<%=mem.getId() %>';
+    	var c = '<%=mem.getAuth()%>';
     	
     	if(a != b){
     		$("#editBtn").hide();
-    		$("#delBtn").hide();
+    		$("#bbsdelBtn").hide();
     	}else{
     		
     		$("#editBtn").show();
-    		$("#delBtn").show();
+    		$("#bbsdelBtn").show();
     		
+    	}
+    	if(c == '3'){
+    		$("#answerBtn").show();
+    	}else{
+    		$("#answerBtn").hide();
     	}
     	
         $('.counter').counterUp({
@@ -295,8 +304,31 @@ mem = (MemberDto)ologin;
             time: 1000
         });
         
-       
+        $("#writeBtn").click(function(){
+        	location.href="userbbswrite.jsp";
+        });
         
+        $("#com_send").click(function(){
+        	var b_seq = $("#seq").val();
+        	var c_id = "<%=mem.getId() %>"; 
+        	var content = $("#comment").val();
+        	location.href="commentAf.jsp?b_seq="+b_seq+"&id="+c_id+"&content="+content;
+        });
+        $("#delBtn").click(function(){
+        	var c_seq = $("#comseq").val();
+        	var b_seq = $("#seq").val();
+        	location.href = "delcomment.jsp?c_seq="+c_seq+"&b_seq=" + b_seq;
+        });
+        $("#editBtn").click(function(){
+        	location.href = "userbbsedit.jsp?seq="+<%=dto.getSeq()%>;
+        });
+        $("#bbsdelBtn").click(function(){
+        	location.href = "userbbsdelAf.jsp?b_seq="+<%=dto.getSeq()%>;
+        });
+        $("#answerBtn").click(function(){
+        	var seq = $("#seq").val();
+        	location.href = "answer.jsp?seq="+seq;
+        });
     });
 </script> 
 <script>

@@ -24,14 +24,14 @@ if(mem != null && !mem.getId().equals("")){
 %>
 <script type="text/javascript">
 	
-	location.href = "nologinindex.jsp";
+	location.href = "loginindex.jsp";
 </script>
 <% 
 }else{
 %>
 	<script type="text/javascript">
 		alert("ID or Password Check Please");
-		location.href = "index.jsp";
+		location.back();
 	</script>
 
 <%

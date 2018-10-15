@@ -79,7 +79,7 @@ if(ologin == null){
 	%>
 	<script type="text/javascript">
 		alert("Login Please");
-		location.href = "index.jsp";
+		location.href = "nologinindex.jsp";
 	</script>
 	<%
 	return;
@@ -106,12 +106,14 @@ iBbsDao dao = BbsDao.getInstance();
 //List<BbsDto> bbslist = dao.getBbsList();
 List<BbsDto> bbslist = new ArrayList<>();
 String search = request.getParameter("search");
+
 System.out.println("bbslist search = " +  search);
 if(search==null){
-	bbslist = dao.getBbsPagingList(paging, "");
+	bbslist = dao.getBbsPagingList(paging, "",0);
 //bbslist = (List<BbsDto>)request.getAttribute("bbslist");		
 }else{
-	bbslist = dao.getBbsPagingList(paging, search);
+	int choice = Integer.parseInt(request.getParameter("choice"));
+	bbslist = dao.getBbsPagingList(paging, search, choice);
 //List<BbsDto> bbslist = dao.getBbsList();
 }
 
@@ -124,22 +126,50 @@ iCommentDao c_dao = CommentDao.getInstance();
   <div class="container"> 
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="nologinindex.jsp"><img src="img/logo-top.png" class="img-responsive"><span>Grit</span></a> </div>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+      <a class="navbar-brand" href="loginindex.jsp"><img src="img/logo-top5.png" class="img-responsive"><span>Gambling!</span></a> </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
-      
+   
       <!--nav icon--> 
       <a id="nav-icon"> <span></span> <span></span> <span></span> </a> 
       <!--nav icon end-->
       
       <ul id="nav-top" class="nav navbar-nav navbar-right">
-		   <li><a href="index.html" class="page-scroll">Home</a></li>
-			<li><a href="page.html" class="page-scroll">Page</a></li>
-			<li><a href="blog.html" class="page-scroll">Blog</a></li>
-			<li><a href="contact.html" class="page-scroll">Contact</a></li>
-      </ul>
+        <li><a href="#" class="page-scroll">Home</a></li>
+        <li><a href="mypage.jsp" class="page-scroll">MyPage</a></li>
+        <li><a href="userbbs.jsp" class="page-scroll">Community</a></li>
+        <li><a href="cs_bbs.jsp" class="page-scroll">Q&A</a></li>
+        <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
+        <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
+      
+      </ul>        
+          <!--search form-->         
+          <form method="get" action="/search" id="search">
+            <ul class="nav">
+            	<li><p style="color:white">보유 액수 : <%=mem.getMoney() %><br>
+            		보유 포인트 : <%=mem.getPoint() %>
+            	</li>
+            </ul>
+          </form>
+          <!--/search form--> 
+          
+           <nav class="bottom-nav">
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Pricing</a></li>
+          </ul>
+        </nav>
+          
+          <ul class="social-link">
+          <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+          <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+          <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+        </ul>
     </div>
     <!-- /.navbar-collapse --> 
   </div>
@@ -169,7 +199,7 @@ iCommentDao c_dao = CommentDao.getInstance();
 <table class="table">
 <thead>
 <tr class="table-primary">
-	<th scope="col">Num</th><th scope="col">Title</th><th scope="col">Writer</th><th scope="col">Read</th>
+	<th scope="col" width="30">Num</th><th scope="col"width="200">Title</th><th scope="col" width="50">Writer</th><th scope="col" width="10">Read</th>
 </tr>
 </thead>
 <tbody>
@@ -227,10 +257,10 @@ if(bbslist ==null || bbslist.size() == 0){
 <div class="fl">
 	<nav>
     <div class="input-group">
-      <select class="custom-select custom-select-sm">
-      	<option value="제목">제목</option>
-      	<option value="작성자">작성자</option>
-      	<option value="내용">내용</option>
+      <select class="custom-select custom-select-sm" id="choice">
+      	<option value="0">제목</option>
+      	<option value="1">작성자</option>
+      	<option value="2">내용</option>
       </select>
       <input type="text" class=" input-sm" aria-label="..." id="searchStr">
       <button id="searchBtn" name="searchBtn"  class="btn btn-default btn-sm">
@@ -316,7 +346,8 @@ if(bbslist ==null || bbslist.size() == 0){
         });
         $("#searchBtn").click(function(){
         	var search = $("#searchStr").val();
-        	location.href="userbbs.jsp?search="+ search;
+        	var choice = $("#choice").val();
+        	location.href="userbbs.jsp?search="+ search + "&choice="+ choice;
         });
     });
 </script> 

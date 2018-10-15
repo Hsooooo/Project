@@ -89,7 +89,7 @@ if(ologin == null){
 	%>
 	<script type="text/javascript">
 		alert("Login Please");
-		location.href = "index.jsp";
+		location.href = "nologinindex.jsp";
 	</script>
 	<%
 	return;
@@ -105,7 +105,7 @@ mem = (MemberDto)ologin;
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="nologinindex.jsp"><img src="img/logo-top.png" class="img-responsive"><span>Grit</span></a> </div>
+      <a class="navbar-brand" href="loginindex.jsp"><img src="img/logo-top.png" class="img-responsive"><span>Grit</span></a> </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
@@ -115,11 +115,13 @@ mem = (MemberDto)ologin;
       <!--nav icon end-->
       
       <ul id="nav-top" class="nav navbar-nav navbar-right">
-		   <li><a href="index.html" class="page-scroll">Home</a></li>
-			<li><a href="page.html" class="page-scroll">Page</a></li>
-			<li><a href="blog.html" class="page-scroll">Blog</a></li>
-			<li><a href="contact.html" class="page-scroll">Contact</a></li>
-      </ul>
+        <li><a href="#" class="page-scroll">Home</a></li>
+        <li><a href="mypage.jsp" class="page-scroll">MyPage</a></li>
+        <li><a href="userbbs.jsp" class="page-scroll">Community</a></li>
+        <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
+        <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
+      
+      </ul>      
     </div>
     <!-- /.navbar-collapse --> 
   </div>
@@ -155,31 +157,31 @@ mem = (MemberDto)ologin;
 <tr>
 	<td><b>아이디</b></td>
 	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getId() %>" readOnly>
+		<%=dto.getId() %>
 	</td>
 </tr>
 <tr>
 	<td><b>작성일</b></td>
 	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getWdate() %>" readOnly>
+		<%=dto.getWdate() %>
 	</td>
 </tr>
 <tr>
-	<td>조회수</td>
+	<td><b>조회수</b></td>
 	<td>
-		<input type="text" class="input-sm" id="id" name="id" size="20" value="<%=dto.getReadcount() %>" readOnly>
+		<%=dto.getReadcount() %>
 	</td>
 </tr>
 <tr>
-	<td>제목</td>
+	<td><b>제목</b></td>
 	<td>
-		<input type="text" class="input-sm col-xs-4" id="title" name="title" size="20" value="<%=dto.getTitle() %>"  style="width:450px" readOnly>
+		<%=dto.getTitle() %>
 	</td>
 </tr>
 
 
 <tr>
-	<td colspan="2">내용</td>
+	<td colspan="2"><b>내용</b></td>
 </tr>
 <tr>
 	<td colspan="2">
@@ -191,7 +193,7 @@ mem = (MemberDto)ologin;
 		
 		
 		<button type="button" class="btn btn-default btn-sm" id="editBtn">수정 </button>
-		<button type="button" class="btn btn-default btn-sm" id="delBtn">삭제</button>
+		<button type="button" class="btn btn-default btn-sm" id="bbsdelBtn">삭제</button>
 	</td>
 </tr>
 </table>
@@ -321,11 +323,11 @@ if(c_dto ==null || c_dto.size() == 0){
     	
     	if(a != b){
     		$("#editBtn").hide();
-    		$("#delBtn").hide();
+    		$("#bbsdelBtn").hide();
     	}else{
     		
     		$("#editBtn").show();
-    		$("#delBtn").show();
+    		$("#bbsdelBtn").show();
     		
     	}
     	
@@ -351,6 +353,9 @@ if(c_dto ==null || c_dto.size() == 0){
         });
         $("#editBtn").click(function(){
         	location.href = "userbbsedit.jsp?seq="+<%=dto.getSeq()%>;
+        });
+        $("#bbsdelBtn").click(function(){
+        	location.href = "userbbsdelAf.jsp?b_seq="+<%=dto.getSeq()%>;
         })
     });
 </script> 

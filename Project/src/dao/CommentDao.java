@@ -24,7 +24,7 @@ private static CommentDao commentdao = new CommentDao();
 	@Override
 	public List<CommentDto> getCommentList(int seq) {
 		String sql = "SELECT COM_SEQ, ID, CONTENT, W_DATE "
-				+ " FROM COMENT WHERE BBS_SEQ="+seq;
+				+ " FROM COMENT WHERE BBS_SEQ="+seq + " ORDER BY W_DATE ASC";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -127,6 +127,36 @@ private static CommentDao commentdao = new CommentDao();
 			DBClose.close(psmt, conn, rs);
 		}
 		return count;
+	}
+
+	@Override
+	public void commentDel(int seq) {
+		String sql ="  DELETE FROM COMENT " + 
+				"     WHERE COM_SEQ="+seq;
+			
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			
+			
+			try {
+				conn = DBConnection.getConnection();
+				System.out.println("1/6 addBbs Succcess");
+				
+				System.out.println(seq);
+				psmt = conn.prepareStatement(sql);
+				System.out.println("2/6 addBbs Succcess");
+				System.out.println(sql);
+				
+				psmt.executeUpdate();
+				System.out.println("3/6 addBbs Succcess");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("addBbs Fail");
+			}finally {
+				DBClose.close(psmt, conn, null);
+			}
+		
 	}
 	
 	
