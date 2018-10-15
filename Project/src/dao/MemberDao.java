@@ -93,11 +93,8 @@ public class MemberDao implements iMemberDao {
 
 	@Override
 	public MemberDto login(MemberDto dto) {
-<<<<<<< HEAD
+ 
 		String sql = " SELECT * "
-=======
-		String sql = " SELECT ID, NICKNAME, PHONE, POINT, MONEY, AUTH "
->>>>>>> refs/remotes/origin/hs
 				+ " FROM MEMBER "
 				+ " WHERE ID=? AND PWD=? ";
 		System.out.println(sql);
@@ -122,27 +119,16 @@ public class MemberDao implements iMemberDao {
 			
 			while(rs.next()) {
 				String id = rs.getString(1);
-<<<<<<< HEAD
+ 
 				String pwd = rs.getString(2);
 				String nick = rs.getString(3);
 				String phone = rs.getString(4);
 				int point = rs.getInt(5);
 				int money = rs.getInt(6);
 				int auth = rs.getInt(7);
-=======
-				String nick = rs.getString(2);
-				String phone = rs.getString(3);
-				int point = rs.getInt(4);
->>>>>>> refs/remotes/origin/hs
-				
-<<<<<<< HEAD
+ 
 				mem = new MemberDto(id, pwd, nick, phone, point, money, auth);
-=======
-				int money = rs.getInt(5);
-				int auth = rs.getInt(6);
-				
-				mem = new MemberDto(id, null, nick, phone, auth, point, money);
->>>>>>> refs/remotes/origin/hs
+ 
 			}
 			
 			System.out.println("3/6 login Success");
@@ -222,7 +208,7 @@ public class MemberDao implements iMemberDao {
 	}
 
 	@Override
-<<<<<<< HEAD
+ 
 	public MemberDto money_Update(MemberDto dto) {
 		System.out.println("===== money_Update start =======");
 		//update
@@ -279,7 +265,6 @@ public class MemberDao implements iMemberDao {
 	}
 	
 	
-=======
 	public void baseballUpd(String id, int point) {
 		String sql = "UPDATE MEMBER SET POINT = "+point+" WHERE ID= '" + id + "'";
 
@@ -307,7 +292,7 @@ public class MemberDao implements iMemberDao {
 		}
 		
 	}
->>>>>>> refs/remotes/origin/hs
+ 
 	
 	
 	
