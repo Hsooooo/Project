@@ -2,12 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <script src="http://code.jquery.com/jquery-3.3.1.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -82,11 +79,12 @@ document.onkeydown = noEvent;
     };
     
     function onMessage(event) {
+    	objDiv.scrollTop = objDiv.scrollHeight;
+    	var onMesage = event.data;
     	
-    	
-    	// 제한시간 초기화
-    	if(game_END==-1){
+    	if(game_END ==- 1){
     	limit=30;
+    		// 제한시간 초기화
     	if(event.data == "my" ||event.data == "you"){
     	ten = event.data;
     	//alert("ten = "+ten);
@@ -97,7 +95,9 @@ document.onkeydown = noEvent;
     		$("#loding").remove();
     		$(".col-md-offset-1").show();
     		$("span").show();
-    		
+    	}else if(Number(random) < (Number(onMesage)){
+    		textarea.value += onMesage+"보단 작습니다\n"
+    	}else if(){
     	}else if((event.data == "넌 졌어 이색기야!@#&$*!")||(ten=="my" && limit==0)){
     		defeated();
     	}else if(event.data == "나가기"){
@@ -106,7 +106,7 @@ document.onkeydown = noEvent;
     		//location.href="yun_UpdonwReady.jsp"
     		
     	}
-    	}else{
+    	}else if(game_END == 2){
         textarea.value +=event.data + "\n";
     	}
     }
@@ -121,29 +121,39 @@ document.onkeydown = noEvent;
    
     // 나가기버튼 클릭시
     $("button").click(function(){
-    	
+    	if(game_END == -1){
     	defeated();
     	alert("기권패 당하셨습니다. 대기실로이동합니다.");
     	webSocket.send("나가기");
     	location.href="yun_UpdonwReady.jsp";
-    	});
+    }else if(game_END == 2){
+    	alert("대기실로 이동합니다.")
+    	location.href="yun_UpdonwReady.jsp";
+    }
+    });
     
     // ================== SEND 함수 STRATE ==========================
     function send() {
-    	
-    	 if(game_END == -1){
     	objDiv.scrollTop = objDiv.scrollHeight;
+    	var message = inputMessage.value;
+    	
+ 		if(message == ""){
+  	    	 textarea.value += "내용을 입력해주세요. \n";
+  	}else{
+    						//스크롤이 생겻을경우 스크롤를 맨아래로 이동시켜주는함수.
+    	 if(game_END == -1){
+    					//게임 진행중.일땐 game_END을 == -1 해줌으로써 게임의 룰에 따라 채팅을 제약시킨다.
     	// 스크롤바 자동으로 아래로내리게해주기.
     				
     	//alert(message_len);
     	if(ten == "my"){
-    		var message = inputMessage.value;
     						//text창 value값 가져오기
     		var message_len = inputMessage.value.length;
     						// text창의 value값의 길이가져오기
             for(i=0; i<message_len; i++){
             	var c = inputMessage.value.charAt(i);
             	
+   
             	if(!isNaN(message)){ 
             					/* 숫자인지 아닌지판별 */
             		num_check++;
@@ -159,7 +169,7 @@ document.onkeydown = noEvent;
             //alert("number_check = "+num_check + "inpuMessage.value.length = " + inputMessage.value.length);
         	if(num_check == message_len){ 
         			// 입력한값이 모두 숫자가맞으면 조건에 들어옴
-        	if(Number(message) >= 1 && Number(message) <= 100){
+        if(Number(message) >= 1 && Number(message) <= 100){
         			// message_len는 내가 입력한 문자의 길이
         			// num_check는 내가 입력한게 모두 숫자이면 해줘서 입력한 길이값이랑 맞을경우 이조건 에들어오게한다.
         textarea.value += "나 : " + message + "\n";
@@ -179,24 +189,24 @@ document.onkeydown = noEvent;
        limit=30;
        inputMessage.value = "";
         ten = "you";
-    }else { // 숫자범위가 초과했을경우
+     }else { // 숫자범위가 초과했을경우
     	num_check = 0;
     	textarea.value += "숫자범위가 초과했습니다 1보다크고 100보다작은 수를 입력햐주세요 \n";
     }
     }else{ // 입력한게 숫자가아닐때
     	num_check = 0;
-    }
-    }else if(ten == "you"){
+    	}
+    	}else if(ten == "you"){
     		//alert("상대방의 차례입니다.");
     		textarea.value += "상대방의 차례입니다. \n"
     	inputMessage.value = "";
-    	}
-        	
+    	}	
     }else{
     	webSocket.send(my_nmae+" : "+inputMessage.value);
     	 textarea.value += "나 : " + inputMessage.value + "\n";
     	 inputMessage.value =""
     	}
+   	 }
     }
     // ================== SEND 함수 END ==========================
     function timer() {
@@ -219,7 +229,7 @@ document.onkeydown = noEvent;
 					alert("통신실패")
 				}
 			});
-	    end();
+			game_END = 2;
    }
    
    function win(){
@@ -236,26 +246,14 @@ document.onkeydown = noEvent;
 			alert("통신실패")
 		}
 	});
-	   end();
+   	game_END = 2;
    }
    
-   function end(){	
-	   alert("게임이끝낫습니다");
-	   var v = confirm("게임이 끝낫습니다 상대와 대화하시시겠습니까?");
-	   alert(v);
-	//   if(confirm("게임이 끝났습니다 상대와 대화를 하시겠습니까?")){
-		   game_END = 2;
-	 //  }else{
-		   /* alert("대기실로이동합니다.");
-		   webSocket.send("나가기");
-		   location.href="yun_UpdonwReady.jsp"; */
-	  // }
-   }
+
    
    function shbu(){
 	   // 쓰레드를 1초씪 돌려줘서 제한시간 오버시 패배또는 승리함수에접근
 	   if(ten=="you" && limit <= 0){
-		   alert("잠시만");
 		 //  $("#time").remove();
 		   //win();
 		   clearInterval(_timer);
@@ -265,7 +263,6 @@ document.onkeydown = noEvent;
 		   win();
 		    
 	   }else if(ten=="my" && limit <= 0){
-		   alert("잠시만");
 		 //  $("#time").remove();
 		   //defeated();
 		   clearInterval(_timer);
