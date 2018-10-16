@@ -12,7 +12,7 @@ CREATE TABLE Member(
 );
 
 INSERT INTO MEMBER
-VALUES('1', '1', '윤상필', '폰번호', 50000, 50000, 0)
+VALUES('4', '4', '필필이', '폰번호', 40000, 40000, 0)
 
 SELECT * FROM MEMBEr
 
