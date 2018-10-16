@@ -56,7 +56,7 @@
 
 
 <body class="page">
-<nav id="top-menu" class="navbar navbar-default navbar-fixed-top">
+<%-- <nav id="top-menu" class="navbar navbar-default navbar-fixed-top">
   <div class="container"> 
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -105,10 +105,10 @@
         </ul>
     </div>
     <!-- /.navbar-collapse --> 
-  </div>
+  </div> --%>
   <!-- /.container-fluid --> 
 </nav>
-<div id="page-banner" style="background-image: url(img/photo-typo.jpg);">
+<div id="page-banner" style="background-image: url(img/photo-typo.jpg); position: absolute;">
   <div class="content  wow fdeInUp">
     <div class="container ">
 </div>
@@ -118,24 +118,30 @@
 <body class="page" oncontextmenu="return false">
   <div class="container">
   <div class="row">
-   <img alt="사진없음" src="./image/neco.gif" id="loding"> 
+    
       <!--blog posts container-->
-      <div class="col-md-offset-3 col-md-6 page-block" id="cls3">
+      <div class="col-md-offset-3 col-md-6 page-block">
+      <div style="position: absolute;">
+      <img alt="사진없음" src="./image/neco.gif" id="loding">
+      <button id="aocldcnlth">매칭 취소</button>
+      </div>
+      <div id="cls3">
       	<span style="text-align: center;">
 		<p>제한 시간</p><h5 id="time"></h5>
 	</span>
 		<fieldset>
-			<textarea id="messageWindow" rows="10" cols="50" readonly="true" style="overflow-y: "></textarea>
-			<br /> <input id="inputMessage" type="text" /> <input type="submit"
+			<textarea id="messageWindow" rows="10" cols="50" readonly="true"></textarea>
+			<br /> <input id="inputMessage" type="text" onkeyup="enterkey()"/> <input type="submit"
 				value="send" onclick="send()" />
 					<button id="skrkrl">나가기</button>
 			
 		</fieldset>
 		</div>
+		</div>
 	</div>
 </div>
 	<br>
-<button id="aocldcnlth">매칭 취소</button>
+
 	<script language='javascript'>
 function noEvent() {
     if (event.keyCode == 116) {
@@ -265,8 +271,14 @@ document.onkeydown = noEvent;
     
     // ================== SEND 함수 STRATE ==========================
     function send() {
-    	objDiv.scrollTop = objDiv.scrollHeight;
+    	
+    	//objDiv.scrollTop = objDiv.scrollHeight;
     	var message = inputMessage.value;
+    	var message_len = inputMessage.value.length;
+    	alert("message_len = " + message_len);
+    	alert("num_check = " + num_check);
+    
+    	//alert("message = " + message);
     						//스크롤이 생겻을경우 스크롤를 맨아래로 이동시켜주는함수.
     	 if(game_END == -1){
     					//게임 진행중.일땐 game_END을 == -1 해줌으로써 게임의 룰에 따라 채팅을 제약시킨다.
@@ -281,11 +293,14 @@ document.onkeydown = noEvent;
      		if(message == ""){
    	    	 textarea.value += "내용을 입력해주세요. \n";
      	}else if(message != ""){//text창 value값 가져오기
-    		var message_len = inputMessage.value.length; // text창의 value값의 길이가져오기
+     		//alert("여기들어오겟지")
+    		 // text창의 value값의 길이가져오기
     						
             for(i=0; i<message_len; i++){
+            	alert(1);
             	var c = inputMessage.value.charAt(i);
-            	if(!isNaN(message)){ //숫자인지 아닌지 판별 
+            	if(!isNaN(message)){ //숫자인지 아닌지 판별
+            		alert(2);
             		num_check++;
             	}else{ /* 숫자가아니면 num_check를 -1 를 해줘서 다시 입력하게만든다. */
             		num_check = -1;
@@ -319,6 +334,8 @@ document.onkeydown = noEvent;
        limit=30;
        inputMessage.value = "";
        ten = "내턴이 아닐때는 내가 못합니다 !##!%%^&";
+       num_check = 0;
+ 		}else if(game_END == 2){
  		}
      }else { // 숫자범위가 초과했을경우
     	num_check = 0;
@@ -332,9 +349,11 @@ document.onkeydown = noEvent;
      }
     }else{
     	if(message == ""){
+    		alert("durldi?")
     		textarea.value += "내용을 입력해주세요. \n"
     		inputMessage.value =""
     	}else {
+    		alert("여기/")
     		webSocket.send(my_nmae+" : "+message);
        	 textarea.value += "나 : " + message + "\n";
        	 inputMessage.value =""
@@ -404,6 +423,12 @@ document.onkeydown = noEvent;
 	   }
 	   //clearInterval == 쓰레드를멈추는함수
  }
+   
+	function enterkey(){
+		if (window.event.keyCode == 13) {
+			send();
+       }
+	}	
   </script>
 </body>
 

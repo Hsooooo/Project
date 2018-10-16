@@ -119,15 +119,19 @@ System.out.println("yun_UdonwReady.jsp dto = " + mem.toString());
 
 <div id="page-body">
   <div class="container">
-  <div class="row"> 
+  <div class="row" align="center"> 
+  <div class="col-md-offset-3 col-md-6 page-block" id="cls3">
 <button onclick="fun(this)" value="start">게임시작!</button>
 <button onclick="fun(this)" value="game_guide">게임방법</button>
 <button onclick="fun(this)" value="mian_view">이전으로</button>
 		<fieldset>
-			<textarea id="messageWindow" rows="10" cols="50" readonly="true" style="overflow-y: "></textarea>
-			<br /> <input id="inputMessage" type="text" /> <input type="submit"
-				value="send" onclick="send()" />
+			<textarea id="messageWindow" rows="10" cols="25" readonly="true"></textarea>
+			<br /> 
+			<input id="inputMessage" type="text" onkeyup="enterkey()" style="overflow: scroll;"/>
+			<!-- <textarea rows="1" cols="1" style="background: white;" id="inputMessage" type="text" onkeyup="enterkey()"></textarea> --> 
+			<input type="submit" value="send" onclick="send()""/>
 		</fieldset>
+		</div>
 	    </div>
   </div>
 </div>
@@ -158,8 +162,8 @@ document.onkeydown = noEvent;
 <script src="js/wow.min.js"></script> 
 
 <script type="text/javascript">
-var objDiv = document.getElementById("messageWindow"); 
 
+var objDiv = document.getElementById("messageWindow"); 
 var textarea = document.getElementById("messageWindow");
 // textarea 변수 안에 area입력값을 넣는다. 
 var webSocket = new WebSocket('ws://127.0.0.1:8090/Project/lobe');
@@ -180,20 +184,26 @@ webSocket.onmessage = function(event) { // 다른 client에서 message를 쏴주
 	}
 	
 function onOpen(event) {
-    textarea.value += "*********************주의상황*********************\n1.현재 페이지부터는 새로고침이 불가능합니다.\n2.가급적이면 버튼시스템을 이용해주세요 .\n3.게임을 시작하면 게임끝날때까지  채팅기능이 제한됩니다.\n4.게임 도중에 나갈시 자동으로 패배하게됩니다. \n5.긴시간 매칭이 안잡히시면 매칭취소후 다시 매칭을 해주시기바랍니다.\n대기실의 채팅방입니다. \n";
+    textarea.value += "******************************************주의상황******************************************\n1.현재 페이지부터는 새로고침이 불가능합니다.\n2.억지로 새로고침을 할시 자동패배가 될수있으니 주의하시기바랍니다. \n3.가급적이면 버튼시스템을 이용해주세요 .\n4.게임을 시작하면 게임끝날때까지  채팅기능이 제한됩니다.\n5.게임 도중에 나갈시 자동으로 패배하게됩니다. \n6.긴시간 매칭이 안잡히시면 매칭취소후 다시 매칭을 해주시기바랍니다.\n대기실의 채팅방입니다. \n";
     webSocket.send(<%=mem.getId()%>+ "님이 입장하셨습니다.");
 }
 
 function onError(event) {
     alert(event.data);
   }
+  
+  
+  
   function send(){
 	  objDiv.scrollTop = objDiv.scrollHeight;
 	  var message = inputMessage.value;
+	  if(message == ""){
+		  textarea.value += "내용을 입력해주세요.\n";
+	  }else{
 	  textarea.value += "나 : " + message + "\n";
 	  webSocket.send(<%=mem.getId()%>+" : "+message);
 	  inputMessage.value = "";
-	  
+	  }
   }
 
 	function fun(val){
@@ -207,6 +217,11 @@ function onError(event) {
 		
 	}
 	
+	function enterkey(){
+		if (window.event.keyCode == 13) {
+			send();
+       }
+	}	
 </script>
 </body>
 </html>
