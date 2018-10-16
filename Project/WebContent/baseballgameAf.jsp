@@ -1,3 +1,6 @@
+<%@page import="dao.HistoryDao"%>
+<%@page import="dto.HistoryDto"%>
+<%@page import="dao.iHistoryDao"%>
 <%@page import="dao.MemberDao"%>
 <%@page import="dto.MemberDto"%>
 <%@page import="dao.iMemberDao"%>
@@ -36,43 +39,55 @@ mem = (MemberDto)ologin;
 %>
 <%
 iMemberDao dao = MemberDao.getInstance();
+iHistoryDao hdao = HistoryDao.getInstance();
+MemberDto mem2 = dao.getMember(mem.getId());
 int point = mem.getPoint();
-
-
+int rate = 0;
+int earend;
 switch(count){
 	case 0:
-		point += betpoint * 50;
+		rate = 50;	//1회차 50배
 		break;
 	case 1:
-		point += betpoint * 20;
+		rate = 30;	//2회차 30배
 		break;
 	case 2:
-		point += betpoint * 10;
+		rate = 20;	//3회차 20배
 		break;
 	case 3:
-		point += betpoint * 5;
+		rate = 10;	//4회차 10배
 		break;
 	case 4:
-		point += betpoint * 2;
+		rate = 5;	//5회차 5배
 		break;
 	case 5:
-		point += betpoint * 1;
+		rate =  2;	//6회차 2배
 		break;
 	case 6:
-		point += betpoint / 2;
+		rate =  1;	//7회차 원금
 		break;
-	case 7:
-		point += betpoint /5;
-		break;
-	case 8:
-		point += betpoint /10;
-		break;
+	
 	case 9:
-		point += betpoint * 20;
+		rate = 0;	//원금 손실
 		break;
 }
-dao.baseballUpd(id, point);
-MemberDto mem2 = dao.refreshBet(id);
+int originMoney = mem2.getPoint();
+earend = 0;
+if(count == 7){
+	earend = (betpoint / 2) - betpoint;
+}else if(count ==8){
+	earend = (betpoint / 5) - betpoint;
+}else{
+	if(rate == 0){
+		earend = (betpoint * rate) - betpoint;
+	}else{
+		earend = (betpoint * rate);
+	}
+}
+originMoney += earend;
+dao.pointUpd(id, originMoney);
+hdao.insertHis(new HistoryDto(0,mem.getId(),1,betpoint,earend,""));
+mem2 = dao.refreshBet(id);
 System.out.println(mem2.getPoint());
 session.setAttribute("login", mem2);
 %>

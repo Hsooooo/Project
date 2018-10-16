@@ -3,17 +3,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("utf-8");
- String id = request.getParameter("id");
- String betpoint = request.getParameter("betpoint");
+String id = request.getParameter("id");
+String betpoint = request.getParameter("betpoint");
 int bet = Integer.parseInt(betpoint);
- iDiceDao dao = DiceDao.getInstance();
-boolean betS = dao.DiceBet(id, bet);
- if(betS){
-	System.out.print("id : " + id + " betpoint : " + bet + "원 업데이트 성공" );
-	
+iDiceDao dao = DiceDao.getInstance();
+boolean betS = dao.diceBet(id, bet);
+if(betS){
+	System.out.print("[DICE] diceBet : 배팅, 차감 업데이트 성공 ( id : " + id + " betpoint : " + bet + "원)" );
+		
 	
 } else {
-	System.out.print("!!주사위 배팅 실패!!");
+	System.out.print("![DICE] diceBet : 배팅, 차감 업데이트 실패!");
 }
 %>    
     
@@ -24,5 +24,6 @@ boolean betS = dao.DiceBet(id, bet);
 <title>diceBet.jsp</title>
 </head>
 <body>
- </body>
-</html> 
+
+</body>
+</html>

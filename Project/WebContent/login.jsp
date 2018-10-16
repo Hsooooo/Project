@@ -21,19 +21,22 @@ MemberDto mem = dao.login(new MemberDto(id,pwd));
 if(mem != null && !mem.getId().equals("")){
 	session.setAttribute("login", mem);
 	session.setMaxInactiveInterval(30*60);
+	
 %>
 <script type="text/javascript">
-	
 	location.href = "loginindex.jsp";
 </script>
 <% 
 }else{
 %>
-	<script type="text/javascript">
-		alert("ID or Password Check Please");
-		location.back();
-	</script>
 
+<script type="text/javascript">
+	alert("ID나 PW를 확인해 주세요.");
+	location.href = "nologinindex.jsp";
+	
+	
+	
+</script>
 <%
 }
 %>

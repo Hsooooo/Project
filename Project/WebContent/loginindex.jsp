@@ -1,3 +1,6 @@
+<%@page import="dto.HistoryDto"%>
+<%@page import="dao.HistoryDao"%>
+<%@page import="dao.iHistoryDao"%>
 <%@page import="dto.BbsDto"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.BbsDao"%>
@@ -80,7 +83,7 @@ mem = (MemberDto)ologin;
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
-      <a class="navbar-brand" href="index.html"><img src="img/logo-top5.png" class="img-responsive"><span>Gambling!</span></a> </div>
+      <a class="navbar-brand" href="loginindex.jsp"><img src="img/logo-top5.png" class="img-responsive"><span>Gamble</span></a> </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
@@ -89,8 +92,11 @@ mem = (MemberDto)ologin;
       <a id="nav-icon"> <span></span> <span></span> <span></span> </a> 
       <!--nav icon end-->
       
-      <ul id="nav-top" class="nav navbar-nav navbar-right">
-        <li><a href="#" class="page-scroll">Home</a></li>
+      <ul id="nav-top" class="nav navbar-nav navbar-right">	
+      	<%if(mem.getAuth() == 3){ %>
+      	<li><a href="admin.jsp" class="page-scroll">ADMIN</a></li>
+      	<%} %>
+        
         <li><a href="mypage.jsp" class="page-scroll">MyPage</a></li>
         <li><a href="userbbs.jsp" class="page-scroll">Community</a></li>
         <li><a href="cs_bbs.jsp" class="page-scroll">Q&A</a></li>
@@ -101,7 +107,7 @@ mem = (MemberDto)ologin;
           <!--search form-->         
           <form method="get" action="/search" id="search">
             <ul class="nav">
-            	<li><p style="color:white">보유 액수 : <%=mem.getMoney() %><br>
+            	<li><p style="color:white">보유 액수 : <%=mem.getMoney() %> &nbsp;
             		보유 포인트 : <%=mem.getPoint() %>
             	</li>
             </ul>
@@ -144,7 +150,7 @@ mem = (MemberDto)ologin;
 <div id="page-banner" style="background-image: url(img/b-2.jpg);">
   <div class="content  wow fdeInUp">
     <div class="container ">
-      <h1>Hello TOTO</h1>
+      <h1>GAMBLE</h1>
     </div>
   </div>
 </div>
@@ -159,14 +165,14 @@ mem = (MemberDto)ologin;
       <!--section-title-->
       <div class="section-title text-center wow fadeInUp">
         <h2>GAME</h2>
-        <a href="blog.html">See the blog</a></div>
+        </div>
       <!--/section-title--> 
       
       <!--home article-->
       <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <a href="baseballgame.jsp"><img src="img/04-screenshot.jpg" alt="image 1"></a>
-          <a href="blog-post.html"><h6>BASEBALL 숫자 맞추기 게임으로 돈을 벌어보세요!</h6></a>
-           <a href="#">Web-design</a> , <a href="#">Front-end</a> </header></a>
+        <header class="entry-header"> <a href="baseballgame.jsp"><img src="img/baseball.jpg" alt="image 1"></a>
+          <a href="baseballgame.jsp"><h6>숫자 야구 게임</h6></a>
+           <em>숫자 야구 게임으로 돈을 벌어 보세요!</em> </header>
       </article>
       <!--/home article --> 
       
@@ -188,8 +194,8 @@ mem = (MemberDto)ologin;
       
       <!--home article-->
       <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <img src="img/01-screenshot.jpg" alt="image 1"> <a href="#">
-          <h6>HEADING 6 in use here</h6>
+        <header class="entry-header"> <img src="img/01-screenshot.jpg" alt="image 1"> <a href="yun_UpdonwReady.jsp">
+          <h6>업다운게임</h6>
           </a> <a href="#">Web-design</a> </header>
       </article>
       <!--/home article --> 
@@ -205,8 +211,8 @@ mem = (MemberDto)ologin;
 <section id="home-contact-block">
   <div class="container">
     <div class="row wow fadeInUp">
-      <p>게임을 하기 위해선 포인트 충전이 필요합니다.</p>
-      <a href="#">포인트 충전하기</a> </div>
+      <p>게임을 하기 위해선 충전이 필요합니다.</p>
+      <a href="mypage.jsp">마이페이지로</a> </div>
   </div>
 </section>
 
@@ -316,26 +322,38 @@ mem = (MemberDto)ologin;
 <!-- about us Page
     ==========================================-->
 <section id="about-us-block" class="text-center">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <div id="testimonial" class="owl-carousel owl-theme">
-          <div class="item"> <img src="img/team/01.jpg">
-            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-            <p><strong>Dean Martin</strong> CEO Acme Inc.</p>
-          </div>
-          <div class="item"> <img src="img/team/02.jpg">
-            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-            <p><strong>Rima Martin</strong> CEO Food Inc.</p>
-          </div>
-          <div class="item"> <img src="img/team/03.jpg">
-            <h5>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.</h5>
-            <p><strong>Joe Martin</strong> CEO Chat Inc.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container">
+    <div class="row text-center">
+  <%
+iHistoryDao dao = HistoryDao.getInstance();
+List<HistoryDto> list =  dao.getRanklist();
+%>
+<table class="table">
+ <th>순위</th><th>ID</th><th>현재금액</th>
+<%
+if(list == null && list.size() == 0){
+   
+
+%>
+
+<%
+
+}else{
+   for(int i=0; i<list.size(); i++){
+	if(i<=10){			//10순위까지만
+%>
+  	
+   <tr>
+   <td><%=i+1 %>위</td><td><%=list.get(i).getId() %></td><td><%=list.get(i).getEarned() %></td>
+   <tr>
+<%
+	}
+   }
+}
+%>
+</table>
+</div>
+</div>
 </section>
 <!-- Company counter section
     ==========================================-->

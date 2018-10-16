@@ -10,7 +10,7 @@
 request.setCharacterEncoding("utf-8");
 %>    
 <%
-int point = Integer.parseInt(request.getParameter("point"));
+int point = Integer.parseInt(request.getParameter("point").trim());
 String id = request.getParameter("id");
 %>
 
@@ -25,7 +25,7 @@ String id = request.getParameter("id");
 <%
 System.out.println(point);
 iMemberDao dao = MemberDao.getInstance();
-dao.baseballUpd(id, point);
+dao.pointUpd(id, point);
 MemberDto mem = dao.refreshBet(id);
 
 

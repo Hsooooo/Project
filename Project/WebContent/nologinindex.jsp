@@ -151,6 +151,7 @@ mem = (MemberDto)ologin;
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
             <h4 class="modal-title" id="myModalLabel">Login</h4>
           </div>
+          <form>
           <div class="modal-body">
           	<div class="form-group">
        			 <label for="exampleInputId">ID</label>
@@ -158,9 +159,10 @@ mem = (MemberDto)ologin;
       		</div>
       		<div class="form-group">
        			 <label for="exampleInputPass">Password</label>
-       			 <input type="password" class="form-control" id="pw" name="pw">
+       			 <input type="password" class="form-control" id="pwd" name="pwd">
       		</div> 
 		  </div>
+		  </form>
           <div class="modal-footer ">
             <button type="button" id="loginBtn" class="btn btn-outline-secondary" data-dismiss="modal">Login</button>
             <button type="button" id="joinBtn" class="btn btn-outline-secondary" data-dismiss="modal">Join</button>
@@ -559,7 +561,7 @@ $(function(){
 		$("#myModal").modal();
 	});
 	$("#loginBtn").click(function(){
-		location.href="login.jsp?id="+$("#id").val() + "&pwd="+$("#pw").val();
+		location.href="login.jsp?id="+$("#id").val() + "&pwd="+$("#pwd").val();
 	});
 	$("#joinBtn").click(function(){
 		location.href="regi.jsp";

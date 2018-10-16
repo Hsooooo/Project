@@ -1,4 +1,10 @@
 
+<%@page import="dto.MemberDto"%>
+<%@page import="dao.MemberDao"%>
+<%@page import="dao.iMemberDao"%>
+<%@page import="dto.HistoryDto"%>
+<%@page import="dao.HistoryDao"%>
+<%@page import="dao.iHistoryDao"%>
 <%@page import="dto.BbsDto"%>
 <%@page import="dao.BbsDao"%>
 <%@page import="dao.iBbsDao"%>
@@ -23,12 +29,21 @@ String content = request.getParameter("content");
 <body>
 <%
 iBbsDao dao = BbsDao.getInstance();
-boolean isS = dao.insertBbs(new BbsDto(id,title,content));
+iHistoryDao hdao = HistoryDao.getInstance();
+iMemberDao mdao = MemberDao.getInstance();
 
-if(isS){
+boolean isS = dao.insertBbs(new BbsDto(id,title,content));
+boolean isS2 = hdao.insertHis(new HistoryDto(0,id,6,0,10,""));
+MemberDto dto = mdao.getMember(id);
+System.out.println(dto.getPoint());
+mdao.pointUpd(id, dto.getPoint() + 10);
+dto = mdao.getMember(id);
+session.setAttribute("login", dto);
+session.setMaxInactiveInterval(30*60);
+if(isS && isS2){
 %>
 	<script type="text/javascript">
-		alert("성공적으로 작성했습니다.");
+		alert("10포인트가 적립되었습니다.")
 		location.href = "userbbs.jsp";
 	</script>
 

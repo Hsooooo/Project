@@ -1,3 +1,5 @@
+<%@page import="dao.MemberDao"%>
+<%@page import="dao.iMemberDao"%>
 <%@page import="dao.DiceDao"%>
 <%@page import="dao.iDiceDao"%>
 <%@page import="dto.DiceDto"%>
@@ -6,31 +8,67 @@
     pageEncoding="UTF-8"%>
  <%
 request.setCharacterEncoding("utf-8");
- Object ologin = session.getAttribute("login");
- MemberDto mem = null;
- if(ologin == null){
- 	%>
- 	<script type="text/javascript">
- 		alert("Login Please");
- 		location.href = "index.jsp";
- 	</script>
- 	<%
- 	return;
- }
+Object ologin = session.getAttribute("login");
+MemberDto mem = null;
+mem = (MemberDto)ologin;
+String id = mem.getId();
+int point = mem.getPoint();
+iMemberDao dao = MemberDao.getInstance();
+boolean up = dao.diceUpdate(id, point);
+if(up){
+	System.out.println("[MEMBER] diceUpdate : 포인트 동기화 완료");
+} else {
+	System.out.println("![MEMBER] diceUpdate : 포인트 동기화 실패!");
+}
+%>
 
- mem = (MemberDto)ologin;
- iDiceDao dice = DiceDao.getInstance();
-DiceDto ddto=dice.ReDice(mem.getId()); // 가용포인트 갱신용
-  %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>diceGame.jsp</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
- </head>
+
+</head>
 <body>
- <div align = "center">
+<%
+///DICE 테이블 데이터 가져오기.
+iDiceDao dice = DiceDao.getInstance();
+DiceDto ddto=dice.reDice(mem.getId());
+System.out.println(ddto);
+if(ddto == null){
+	%>
+	
+	<script type="text/javascript">
+	
+	jQuery(document).ready(function( $ ) {
+		var id = "<%=mem.getId() %>" ;
+		var point = "<%=mem.getPoint() %>";
+		var alldata0 = { "id" : id, "point" : point};
+		location.href = "diceInit.jsp?id="+id+"&point="+point;
+		/* $.ajax({
+			url : "diceInit.jsp",
+			type : "GET",
+			data : alldata0,
+			success : function (data) {
+				alert("dice db에 추가/업데이트 완료!");
+				location.href="diceGame.jsp";
+					
+			},
+			error : function () {
+				alert("dice db 추가/업데이트 에러!");
+				location.href="index.jsp";
+			}
+		}); */
+    });
+	
+	</script>
+	<%
+}
+System.out.println(ddto.getId() + ", " +ddto.getCurpoint());
+ %>
+<div align = "center">
 <h1>주사위 게임을 시작합니다.</h1><br>
 상대 플레이어 수를 고르세요 
 <select id="player">
@@ -41,13 +79,15 @@ DiceDto ddto=dice.ReDice(mem.getId()); // 가용포인트 갱신용
 <option value="4">4</option>
 </select>
 <br><br>
- <br><br>
+
+<br><br>
 배팅할 금액을 입력하세요<br>
-<p id = "info"><%=mem.getNickname() %>(<%=mem.getId() %>)님의 현재 가용 포인트 :   <b><%=mem.getPoint() %></b> </p>
+<p id = "info"><%=mem.getNickname() %>(<%=mem.getId() %>)님의 현재 가용 포인트 : <b><%=ddto.getCurpoint() %></b></p>
 <input type="text" id = "betpoint" size="20">
 <button id = "bet">배팅</button>&nbsp;<button id="fillpoint" onclick="location.href='fillpoint.jsp'">충전하기</button>
 <br><br>
- <br><br>
+
+<br><br>
 주사위를 굴리려면 버튼을 누르세요
 <br><br>
 <button id = "roll">ROLL IT!</button>&nbsp;&nbsp; <!-- 주사위 굴리기  -->
@@ -59,37 +99,41 @@ DiceDto ddto=dice.ReDice(mem.getId()); // 가용포인트 갱신용
 <p id = "img"></p> <!-- 플레이어 수 선택값에 따른 이미지 추가될 자리 -->
 <button id = "exit">그만하기</button>
 </div>
- <script type="text/javascript">
+
+
+
+
+<script type="text/javascript">
 $("select").on("change", function() { // 플레이어 수 선택하면 진입
- 	$("select").prop("disabled",true); // 드롭다운 비활성화
+	$("select").prop("disabled",true); // 드롭다운 비활성화
 	
 	 var player = this.value; // 플레이어 선택값 저장
 	/* alert(player); */
 	 var img = '<img alt="" src="./Dice1.gif" width="80" height="80"'; // 주사위 이미지 추가용 
- 	 for(var i = 1 ; i <= player; i ++){ // 선택한 플레이어 수에 따라 주사위 이미지 추가
+	 for(var i = 1 ; i <= player; i ++){ // 선택한 플레이어 수에 따라 주사위 이미지 추가
 		 $("#img").append(img + "name="+i+">&nbsp;");		 
 	 }
- 	});
+	});
 	
 	
 	
  $("#betpoint").on("click keyup input", function () { // 배팅할 포인트 입력하는 텍필 이벤트 감지
 	
-	var curpoint =<%=mem.getPoint()%>; // 가용포인트 저장
+	var curpoint =<%=ddto.getCurpoint()%>; // 가용포인트 저장
 	
 	if(curpoint==0){
 		$("#bet").prop("disabled", true); // 포인트 0이면 배팅 버튼 비활성화
 		$("#betpoint").prop("disabled", true); // 텍필도 비활성화
 	}
 }); 
-  
+ 
  
 $("#bet").click(function () { // 배팅 버튼 클릭시 진입
 	
 	// 1. 배팅할 포인트 텍필값 넘기기
 	var betpoint = $("#betpoint").val(); // 배팅할 포인트 가겨오기
 	var id = "<%=mem.getId() %>"; /*  세션id 가져오기 */
-	var curpoint = "<%=mem.getPoint()%>"; /*   가용포인트 가져오기 */
+	var curpoint = "<%=ddto.getCurpoint()%>"; /*   가용포인트 가져오기 */
 	
 	var alldata1 = { "id" : id, "curpoint" : curpoint};
 	$.ajax({
@@ -108,6 +152,7 @@ $("#bet").click(function () { // 배팅 버튼 클릭시 진입
 	
 	
 	var alldata2 = { "id" : id, "betpoint" : betpoint};
+	//$("#info b").text(curpoint-betpoint); // 가용포인트 태그값을 가용포인트-배팅할 포인트 값으로 바꿈	
 	
 	$.ajax({
 		
@@ -123,8 +168,8 @@ $("#bet").click(function () { // 배팅 버튼 클릭시 진입
 		}
 	});
 	
- });
- $("#roll").click(function() { // roll it 버튼 클릭시 진입
+});
+$("#roll").click(function() { // roll it 버튼 클릭시 진입
  
 	 // 1. 드롭다운서 선택한 플레이어 수 가져오기
 	 var player = $("#player option:selected").val();
@@ -189,12 +234,12 @@ $("#bet").click(function () { // 배팅 버튼 클릭시 진입
 		});	
 	 
 });
- // dice 추가시 이미 존재한 레코드인 경우에
+// dice 추가시 이미 존재한 레코드인 경우에
 // DiceAdd failed : java.sql.SQLIntegrityConstraintViolationException: ORA-00001: unique constraint (HR.SYS_C007309) violated 뜸--> insert를 merge로 바꾸기(해결)
- // 새로고침하거나, reset 누르면 갱신된 포인트로 표시돼야 함.(해결)
- $("#exit").click(function () { //게임 종료 버튼 클릭시 Dice 테이블의 포인트 ----> Member로 동기화하기 위함.
- 	var id = "<%=mem.getId()%>";
-	 var totalpoint = "<%=mem.getPoint()%>"; 
+// 새로고침하거나, reset 누르면 갱신된 포인트로 표시돼야 함.(해결)
+$("#exit").click(function () { //게임 종료 버튼 클릭시 Dice 테이블의 포인트 ----> Member로 동기화하기 위함.
+	var id = "<%=mem.getId()%>";
+	var totalpoint = "<%=ddto.getCurpoint()%>";
 	var pointdata = { "id" : id, "totalpoint" : totalpoint };
 	
 	$.ajax({
@@ -203,7 +248,7 @@ $("#bet").click(function () { // 배팅 버튼 클릭시 진입
 		type : "GET",
 		data : pointdata,
 		success : function (data) {
-			alert("포인트 동기화 완료");
+			alert("포인트" + totalpoint+" 동기화 완료");
 		
 			
 		},
@@ -215,5 +260,6 @@ $("#bet").click(function () { // 배팅 버튼 클릭시 진입
 	 
 	
 </script>
- </body>
-</html> 
+
+</body>
+</html>

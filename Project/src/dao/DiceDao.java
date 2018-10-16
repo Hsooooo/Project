@@ -16,9 +16,10 @@ import dto.MemberDto;
 	public static DiceDao getInstance() {
 		return diceDao;
 	}
- 	@Override
-	public boolean DiceAdd(String id, int curpoint) { // 금액 입력하고 배팅 버튼 누르면(1) dice 테이블에 신규 행 추가 . 레코드 없으면 insert, 있으면 CURPOINT만 업데이트됨.
- 		int count = 0;
+	@Override
+	public boolean diceAdd(String id, int curpoint) { // 금액 입력하고 배팅 버튼 누르면(1) dice 테이블에 신규 행 추가 . 레코드 없으면 insert, 있으면 CURPOINT만 업데이트됨.
+
+		int count = 0;
 		String sql = " MERGE INTO DICE USING DUAL ON(ID = ?) WHEN MATCHED THEN "
 				+ " UPDATE SET CURPOINT = ? "
 				+ " WHEN NOT MATCHED THEN "
@@ -55,11 +56,12 @@ import dto.MemberDto;
 		
 		return count > 0 ? true : false ;
 	}
- 	@Override
-	public boolean DiceBet(String id, int bet) { // 금액 입력하고 배팅 버튼 누르면(2) BET, CURPOINT 항목 업데이트
+
+	@Override
+	public boolean diceBet(String id, int bet) { // 금액 입력하고 배팅 버튼 누르면(2) BET, CURPOINT 항목 업데이트
 		int count = 0;
 		
-		String sql = " UPDATE DICE SET BET = ?, CURPOINT = CURPOINT-? WHERE ID = ? ";
+		String sql = " UPDATE DICE SET BET = BET+?, CURPOINT = CURPOINT-? WHERE ID = ? ";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -69,7 +71,8 @@ import dto.MemberDto;
 			System.out.println("1/6 DiceAdd success");
 			psmt = conn.prepareStatement(sql);
 			System.out.println("2/6 DiceAdd success");
- 			psmt.setInt(1, bet);
+
+			psmt.setInt(1, bet);
 			psmt.setInt(2, bet);
 			psmt.setString(3, id);
 			
@@ -77,21 +80,25 @@ import dto.MemberDto;
 			
 			count = psmt.executeUpdate();
 			System.out.println("4/6 DiceAdd success");
- 			
+
+			
 		} catch (Exception e) {
- 			System.out.println("DiceAdd failed : " + e);
- 		} finally {
+
+			System.out.println("DiceAdd failed : " + e);
+
+		} finally {
 			DBClose.close(psmt, conn, null);
 		}
 		
 		return count > 0 ? true : false ;
 	}
- 	
+
+	
 	@Override
-	public boolean DiceAf(String id, int win, int lose, int earned) { // ROLL IT 버튼 누르면  회차, 결과, 포인트 업데이트
+	public boolean diceAf(String id, int win, int lose, int earned) { // ROLL IT 버튼 누르면  회차, 결과, 포인트 업데이트
 		
 		int count = 0;
-		String sql = " UPDATE DICE SET ROUND = ROUND+1, WIN = ?, LOSE = ?, EARNED = ?, CURPOINT = CURPOINT+? WHERE ID = ? ";
+		String sql = " UPDATE DICE SET ROUND = ROUND+1, WIN = WIN+?, LOSE = LOSE+?, EARNED = EARNED+?, CURPOINT = CURPOINT+? WHERE ID = ? ";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -101,7 +108,8 @@ import dto.MemberDto;
 			System.out.println("1/6 DiceAf success");
 			psmt = conn.prepareStatement(sql);
 			System.out.println("2/6 DiceAf success");
- 			psmt.setInt(1, win);
+
+			psmt.setInt(1, win);
 			psmt.setInt(2, lose);
 			psmt.setInt(3, earned);
 			psmt.setInt(4, earned);
@@ -111,17 +119,21 @@ import dto.MemberDto;
 			
 			count = psmt.executeUpdate();
 			System.out.println("4/6 DiceAf success");
- 			
+
+			
 		} catch (Exception e) {
- 			System.out.println("DiceAf failed : " + e);
- 		} finally {
+
+			System.out.println("DiceAf failed : " + e);
+
+		} finally {
 			DBClose.close(psmt, conn, null);
 		}
 	
 		return count > 0  ? true : false;
 	}
- 	@Override
-	public DiceDto ReDice(String id) { // 새로고침이나 reset 버튼 누르면  가용포인트 갱신 위해서 해당 유저의 dice 테이블 레코드 불러옴
+
+	@Override
+	public DiceDto reDice(String id) { // 새로고침이나 reset 버튼 누르면  가용포인트 갱신 위해서 해당 유저의 dice 테이블 레코드 불러옴
 		
 		String sql = " SELECT * FROM DICE WHERE ID = ? ";
 		

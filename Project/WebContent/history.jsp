@@ -1,6 +1,9 @@
-<%@page import="dto.AuthorizeDto"%>
-<%@page import="dao.AuthorizeDao"%>
-<%@page import="dao.iAuthorizeDao"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="dao.iHistoryDao"%>
+<%@page import="dao.HistoryDao"%>
+<%@page import="dto.HistoryDto"%>
+<%@page import="java.util.List"%>
+<%@page import="dto.PagingBean"%>
 <%@page import="dao.CsBbsDao"%>
 <%@page import="dao.iCsBbsDao"%>
 <%@page import="dao.MemberDao"%>
@@ -66,17 +69,32 @@ iMemberDao mDao = MemberDao.getInstance();
 
 
 mem = (MemberDto)ologin;
-MemberDto mem2 = mDao.getMember(mem.getId());
 iBbsDao bDao = BbsDao.getInstance();
 int bCount = bDao.getMyBbsCount(mem.getId());
 iCsBbsDao cDao = CsBbsDao.getInstance();
 int cCount = cDao.getMyCsCount(mem.getId());
-iAuthorizeDao auth = AuthorizeDao.getInstance();
-auth.addRow(mem.getId());
-AuthorizeDto dto = auth.getRow(mem.getId());
-int status = dto.getStatus();
-int money = mem2.getMoney();
-int point = mem2.getPoint();
+%>
+
+<!--  페이징 정보 교환 -->
+<%
+PagingBean paging = new PagingBean();
+String nowPage = request.getParameter("nowPage");
+if(nowPage == null){ /* 처음으로 들어온페이지. */
+	//System.out.println("bbslist = 1");
+	paging.setNowPage(1);
+	//System.out.println(paging.getNowPage());
+}else{
+	paging.setNowPage(Integer.parseInt(request.getParameter("nowPage")));
+	//System.out.println("bbslist = 2");
+	//System.out.println(paging.getNowPage());
+}
+%>
+<%
+iHistoryDao hdao = HistoryDao.getInstance();
+//List<BbsDto> bbslist = dao.getBbsList();
+List<HistoryDto> bbslist = new ArrayList<>();
+bbslist = hdao.getBbsPagingList(paging,mem.getId());
+
 %>
 <!-- Navigation
     ==========================================-->
@@ -147,15 +165,82 @@ int point = mem2.getPoint();
     <div class="row  wow fdeInUp">
       <!--blog page container-->
       <div class="border border-primary col-md-9 col-sm-7 col-xs-12 page-block ">
-      	<div> 
-        <h3>내 정보</h3>
-        <p><b>ID </b> : <%=mem2.getId() %></p>
-        <p><b>Nick Name </b>: <%=mem2.getNickname() %></p>
-        <p><b>Phone Number </b>: <%=mem2.getPhone() %></p>
-        <p><b>My Money </b>:<%=mem2.getMoney() %>원 <button class="btn btn-primary btn-sm" id="repillBtn" data-target="repillModal">충전</button><br>
-        <input type="text" class="input-sm col-xs-3" id="moneyTxt"><button class="btn btn-primary btn-sm" id="changePoint">포인트로 바꾸기</button></p>
-        <p><b>My Point </b>: <%=mem2.getPoint() %>p <br><input type="text" class="input-sm col-xs-3"><button class="btn btn-primary btn-sm">환전</button> </p>
-       </div>
+      <h3>적립 내역</h3>
+      	
+      	<table class="table">
+<thead>
+<tr class="table-primary">
+	<th scope="col" width="50">종류</th><th scope="col" width="30">베팅금</th>
+	<th scope="col" width="30">수익</th><th scope="col" width="30">시간</th>
+</tr>
+</thead>
+<tbody>
+<%
+int count = 0;
+if(bbslist ==null || bbslist.size() == 0){
+	%>
+	
+	<tr>
+		<td colspan="3">No Item</td>
+	</tr>
+	<%
+}else{
+	for(int i=0;i<bbslist.size();i++){
+		HistoryDto bbs = bbslist.get(i);
+		%>
+		<tr>
+			
+			<td>
+			<%
+			int flag = bbs.getKind();
+			if(flag == 1){
+			%>
+				Baseball
+			<%	
+			}else if(flag == 2){
+			%>
+				Dice
+			<%	
+			}else if(flag == 3){
+			%>
+				홀짝
+			<%	
+			}else if(flag == 4){
+			%>
+				업다운
+			<%	
+			}else if(flag == 5){
+			%>
+				댓글달기
+			<%	
+			}else{
+			%>
+				게시글쓰기
+			<%	
+			}
+			%>
+			</td>
+			<td><%=bbs.getBet() %></td>
+			<td><%=bbs.getEarned() %></td>
+			<td><%=bbs.getWdate() %></td>
+		</tr>
+		
+		<%
+	}
+}
+%>
+</tbody>
+</table>
+<jsp:include page="paging.jsp">
+	<jsp:param value="history.jsp" name="actionPath"/>
+	<jsp:param value="<%=String.valueOf(paging.getNowPage()) %>" name="nowPage"/>
+	<jsp:param value="<%=String.valueOf(paging.getTotalCount()) %>" name="totalCount"/>
+	<jsp:param value="<%=String.valueOf(paging.getCountPerPage()) %>" name="countPerPage"/>
+	<jsp:param value="<%=String.valueOf(paging.getBlockCount()) %>" name="blockCount"/>
+	
+</jsp:include>
+      	
+      	
         
         
         <div class="clearfix"></div>
@@ -177,8 +262,9 @@ int point = mem2.getPoint();
         <section class="widget widget_categories  wow fdeInUp">
           <h2 class="widget-title">category</h2>
           <ul >
-            <li ><a href="userbbs.jsp?search=<%=mem2.getId() %>&choice=1"> 내가 쓴 글 <span ><%=bCount %></span> </a> </li>
-            <li><a href="cs_bbs.jsp"> Q&A </a></li>
+          	
+            <li ><a href="userbbs.jsp?search=<%=mem.getId() %>&choice=1"> 내가 쓴 글 <span ><%=bCount %></span> </a> </li>
+            <li><a href="#"> Q&A<span ><%=cCount%></span> </a></li>
             <li><a href="mypage.jsp"> 내 정보 보기</a></li>
             <li ><a href="history.jsp"> 적립 내역 보기 </a> </li>
             
@@ -222,7 +308,7 @@ int point = mem2.getPoint();
       		</div>
 		  </div>
           <div class="modal-footer ">
-            <button type="button" id="fill_btn" class="btn btn-outline-secondary" data-dismiss="modal">충전</button>
+            <button type="button" id="loginBtn" class="btn btn-outline-secondary" data-dismiss="modal">충전</button>
             
           </div>
         </div>
@@ -278,66 +364,15 @@ int point = mem2.getPoint();
 <script type="text/javascript" src="js/main.js"></script> 
 <script src="js/wow.min.js"></script> 
 <script>
-	var status = "<%=status%>";
     jQuery(document).ready(function( $ ) {
-    	if(<%=money%>==0){
-    		$("#changePoint").attr('disabled',true);
-    		$("moneyTxt").attr('disabled',true);
-    	}
         $('.counter').counterUp({
             delay: 10,
             time: 1000
         });
         $("#repillBtn").click(function(){
-        	if(status==0){
-        		alert("이미 승인 대기중입니다.");
-        		
-        	}else{
-        		$("#repillModal").modal();
-        	}
+        	$("#repillModal").modal();
         });
-        $("#fill_btn").click(function () {
-        	var fill_money = $("#money").val();
-        	var id = "<%=mem.getId()%>";
-        	var data1 = {"id" : id, "fill_money" : fill_money};
-        	$.ajax({
-        		
-        		url : "fillMoney.jsp",
-        		type : "GET",
-        		data : data1,
-        		success : function (data){
-        				alert(fill_money+ "원 충전 신청이 완료됐습니다. 승인 대기중입니다.");
-        				location.reload();
-        				
-        		},
-        		error : function () {
-        			alert("FILL_MONEY db 추가 에러!");
-        		}		
-        	});
-        });
-        $("#changePoint").click(function(){
-        	var toPoint_val = $("#moneyTxt").val();
-        	
-    		var id = "<%=mem2.getId() %>";
-    		var data2 = { "id" : id, "to_point" : toPoint_val };
-    	
-    	$.ajax({
-    		
-    			url : "toPoint.jsp",
-    			type : "GET",
-    			data : data2,
-    			success : function (data) {
-    				
-    				location.reload();
-    				
-    			},
-    			error : function () {
-    				alert("MEMBER db 업데이트 에러!");
-    			}
-        });
-        
     });
-});
 </script> 
 <script>
 new WOW().init();
