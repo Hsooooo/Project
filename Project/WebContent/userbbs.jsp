@@ -235,7 +235,7 @@ if(bbslist ==null || bbslist.size() == 0){
 				%>
 				
 			</td>
-			<td><%=bbs.getId() %></td>
+			<td><a href="history.jsp?id=<%=bbs.getId()%>"><%=bbs.getId() %></a></td>
 			<td><%=bbs.getReadcount() %></td>
 		</tr>
 		

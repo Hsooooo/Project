@@ -1,3 +1,5 @@
+<%@page import="dao.MemberDao"%>
+<%@page import="dao.iMemberDao"%>
 <%@page import="dto.HistoryDto"%>
 <%@page import="dao.HistoryDao"%>
 <%@page import="dao.iHistoryDao"%>
@@ -362,8 +364,13 @@ if(list == null && list.size() == 0){
     <div class="row text-center">
       <div class="col-md-12 wow fadeInDown">
         <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="c-block"><i class="fa fa-heart-o"></i><span class="counter">17</span>
-            <p>Clients</p>
+        <%
+        int memberCount = 0;
+        iMemberDao mdao = MemberDao.getInstance();
+        memberCount = mdao.getMemberCount();
+        %>
+          <div class="c-block"><i class="fa fa-heart-o"></i><span class="counter"><%=memberCount %></span>
+            <p>USERS</p>
           </div>
         </div>
         <div class="col-md-3 col-sm-6 col-xs-12">

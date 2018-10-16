@@ -157,7 +157,7 @@ mem = (MemberDto)ologin;
 <tr>
 	<td><b>아이디</b></td>
 	<td>
-		<%=dto.getId() %>
+		<a href="history.jsp?id=<%=dto.getId()%>"><%=dto.getId() %></a>
 	</td>
 </tr>
 <tr>
@@ -219,7 +219,7 @@ if(c_dto ==null || c_dto.size() == 0){
 		CommentDto c_dt = c_dto.get(i);
 		%>
 		<tr>
-			<td><b><%=c_dt.getId() %></b></td>
+			<td><b><a href="history.jsp?id=<%=c_dt.getId()%>"><%=c_dt.getId() %></a></b></td>
 			<td>
 				<input type="hidden" id="comseq" name="comseq" value="<%=c_dt.getSeq() %>">
 				<%=c_dt.getContent() %>

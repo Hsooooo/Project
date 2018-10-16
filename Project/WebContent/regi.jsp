@@ -120,7 +120,7 @@ request.setCharacterEncoding("utf-8");
     </div>
     <div id="phoneDiv"  class="form-group has-feedback">
       <label class="control-label" for="inputError2">phone</label>
-      <input type="text" class="form-control" id="phone" name="phone" aria-describedby="inputError2Status">
+      <input type="text" class="form-control" id="phone" name="phone" aria-describedby="inputError2Status" maxlength="11">
       <span id="phoneChk" class="glyphicon form-control-feedback" aria-hidden="true"></span> 
       <span id="inputError2Status" class="sr-only">(error)</span> 
     </div>

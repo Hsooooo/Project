@@ -67,7 +67,7 @@ if(ologin == null){
 }
 iMemberDao mDao = MemberDao.getInstance();
 
-
+String id = request.getParameter("id");
 mem = (MemberDto)ologin;
 iBbsDao bDao = BbsDao.getInstance();
 int bCount = bDao.getMyBbsCount(mem.getId());
@@ -91,10 +91,15 @@ if(nowPage == null){ /* 처음으로 들어온페이지. */
 %>
 <%
 iHistoryDao hdao = HistoryDao.getInstance();
-//List<BbsDto> bbslist = dao.getBbsList();
 List<HistoryDto> bbslist = new ArrayList<>();
-bbslist = hdao.getBbsPagingList(paging,mem.getId());
-
+//List<BbsDto> bbslist = dao.getBbsList();
+if(id == null || id.equals("")){
+	
+	bbslist = hdao.getBbsPagingList(paging,mem.getId());
+}else{
+	
+	bbslist = hdao.getBbsPagingList(paging,id);
+}
 %>
 <!-- Navigation
     ==========================================-->
@@ -156,7 +161,11 @@ bbslist = hdao.getBbsPagingList(paging,mem.getId());
 <div id="page-banner" style="background-image: url(img/photo-1501.jpg);">
   <div class="content  wow fdeInUp">
     <div class="container ">
+    <%if(id == null || id.equals("")){ %>
       <h1>My Page</h1>
+      <%}else{ %>
+      <h1>유저 정보보기</h1>
+      <%} %>
     </div>
   </div>
 </div>
@@ -165,8 +174,11 @@ bbslist = hdao.getBbsPagingList(paging,mem.getId());
     <div class="row  wow fdeInUp">
       <!--blog page container-->
       <div class="border border-primary col-md-9 col-sm-7 col-xs-12 page-block ">
-      <h3>적립 내역</h3>
-      	
+      <%if(id == null || id.equals("")){ %>
+      <h3>나의 적립 내역</h3>
+      	<%}else{ %>
+      	<h3><%=id %>님의 적립 내역(최근 10건만 표시됩니다.)</h3>
+      	<%} %>
       	<table class="table">
 <thead>
 <tr class="table-primary">
@@ -231,6 +243,7 @@ if(bbslist ==null || bbslist.size() == 0){
 %>
 </tbody>
 </table>
+<%if(id == null || id.equals("")){ %>
 <jsp:include page="paging.jsp">
 	<jsp:param value="history.jsp" name="actionPath"/>
 	<jsp:param value="<%=String.valueOf(paging.getNowPage()) %>" name="nowPage"/>
@@ -239,9 +252,9 @@ if(bbslist ==null || bbslist.size() == 0){
 	<jsp:param value="<%=String.valueOf(paging.getBlockCount()) %>" name="blockCount"/>
 	
 </jsp:include>
-      	
-      	
-        
+<%}else{ %>
+    	
+<%} %>        
         
         <div class="clearfix"></div>
         

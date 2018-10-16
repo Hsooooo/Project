@@ -1,3 +1,4 @@
+<%@page import="java.util.regex.Pattern"%>
 <%@page import="dto.AuthorizeDto"%>
 <%@page import="dao.AuthorizeDao"%>
 <%@page import="dao.iAuthorizeDao"%>
@@ -10,7 +11,15 @@
 <%@page import="dto.MemberDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  
+  <%!
+  public static String makePhoneNumber(String phoneNoStr) {
+	  
+      String regEx = "(010|011|016|017|018?019)(.+)(.{4})";
+      if(!Pattern.matches(regEx, phoneNoStr)) return null;
+      return phoneNoStr.replaceAll(regEx, "$1-$2-$3");
+ 
+   }
+  %>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -77,6 +86,7 @@ AuthorizeDto dto = auth.getRow(mem.getId());
 int status = dto.getStatus();
 int money = mem2.getMoney();
 int point = mem2.getPoint();
+String phone = makePhoneNumber(mem2.getPhone());
 %>
 <!-- Navigation
     ==========================================-->
@@ -151,7 +161,7 @@ int point = mem2.getPoint();
         <h3>내 정보</h3>
         <p><b>ID </b> : <%=mem2.getId() %></p>
         <p><b>Nick Name </b>: <%=mem2.getNickname() %></p>
-        <p><b>Phone Number </b>: <%=mem2.getPhone() %></p>
+        <p><b>Phone Number </b>: <%=phone %></p>
         <p><b>My Money </b>:<%=mem2.getMoney() %>원 <button class="btn btn-primary btn-sm" id="repillBtn" data-target="repillModal">충전</button><br>
         <input type="text" class="input-sm col-xs-3" id="moneyTxt"><button class="btn btn-primary btn-sm" id="changePoint">포인트로 바꾸기</button></p>
         <p><b>My Point </b>: <%=mem2.getPoint() %>p <br><input type="text" class="input-sm col-xs-3"><button class="btn btn-primary btn-sm">환전</button> </p>
