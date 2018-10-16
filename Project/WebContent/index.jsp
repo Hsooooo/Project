@@ -15,16 +15,7 @@
 }
 </style>
  -->
-<!--hj 수정!!!!!!!!!!!!!  -->
- 
-<link href="css/style0.css" rel="stylesheet" type="text/css" />
 
-<style type="text/css">
-body {
-	background: url(./image/back.jpg) no-repeat center top;
-}
-
-</style> 
 
 </head>
 <body>
@@ -81,6 +72,7 @@ Pds 자료실
 Please provide your credential to use this website -->
 <h2>로그인 페이지</h2>
 이 웹 사이트를 사용하려면 로그인해 주십시오.
+
 <br>
 <br>
 <div id="login-box-name" style="margin-top:20px;">User Id:</div>

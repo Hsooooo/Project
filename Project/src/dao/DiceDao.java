@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 
 import db.DBClose;
 import db.DBConnection;
-import model.DiceDto;
-import model.MemberDto;
+import dto.DiceDto;
+import dto.MemberDto;
 
 public class DiceDao implements iDiceDao {
 

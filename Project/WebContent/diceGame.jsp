@@ -1,7 +1,9 @@
+<%@page import="dao.MemberDao"%>
+<%@page import="dao.iMemberDao"%>
 <%@page import="dao.DiceDao"%>
 <%@page import="dao.iDiceDao"%>
-<%@page import="model.DiceDto"%>
-<%@page import="model.MemberDto"%>
+<%@page import="dto.DiceDto"%>
+<%@page import="dto.MemberDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  <%
@@ -40,6 +42,10 @@ System.out.println(ddto.getId() + ", " +ddto.getCurpoint());
 
 </head>
 <body>
+<div align = "right">
+
+<button onclick="location.href='myPage.jsp'">마이페이지</button>
+</div>
 
 <div align = "center">
 <h1>주사위 게임을 시작합니다.</h1><br>

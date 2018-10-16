@@ -1,6 +1,6 @@
 package dao;
 
-import model.DiceDto;
+import dto.DiceDto;
 
 public interface iDiceDao {
 

@@ -120,7 +120,7 @@ public class MemberDao implements iMemberDao {
 				String phone = rs.getString(3);
 				int point = rs.getInt(4);
 				int money = rs.getInt(5);
-				int auth = rs.getInt(4);
+				int auth = rs.getInt(6);
 				
 				mem = new MemberDto(id, null, nick, phone, point, money, auth);
 			}
@@ -241,4 +241,118 @@ public class MemberDao implements iMemberDao {
 		return count > 0 ? true : false;
 	}
 	//////////////////////////////////////////////////////////////////
+
+	
+    //////////////////////////////////////////////////////////////////
+	/// 마이페이지 - 충전하기 관리자 승인 후 money에 더해주기
+	@Override
+	public boolean fillMoneyUpdate(String id, int fill_money) {
+		
+	String sql = " UPDATE MEMBER SET MONEY=MONEY+? WHERE ID=? ";
+		
+		int count = 0;
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			System.out.println("1/6 moneyToPoint success");	
+			psmt = conn.prepareStatement(sql);
+			System.out.println("2/6 moneyToPoint success");	
+
+			psmt.setInt(1, fill_money);
+			psmt.setString(2, id);
+			System.out.println("3/6 moneyToPoint success");	
+
+			count = psmt.executeUpdate();
+			System.out.println("4/6 moneyToPoint success");	
+
+		} catch (Exception e) {
+			System.out.println("moneyToPoint failed :" + e);	
+
+		} finally {
+			DBClose.close(psmt, conn, null);
+		}
+		return count>0 ? true : false;
+	}
+
+	
+
+	
+	
+	
+	//////////////////////////////////////////////////////////////////
+	//마이페이지 - 포인트로 전환하기 버튼 누르면 (승인 없이 바로) money에서 빠지고, point에 더하도록 업데이트.
+	@Override
+	public boolean moneyToPoint(String id, int to_point) {
+		
+		String sql = " UPDATE MEMBER SET MONEY=MONEY-?, POINT=POINT+? WHERE ID=? ";
+		
+		int count = 0;
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			System.out.println("1/6 moneyToPoint success");	
+			psmt = conn.prepareStatement(sql);
+			System.out.println("2/6 moneyToPoint success");	
+
+			psmt.setInt(1, to_point);
+			psmt.setInt(2, to_point);
+			psmt.setString(3, id);
+			System.out.println("3/6 moneyToPoint success");	
+
+			count = psmt.executeUpdate();
+			System.out.println("4/6 moneyToPoint success");	
+
+		} catch (Exception e) {
+			System.out.println("moneyToPoint failed :" + e);	
+
+		} finally {
+			DBClose.close(psmt, conn, null);
+		}
+		return count>0 ? true : false;
+	}
+
+	
+	//////////////////////////////////////////////////////////////////
+	//마이페이지 - 환전하기 관리자 승인 후  money에 더해주고, POINT에서 빼야됨.
+	@Override
+	public boolean toMoneyUpdate(String id, int to_money) {
+	
+		String sql = " UPDATE MEMBER SET MONEY=MONEY+?, POINT=POINT-? WHERE ID=? ";
+		int count = 0;
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		
+		try {
+			conn = DBConnection.getConnection();
+			System.out.println("1/6 moneyUpdate success");
+			psmt = conn.prepareStatement(sql);
+			System.out.println("2/6 moneyUpdate success");
+			
+			psmt.setInt(1, to_money);
+			psmt.setInt(2, to_money);
+			psmt.setString(3, id);
+			
+			System.out.println("3/6 moneyUpdate success");
+			
+			count = psmt.executeUpdate();
+			System.out.println("4/6 moneyUpdate success");
+			
+		} catch (Exception e) {
+			System.out.println("moneyUpdate failed : " + e);
+			
+		} finally {
+			DBClose.close(psmt, conn, null);
+		}
+		
+		
+		return count > 0 ? true : false ;
+	}
+
+	
+	
+	
 }

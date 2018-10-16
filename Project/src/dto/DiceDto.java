@@ -12,7 +12,7 @@ CREATE TABLE DICE ( ID VARCHAR2(50) PRIMARY KEY,
 ALTER TABLE DICE ADD FOREIGN KEY(ID) REFERENCES MEMBER(ID);
 */
 
-package model;
+package dto;
 
 public class DiceDto {
 

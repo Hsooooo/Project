@@ -1,7 +1,7 @@
 <%@page import="dao.DiceDao"%>
 <%@page import="dao.iDiceDao"%>
-<%@page import="model.MemberDto"%>
-<%@page import="model.DiceDto"%>
+<%@page import="dto.MemberDto"%>
+<%@page import="dto.DiceDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
