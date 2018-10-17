@@ -62,11 +62,13 @@ request.setCharacterEncoding("utf-8");
       <!--nav icon end-->
       
       <ul id="nav-top" class="nav navbar-nav navbar-right">
-		   <li><a href="index.html" class="page-scroll">Home</a></li>
-			<li><a href="page.html" class="page-scroll">Page</a></li>
-			<li><a href="blog.html" class="page-scroll">Blog</a></li>
-			<li><a href="contact.html" class="page-scroll">Contact</a></li>
-      </ul>
+        <li><a href="#" class="page-scroll">Home</a></li>
+        <li><a href="mypage.jsp" class="page-scroll">MyPage</a></li>
+        <li><a href="userbbs.jsp" class="page-scroll">Community</a></li>
+        <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
+        <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li>
+      
+      </ul> 
     </div>
     <!-- /.navbar-collapse --> 
   </div>
@@ -118,7 +120,7 @@ request.setCharacterEncoding("utf-8");
     </div>
     <div id="phoneDiv"  class="form-group has-feedback">
       <label class="control-label" for="inputError2">phone</label>
-      <input type="text" class="form-control" id="phone" name="phone" aria-describedby="inputError2Status">
+      <input type="text" class="form-control" id="phone" name="phone" aria-describedby="inputError2Status" maxlength="11">
       <span id="phoneChk" class="glyphicon form-control-feedback" aria-hidden="true"></span> 
       <span id="inputError2Status" class="sr-only">(error)</span> 
     </div>

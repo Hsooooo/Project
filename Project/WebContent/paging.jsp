@@ -80,39 +80,63 @@ System.out.println("lastPage = " + lastPage);
 	<input type="hidden" name="choice" value="<%=choice %>">
 
 	<div align="center">
-		
+		<nav aria-label="...">
+  		<ul class="pagination pagination-sm">
 		<!-- 첫페이지로 (총 글수가 100개 이상일 시에 보임)-->
-		<%if(firstPage > 0){ %>		
-			<a href="#" onclick="gotoPage('<%=firstPage %>')">[처음페이지]</a>
+		<%if(firstPage > 0){ %>	
+			<li>	
+				<a href="#" onclick="gotoPage('<%=firstPage %>')">[처음페이지]</a>
+			</li>
 		<%} %>
 		<!-- 이전페이지로 -->
+			
 		<%if(prevPage > 0){ %>	
-			<a href="#" onclick="gotoPage('<%=prevPage %>')">[이전]</a>
-		<%} %>
-		
+			<li class="page-item">
+				<a class="page-link" href="#" onclick="gotoPage('<%=prevPage %>')">&laquo;</a>
+			</li>
+		<%}else{
+			%>
+			<li class="page-item disabled">
+				<a class="page-link" href="#">&laquo;</a>
+			</li>
+		<%} 
+		%>
 		<!-- [1][2][3]4[5][6] --> 
 		<%
 		for(int i = startPage; i <= endPage; i++){
 			if(i == nowPage){	
-			%>	
-				<%=i %>
+			%>	<li class="page-item active">
+					<a class="page-link" href="#"><%=i %></a>
+				</li>
 			<%	
 			}else{
 			%>
-				<a href="#" onclick="gotoPage('<%=i %>')">[<%=i %>]</a>
+			<li class="page-item">
+				<a class="page-link" href="#" onclick="gotoPage('<%=i %>')"><%=i %></a>
+			</li>
 			<%
 			}			
 		}		
 		%>
 		<!-- 다음 페이지 -->
 		<%if(nextPage > 0){ %>
-			<a href="#" onclick="gotoPage('<%=nextPage %>')">[다음]</a>
-		<%} %>
-		
+		<li class="page-item">
+			<a class="page-link" href="#" onclick="gotoPage('<%=nextPage %>')">&raquo;</a>
+		</li>
+		<%}else{
+		%>
+		<li class="page-item disabled">
+			<a class="page-link"  href="#">&raquo;</a>
+		</li>
+		<%
+		}
+		%>
 		<!-- 끝페이지 (총 글수가 100개 이상일 시에 보임)-->
 		<%if(lastPage > 0){ %>
 			<a href="#" onclick="gotoPage('<%=lastPage %>')">[끝페이지]</a>
 		<%} %>
+		</ul>
+		</nav>
 	</div>
 
 </form>

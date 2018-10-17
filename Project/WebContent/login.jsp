@@ -8,10 +8,14 @@ String id = request.getParameter("id");
 String pwd = request.getParameter("pwd");
 
 iMemberDao dao = MemberDao.getInstance();
+<<<<<<< HEAD
 MemberDto mem = dao.login(new MemberDto(id,pwd,null,null,0, 0, 0));
 
 System.out.println(mem.toString());
 
+=======
+MemberDto mem = dao.login(new MemberDto(id,pwd));
+>>>>>>> refs/remotes/origin/hs2
 %>    
 <!DOCTYPE html>
 <html>
@@ -27,6 +31,7 @@ if(mem != null && !mem.getId().equals("")){
 	session.setAttribute("login", mem);
 	session.setMaxInactiveInterval(30*60);
 	
+<<<<<<< HEAD
 	
 	if(mem.getAuth()==3){ // 관리자일 때
 	System.out.println("auth : " + mem.getAuth());
@@ -37,7 +42,11 @@ if(mem != null && !mem.getId().equals("")){
 	<% 	
 	}
 	%>
+=======
+%>
+>>>>>>> refs/remotes/origin/hs2
 <script type="text/javascript">
+<<<<<<< HEAD
 	
 /* 	location.href = "nologinindex.jsp";
  */	
@@ -66,17 +75,30 @@ if(mem != null && !mem.getId().equals("")){
 	});
 	///////////////////////////////////
 	
+=======
+	location.href = "loginindex.jsp";
+>>>>>>> refs/remotes/origin/hs2
 </script>
 <% 
 } 
 else{
 %>
+<<<<<<< HEAD
 	<script type="text/javascript">
 		alert("ID or Password Check Please");
 		location.href = "index.jsp";
 	
 	</script>
+=======
+>>>>>>> refs/remotes/origin/hs2
 
+<script type="text/javascript">
+	alert("ID나 PW를 확인해 주세요.");
+	location.href = "nologinindex.jsp";
+	
+	
+	
+</script>
 <%
 }
 %>

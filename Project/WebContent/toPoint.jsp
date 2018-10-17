@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <%@page import="dao.MemberDao"%>
 <%@page import="dao.iMemberDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -21,6 +22,28 @@ if(updateS){
 
 
 
+=======
+<%@page import="dto.MemberDto"%>
+<%@page import="dao.MemberDao"%>
+<%@page import="dao.iMemberDao"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<%
+request.setCharacterEncoding("utf-8");
+String id = request.getParameter("id");
+String to_point_ = request.getParameter("to_point");
+int to_point = Integer.parseInt(to_point_.trim());
+iMemberDao dao = MemberDao.getInstance();
+boolean updateS = dao.moneyToPoint(id, to_point);
+MemberDto dto = dao.getMember(id);
+session.setAttribute("login", dto);
+if(updateS){
+	System.out.println("[MEMBER] moneyToPoint 업데이트 완료 ");
+} else {
+	System.out.println("![MEMBER] moneyToPoint 업데이트 실패!");
+}
+>>>>>>> refs/remotes/origin/hs2
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>

@@ -12,6 +12,7 @@
 <%
 //////////// status를 -1로 update하기.
 request.setCharacterEncoding("utf-8");
+<<<<<<< HEAD
 
 String id = request.getParameter("id");
 
@@ -26,6 +27,16 @@ if(authNoS){
 
 }
 
+=======
+String id = request.getParameter("id");
+iAuthorizeDao dao = AuthorizeDao.getInstance();
+boolean authNoS = dao.authNo(id);
+if(authNoS){
+	System.out.println("[AUTHORIZE] authNo update 성공");
+} else {
+	System.out.println("![AUTHORIZE] authNo update 실패!");
+}
+>>>>>>> refs/remotes/origin/hs2
 %>
 </body>
 </html>

@@ -59,17 +59,14 @@ request.setCharacterEncoding("utf-8");
 Object ologin = session.getAttribute("login");
 MemberDto mem = null;
 String nav_bar = "";
-if(ologin == null){
-	nav_bar = "";
+/* if(ologin == null){
+	nav_bar = ""; */
 	%>
-		<script type="text/javascript">
-			alert("로그인이 필요합니다.");
-			location.href="index.jsp";
-		</script>
+		
 	<%
-	return;
+/* 	return;
 }
-
+ */
 mem = (MemberDto)ologin;
 %>
 
@@ -80,7 +77,7 @@ mem = (MemberDto)ologin;
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
-      <a class="navbar-brand" href="index.html"><img src="img/logo-top.png" class="img-responsive"><span>TOTO</span></a> </div>
+      <a class="navbar-brand" href="index.html"><img src="img/logo-top5.png" class="img-responsive"><span>TOTO</span></a> </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
@@ -91,10 +88,11 @@ mem = (MemberDto)ologin;
       
       <ul id="nav-top" class="nav navbar-nav navbar-right">
         <li><a href="#" class="page-scroll">Home</a></li>
-        <li><a href="userbbs.jsp" class="page-scroll">MyPage</a></li>
-        <li><a href="#" class="page-scroll">Blog</a></li>
+        <li><a href="mypage.jsp" class="page-scroll">MyPage</a></li>
+        <li><a href="userbbs.jsp" class="page-scroll">Community</a></li>
+        <li><a href="cs_bbs.jsp" class="page-scroll">Q&A</a></li>
         <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
-        <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
+        <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li>
       
       </ul>        
           <!--search form-->         
@@ -127,25 +125,33 @@ mem = (MemberDto)ologin;
 
 <!-- banner Page
     ==========================================-->
-<section id="home-banner" style="background-image: url(img/b-1.jpg);">
-  <div class="content">
+<!-- <section id="home-banner" style="background-image: url(img/b-1.jpg);">
+  <div class="content wow fdeInUp">
     <div class="container"  data-wow-duration="1s"> <span class="wow fadeIn">Dcrazed says</span>
       <h1 class="wow fadeInUp"><span>TOTO</span> </h1>
     </div>
   </div>
   <div class="arrow bounce"> <i class="fa fa-arrow-down fa-2x"></i> </div>
-</section>
+</section> -->
 
+<div id="page-banner" style="background-image: url(img/b-2.jpg);">
+  <div class="content  wow fdeInUp">
+    <div class="container ">
+      <h1>Hello TOTO</h1>
+    </div>
+  </div>
+</div>
 
 <!--  Modal login Page
 ======================================================== -->
-<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
+ <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close"></i></button>
             <h4 class="modal-title" id="myModalLabel">Login</h4>
           </div>
+          <form>
           <div class="modal-body">
           	<div class="form-group">
        			 <label for="exampleInputId">ID</label>
@@ -153,16 +159,17 @@ mem = (MemberDto)ologin;
       		</div>
       		<div class="form-group">
        			 <label for="exampleInputPass">Password</label>
-       			 <input type="password" class="form-control" id="pw" name="pw">
+       			 <input type="password" class="form-control" id="pwd" name="pwd">
       		</div> 
 		  </div>
+		  </form>
           <div class="modal-footer ">
             <button type="button" id="loginBtn" class="btn btn-outline-secondary" data-dismiss="modal">Login</button>
             <button type="button" id="joinBtn" class="btn btn-outline-secondary" data-dismiss="modal">Join</button>
           </div>
         </div>
       </div>
-</div> -->
+</div>
 
 <!-- latest news block
     ==========================================-->
@@ -178,7 +185,7 @@ mem = (MemberDto)ologin;
       
       <!--home article-->
       <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <a href="blog-post.html"><img src="img/04-screenshot.jpg" alt="image 1"></a>
+        <header class="entry-header"> <a href="baseballgame.jsp"><img src="img/04-screenshot.jpg" alt="image 1"></a>
           <a href="blog-post.html"><h6>BASEBALL 숫자 맞추기 게임으로 돈을 벌어보세요!</h6></a>
            <a href="#">Web-design</a> , <a href="#">Front-end</a> </header></a>
       </article>
@@ -186,9 +193,8 @@ mem = (MemberDto)ologin;
       
       <!--home article-->
       <article class="col-md-3 col-sm-6 col-xs-12">
-        <header class="entry-header"> <img src="img/02-screenshot.jpg" alt="image 1"> <a href="#">
-          <h6>Responsive Website in 2017 – 
-            Step by Step Guide</h6>
+        <header class="entry-header"><a href="diceGame.jsp"> <img src="img/dice.jpg" alt="image 1"></a> <a href="#">
+          <h6>주사위 게임으로 돈을 벌어보세요!</h6>
           </a> <a href="#">Web-design</a> </header>
       </article>
       <!--/home article --> 
@@ -217,11 +223,11 @@ mem = (MemberDto)ologin;
 
 <!-- contact us Page
     ==========================================-->
-<section id="home-contact-block">
+<section id="home-contact-block" >
   <div class="container">
     <div class="row wow fadeInUp">
-      <p>게임을 하기 위해선 포인트 충전이 필요합니다.</p>
-      <a href="#">포인트 충전하기</a> </div>
+      <p>게임을 하기 위해선 회원가입이 필요합니다.</p>
+      <a href="regi.jsp">회원 가입하기</a> </div>
   </div>
 </section>
 
@@ -243,7 +249,7 @@ mem = (MemberDto)ologin;
         <!--tab nav-->
         <ul class="nav nav-tabs">
             <li class="active"><a href="#concept" data-toggle="tab"><i class="fa fa-star-o"></i>
-                <h5>01. Concept</h5>
+                <h5>01. 회원가입</h5>
                 </a>
             </li>
             <li><a href="#prototype" data-toggle="tab"><i class="fa fa-copy"></i>
@@ -555,7 +561,7 @@ $(function(){
 		$("#myModal").modal();
 	});
 	$("#loginBtn").click(function(){
-		location.href="login.jsp?id="+$("#id").val() + "&pw="+$("#pw").val();
+		location.href="login.jsp?id="+$("#id").val() + "&pwd="+$("#pwd").val();
 	});
 	$("#joinBtn").click(function(){
 		location.href="regi.jsp";

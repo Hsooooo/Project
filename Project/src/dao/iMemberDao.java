@@ -8,6 +8,7 @@ public interface iMemberDao {
 	public MemberDto login(MemberDto dto);
 	public boolean nickCheck(String nick);
 	public boolean phoneCheck(String phone);
+<<<<<<< HEAD
 	
 	///////////////////////게임 종료시  member 테이블로 dice 게임 결과(최종 현재포인트) 업데이트 하기 위함
 	public boolean diceUpdate(String id, int totalpoint);
@@ -20,4 +21,15 @@ public interface iMemberDao {
 	
 	/////////////////////관리자가 충전/환전 리스트에서 환전요청금액 승인 누르면 money 더하고, point 차감
 	public boolean toMoneyUpdate(String id, int to_money);
+=======
+	public void pointUpd(String id,int point);
+	public MemberDto refreshBet(String id);
+	public boolean diceClose(String id, int totalpoint);
+	public MemberDto getMember(String id);
+	public boolean diceUpdate(String id, int totalpoint);
+	public MemberDto money_Update(MemberDto dto);
+	public boolean toMoneyUpdate(String id, int to_money);
+	public boolean fillMoneyUpdate(String id, int fill_money);
+	public boolean moneyToPoint(String id, int to_point);
+>>>>>>> refs/remotes/origin/hs2
 }

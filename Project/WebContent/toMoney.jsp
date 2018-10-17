@@ -4,6 +4,7 @@
     pageEncoding="UTF-8"%>
 <%
 request.setCharacterEncoding("utf-8");
+<<<<<<< HEAD
 
 String id = request.getParameter("id");
 String to_money_ = request.getParameter("to_money");
@@ -15,6 +16,14 @@ iAuthorizeDao dao = AuthorizeDao.getInstance();
 
 boolean insertS = dao.toMoney(id, to_money);
 
+=======
+String id = request.getParameter("id");
+String to_money_ = request.getParameter("to_money");
+int to_money = Integer.parseInt(to_money_);
+System.out.println( "###toMoney####id : " + id + "to_money" + to_money);
+iAuthorizeDao dao = AuthorizeDao.getInstance();
+boolean insertS = dao.toMoney(id, to_money);
+>>>>>>> refs/remotes/origin/hs2
 if(insertS){
 	System.out.println("[AUTHORIZE] toMoney INSERT 성공");
 }else{

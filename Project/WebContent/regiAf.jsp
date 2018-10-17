@@ -26,13 +26,17 @@ String phone = request.getParameter("phone");
 <%
 iMemberDao dao = MemberDao.getInstance();
 System.out.println(id+","+pwd+","+nick+","+phone);
+<<<<<<< HEAD
 boolean isS = dao.addMember(new MemberDto(id,pwd,nick,phone,0,0,0));
+=======
+boolean isS = dao.addMember(new MemberDto(id,pwd,nick,phone,0,500,0));
+>>>>>>> refs/remotes/origin/hs2
 
 if(isS){
 %>
 	<script type="text/javascript">
 		alert("성공적으로 가입했습니다.");
-		location.href = "index.jsp";
+		location.href = "nologinindex.jsp";
 	</script>
 
 <% 

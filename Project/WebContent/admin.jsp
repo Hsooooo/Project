@@ -12,6 +12,7 @@
 <body>
 <%
 request.setCharacterEncoding("utf-8");
+<<<<<<< HEAD
 
 Object ologin = session.getAttribute("login");
 MemberDto mem = (MemberDto)ologin;
@@ -51,3 +52,32 @@ if(auth==3){
 <button onclick = "location.href='index.jsp'">로그인 화면으로</button>
 </body>
 </html>
+=======
+ Object ologin = session.getAttribute("login");
+MemberDto mem = (MemberDto)ologin;
+ int auth = mem.getAuth();
+ if(auth==3){
+	%>
+	
+	
+	<% 
+	} else {
+	%>
+ 	<script type="text/javascript">
+	alert("!권한이 없습니다!");
+	location.href = "index.jsp";
+	</script>
+ <%
+}
+%>  
+ <h1>관리자모드</h1>
+ <button onclick = "location.href='admin_memberinfo.jsp'">회원정보 관리</button>
+<br><br>
+<button onclick = "location.href='admin_authorize.jsp'">충전/환전 관리</button>
+<br><br>
+<button>배팅내역 관리</button>
+<br><br>
+<button onclick = "location.href='loginindex.jsp'">로그인 화면으로</button>
+</body>
+</html> 
+>>>>>>> refs/remotes/origin/hs2

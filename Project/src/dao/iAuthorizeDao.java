@@ -8,6 +8,7 @@ public interface iAuthorizeDao {
 	
 	public boolean addRow(String id);
 	
+<<<<<<< HEAD
 	public boolean fillMoney(String id, int fill_money); // ì¶©ì „ ê¸ˆì•¡ ìž…ë ¥ í›„ ì¶©ì „ ë²„íŠ¼ ëˆ„ë¥´ë©´ í–‰ ì¶”ê°€ + status 0(ìŠ¹ì¸ëŒ€ê¸°ì¤‘)ìœ¼ë¡œ ì…‹íŒ…. 
 
 	public boolean toMoney(String id, int to_money); // ì¶©ì „ ê¸ˆì•¡ ìž…ë ¥ í›„ ì¶©ì „ ë²„íŠ¼ ëˆ„ë¥´ë©´ í–‰ ì¶”ê°€ + status 0(ìŠ¹ì¸ëŒ€ê¸°ì¤‘)ìœ¼ë¡œ ì…‹íŒ…. 
@@ -30,3 +31,27 @@ public interface iAuthorizeDao {
 	//        ê±°ì ˆí•˜ë©´ -1ë¡œ ì…‹íŒ…. 
 	
 }
+=======
+	public boolean fillMoney(String id, int fill_money); // ÃæÀü ±Ý¾× ÀÔ·Â ÈÄ ÃæÀü ¹öÆ° ´©¸£¸é Çà Ãß°¡ + status 0(½ÂÀÎ´ë±âÁß)À¸·Î ¼ÂÆÃ. 
+
+	public boolean toMoney(String id, int to_money); // ÃæÀü ±Ý¾× ÀÔ·Â ÈÄ ÃæÀü ¹öÆ° ´©¸£¸é Çà Ãß°¡ + status 0(½ÂÀÎ´ë±âÁß)À¸·Î ¼ÂÆÃ. 
+
+	
+	public List<AuthorizeDto> getBbsList(); // °ü¸®ÀÚ¸ðµå ÃæÀü/È¯Àü ºä¿¡ ¸®½ºÆ® »Ñ¸®±â
+	
+	public boolean authNo(String id); 
+	
+	public boolean authOk(String id, int status);
+	
+	public AuthorizeDto getRow(String id); // ½ÂÀÎ»óÅÂ Á¶È¸¿ë
+	
+	
+	////////////////
+	/// Ã³À½ ·ÎµåÇßÀ»¶§ 9·Î ¼ÂÆÃ. ÃæÀü , È¯Àü ¹öÆ° ´©¸£¸é FILL_MONEY, TO_MONEY¿¡ °ª µé¾î°¡°í, STATUS 0À¸·Î ¹Ù²ñ.
+	
+	/// °ü¸®ÀÚ°¡ FILL_MONEY ½ÂÀÎÇÏ¸é  STATUS 1·Î ¹Ù²Û ÈÄ MEMBER¿¡ ±Ý¾× ¾÷µ¥ÀÌÆ®ÇÏ°í FILL_MONEY 0À¸·Î ¸®¼Â, 
+	//        TO_MONEY ½ÂÀÎÇÏ¸é STATUS 2·Î ¹Ù²Û ÈÄ ±Ý¾× ¾÷µ¥ÀÌÆ®ÇÏ°í TO_MONEY 0À¸·Î ¸®¼Â, 
+	//        °ÅÀýÇÏ¸é -1·Î ¼ÂÆÃ. 
+	
+}
+>>>>>>> refs/remotes/origin/hs2

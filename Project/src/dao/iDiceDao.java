@@ -3,6 +3,7 @@ package dao;
 import dto.DiceDto;
 
 public interface iDiceDao {
+<<<<<<< HEAD
 
 	public boolean diceAdd(String id, int curpoint); 
 	// 1. login.jsp(í˜„ìž¬)ë‚˜ ë©”ì¸ì—ì„œ ì£¼ì‚¬ìœ„ë¡œ ë„˜ì–´ê°ˆ ë•Œ member í…Œì´ë¸”ì˜ idì™€ pointë¥¼ diceInit.jspë¡œ ë³´ëƒ„ -> idì™€ point ë°›ì•„ì„œ dice í…Œì´ë¸”ì— insert or updateí•¨.
@@ -16,4 +17,12 @@ public interface iDiceDao {
 	
 
 	///+ BET, WIN, LOSE, EARNED ê¸ˆì•¡ ëˆ„ì ë˜ê²Œ ë°”ê¿ˆ
+=======
+	public boolean diceAdd(String id, int curpoint); //  º£ÆÃ ¹öÆ° ´©¸£¸é (1) merge. °ÔÀÓ Ã¹ÆÇÀÏ ¶§¸¸ »õ ·¹ÄÚµå »ý¼º, ÀÌ¹Ì Á¸ÀçÇÏ´Â °æ¿ì curpoint¸¸ ¾÷µ¥ÀÌÆ®µÊ. 
+ 	public boolean diceBet(String id, int bet); // º£ÆÃ ¹öÆ° ´©¸£¸é (2) update. curpoint¿¡¼­ betpoint Â÷°¨ + bet Ç×¸ñ ¾÷µ¥ÀÌÆ®
+	
+	public boolean diceAf(String id, int win, int lose, int earned); // roll ¹öÆ° ´©¸£¸é update. È¸Â÷ Á¾·á ÈÄ °á°ú  ¾÷µ¥ÀÌÆ®¿ë
+	
+	public DiceDto reDice(String id); // °ÔÀÓ ºä »õ·Î°íÄ§ or reset ¹öÆ° Å¬¸¯½Ã ÇöÀç °¡¿ë Æ÷ÀÎÆ® °»½Å¿ë.
+>>>>>>> refs/remotes/origin/hs2
 }

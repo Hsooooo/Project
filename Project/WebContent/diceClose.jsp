@@ -5,6 +5,7 @@
 
 <%
 request.setCharacterEncoding("utf-8");
+<<<<<<< HEAD
 
 String id = request.getParameter("id");
 String totalpoint_ = request.getParameter("totalpoint");
@@ -16,6 +17,15 @@ boolean updateS = dao.diceUpdate(id, totalpoint);
 if(updateS){
 	System.out.println("[MEMBER] diceUpdate : 포인트 동기화 완료(" + totalpoint + " 원)");
 
+=======
+String id = request.getParameter("id");
+String totalpoint_ = request.getParameter("totalpoint");
+int totalpoint = Integer.parseInt(totalpoint_);
+iMemberDao dao = MemberDao.getInstance();
+boolean updateS = dao.diceUpdate(id, totalpoint);
+if(updateS){
+	System.out.println("[MEMBER] diceUpdate : 포인트 동기화 완료(" + totalpoint + " 원)");
+>>>>>>> refs/remotes/origin/hs2
 } else {
 	System.out.println("![MEMBER] diceUpdate : 포인트 동기화 실패!");	
 }

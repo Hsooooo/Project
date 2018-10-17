@@ -273,7 +273,7 @@ public class BbsDao implements iBbsDao {
 	
 
 	@Override
-	public List<BbsDto> getBbsPagingList(PagingBean paging, String searchWord) {
+	public List<BbsDto> getBbsPagingList(PagingBean paging, String searchWord, int flag) {
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -285,10 +285,17 @@ public class BbsDao implements iBbsDao {
 		try {
 			conn = DBConnection.getConnection();
 			System.out.println("1/6 getBbsPagingList Success");
-			
+			String sel = "";
+			if(flag == 0) {
+				sel = " TITLE ";
+			}else if(flag == 1){
+				sel = " ID ";
+			}else if(flag == 2) {
+				sel = " CONTENT ";
+			}
 			String totalSql = " SELECT COUNT(SEQ) "
 					+ " FROM BBS "
-					+ " WHERE TITLE LIKE '" + sWord + "' ";
+					+ " WHERE "+ sel + " LIKE '" + sWord + "' ";
 			
 			psmt = conn.prepareStatement(totalSql);
 			rs = psmt.executeQuery();
@@ -305,15 +312,15 @@ public class BbsDao implements iBbsDao {
 			String sql = " SELECT * FROM "
 					+ " (SELECT * FROM "
 					+ " 	(SELECT * FROM BBS"
-					+ "		WHERE TITLE LIKE '" + sWord + "' "
-					+ "		ORDER BY WDATE) "
+					+ "		WHERE "+ sel + " LIKE '" + sWord + "' "
+					+ "		ORDER BY WDATE ASC) "
 					+ " WHERE ROWNUM <=" + paging.getStartNum() + ""
-					+ "	ORDER BY WDATE) "
+					+ "	ORDER BY WDATE DESC) "
 					+ "	WHERE ROWNUM <=" + paging.getCountPerPage();
 			
 			psmt = conn.prepareStatement(sql);
 			System.out.println("2/6 getBbsPagingList Success");
-			
+			System.out.println(sql);
 			rs = psmt.executeQuery();
 			System.out.println("3/6 getBbsPagingList Success");
 			
@@ -328,6 +335,43 @@ public class BbsDao implements iBbsDao {
 			DBClose.close(psmt, conn, rs);
 		}
 		return bbslist;
+	}
+
+	@Override
+	public int getMyBbsCount(String id) {
+		String sql = " SELECT count(*) "
+				+ " FROM BBS WHERE ID= '" + id + "'";
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+
+		int count = 0;
+
+		try {
+			conn = DBConnection.getConnection();
+			System.out.println("1/6 getBbs Success");
+
+			psmt = conn.prepareStatement(sql);
+			System.out.println("2/6 getBbs Success");
+
+			rs = psmt.executeQuery();
+			System.out.println("3/6 getBbs Success");
+
+			while (rs.next()) {
+				count = rs.getInt(1);
+
+			}
+
+			System.out.println("4/6 getBbs Success");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("getBbs Fail");
+		} finally {
+			DBClose.close(psmt, conn, rs);
+		}
+		return count;
 	}
 
 }

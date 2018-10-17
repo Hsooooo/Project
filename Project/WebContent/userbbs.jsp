@@ -1,4 +1,5 @@
 
+<%@page import="java.util.ArrayList"%>
 <%@page import="dto.BbsDto"%>
 <%@page import="dao.CommentDao"%>
 <%@page import="dao.iCommentDao"%>
@@ -30,7 +31,8 @@ request.setCharacterEncoding("utf-8");
 <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
 <!-- Bootstrap -->
-<link rel="stylesheet" type="text/css"  href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css"  href="css/bootstrap.css?ver=1"> 
+
 <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
 
 <!-- Slider
@@ -38,6 +40,7 @@ request.setCharacterEncoding("utf-8");
 <link href="css/owl.carousel.css" rel="stylesheet" media="screen">
 <link href="css/owl.theme.css" rel="stylesheet" media="screen">
 <link href="css/animate.css" rel="stylesheet" media="screen">
+
 <style type="text/css">
 thead {
     display: table-header-group;
@@ -58,7 +61,7 @@ thead {
 </style>
 <!-- Stylesheet
     ================================================== -->
-<link rel="stylesheet" type="text/css"  href="style.css">
+ <link rel="stylesheet" type="text/css"  href="style.css?ver=2">
 <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700|Montserrat:100,200,300,300i,400,500,600,700,800,900' rel='stylesheet' type='text/css'>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -76,7 +79,7 @@ if(ologin == null){
 	%>
 	<script type="text/javascript">
 		alert("Login Please");
-		location.href = "index.jsp";
+		location.href = "nologinindex.jsp";
 	</script>
 	<%
 	return;
@@ -87,16 +90,33 @@ mem = (MemberDto)ologin;
 <!--  페이징 정보 교환 -->
 <%
 PagingBean paging = new PagingBean();
-if(request.getParameter("nowPage") == null){
+String nowPage = request.getParameter("nowPage");
+if(nowPage == null){ /* 처음으로 들어온페이지. */
+	//System.out.println("bbslist = 1");
 	paging.setNowPage(1);
+	//System.out.println(paging.getNowPage());
 }else{
 	paging.setNowPage(Integer.parseInt(request.getParameter("nowPage")));
+	//System.out.println("bbslist = 2");
+	//System.out.println(paging.getNowPage());
 }
 %>
 <%
 iBbsDao dao = BbsDao.getInstance();
 //List<BbsDto> bbslist = dao.getBbsList();
-List<BbsDto> bbslist = dao.getBbsPagingList(paging, "");
+List<BbsDto> bbslist = new ArrayList<>();
+String search = request.getParameter("search");
+
+System.out.println("bbslist search = " +  search);
+if(search==null){
+	bbslist = dao.getBbsPagingList(paging, "",0);
+//bbslist = (List<BbsDto>)request.getAttribute("bbslist");		
+}else{
+	int choice = Integer.parseInt(request.getParameter("choice"));
+	bbslist = dao.getBbsPagingList(paging, search, choice);
+//List<BbsDto> bbslist = dao.getBbsList();
+}
+
 iCommentDao c_dao = CommentDao.getInstance();
 
 %>
@@ -106,22 +126,50 @@ iCommentDao c_dao = CommentDao.getInstance();
   <div class="container"> 
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="nologinindex.jsp"><img src="img/logo-top.png" class="img-responsive"><span>Grit</span></a> </div>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button>
+      <a class="navbar-brand" href="loginindex.jsp"><img src="img/logo-top5.png" class="img-responsive"><span>Gambling!</span></a> </div>
     
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"> 
-      
+   
       <!--nav icon--> 
       <a id="nav-icon"> <span></span> <span></span> <span></span> </a> 
       <!--nav icon end-->
       
       <ul id="nav-top" class="nav navbar-nav navbar-right">
-		   <li><a href="index.html" class="page-scroll">Home</a></li>
-			<li><a href="page.html" class="page-scroll">Page</a></li>
-			<li><a href="blog.html" class="page-scroll">Blog</a></li>
-			<li><a href="contact.html" class="page-scroll">Contact</a></li>
-      </ul>
+        <li><a href="#" class="page-scroll">Home</a></li>
+        <li><a href="mypage.jsp" class="page-scroll">MyPage</a></li>
+        <li><a href="userbbs.jsp" class="page-scroll">Community</a></li>
+        <li><a href="cs_bbs.jsp" class="page-scroll">Q&A</a></li>
+        <!-- <li><a href="#" id="accountBtn" class="page-scroll" data-target="myModal">Account</a></li> --><!--  <-- 모달 창 띄우는 줄 -->
+        <li><a href="logout.jsp" class="page-scroll">Logout</a></li>
+      
+      </ul>        
+          <!--search form-->         
+          <form method="get" action="/search" id="search">
+            <ul class="nav">
+            	<li><p style="color:white">보유 액수 : <%=mem.getMoney() %><br>
+            		보유 포인트 : <%=mem.getPoint() %>
+            	</li>
+            </ul>
+          </form>
+          <!--/search form--> 
+          
+           <nav class="bottom-nav">
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Pricing</a></li>
+          </ul>
+        </nav>
+          
+          <ul class="social-link">
+          <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+          <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+          <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+        </ul>
     </div>
     <!-- /.navbar-collapse --> 
   </div>
@@ -130,7 +178,7 @@ iCommentDao c_dao = CommentDao.getInstance();
 
 <!-- banner Page
     ==========================================-->
-<div id="page-banner" style="background-image: url(img/photo-typo.jpg);">
+<div id="page-banner" style="background-image: url(img/photo-typo2.jpg);">
   <div class="content  wow fdeInUp">
     <div class="container ">
       <h1>유저 게시판</h1>
@@ -147,13 +195,14 @@ iCommentDao c_dao = CommentDao.getInstance();
       <div class="col-md-offset-1 col-md-9 page-block">
         
 
-
+<h2>목록</h2>
 <table class="table">
-
-<tr>
-	<th scope="col">Num</th><th scope="col">Title</th><th scope="col">Writer</th><th scope="col">Read</th>
+<thead>
+<tr class="table-primary">
+	<th scope="col" width="30">Num</th><th scope="col"width="200">Title</th><th scope="col" width="50">Writer</th><th scope="col" width="10">Read</th>
 </tr>
-
+</thead>
+<tbody>
 <%
 int count = 0;
 if(bbslist ==null || bbslist.size() == 0){
@@ -168,7 +217,7 @@ if(bbslist ==null || bbslist.size() == 0){
 		BbsDto bbs = bbslist.get(i);
 		%>
 		<tr>
-			<td><%=i+1 %></td>
+			<td><%=i+1%></td>
 			<td style="text-align: left;">
 			<%
 				count = c_dao.commentCount(bbs.getSeq());
@@ -176,7 +225,7 @@ if(bbslist ==null || bbslist.size() == 0){
 				<%
 				if(bbs.getDel() == 0){
 				%>
-					<a href="bbsdetail.jsp?seq=<%=bbs.getSeq() %>"><%=bbs.getTitle() %></a>[<%=count %>]
+					<a href="userbbsdetail.jsp?seq=<%=bbs.getSeq() %>"><%=bbs.getTitle() %></a>[<%=count %>]
 				<%
 				}else{
 				%>
@@ -186,7 +235,7 @@ if(bbslist ==null || bbslist.size() == 0){
 				%>
 				
 			</td>
-			<td><%=bbs.getId() %></td>
+			<td><a href="history.jsp?id=<%=bbs.getId()%>"><%=bbs.getId() %></a></td>
 			<td><%=bbs.getReadcount() %></td>
 		</tr>
 		
@@ -194,31 +243,40 @@ if(bbslist ==null || bbslist.size() == 0){
 	}
 }
 %>
-
+</tbody>
 </table>
-<div>
-	<div class="fl">
-		<div>
-			<input type="text" id="search" name="search" style="width:50px; height:30px">
-			<input type="button" id="searchBtn" name="searchBtn"  style="width:50px; height:30px" class="btn btn-primary" value="검색">
-			
-		</div>
-		
-		
-	</div>
-	<div class="fr">
-		<input type="button" id="writeBtn" name="writeBtn"  style="width:50px; height:30px" class="btn btn-primary" value="글쓰기">
-	</div>
-</div>
-<div>
 <jsp:include page="paging.jsp">
-	<jsp:param value="bbslist.jsp" name="actionPath"/>
+	<jsp:param value="userbbs.jsp" name="actionPath"/>
 	<jsp:param value="<%=String.valueOf(paging.getNowPage()) %>" name="nowPage"/>
 	<jsp:param value="<%=String.valueOf(paging.getTotalCount()) %>" name="totalCount"/>
 	<jsp:param value="<%=String.valueOf(paging.getCountPerPage()) %>" name="countPerPage"/>
 	<jsp:param value="<%=String.valueOf(paging.getBlockCount()) %>" name="blockCount"/>
 	
 </jsp:include>
+<div>
+<div class="fl">
+	<nav>
+    <div class="input-group">
+      <select class="custom-select custom-select-sm" id="choice">
+      	<option value="0">제목</option>
+      	<option value="1">작성자</option>
+      	<option value="2">내용</option>
+      </select>
+      <input type="text" class=" input-sm" aria-label="..." id="searchStr">
+      <button id="searchBtn" name="searchBtn"  class="btn btn-default btn-sm">
+			<span class="glyphicon glyphicon-pencil"></span>검색
+	  </button>
+    </div><!-- /input-group -->
+	</nav>	
+</div>
+	<div class="fr">
+		<button id="writeBtn" name="writeBtn"  class="btn btn-default btn-sm">
+				<span class="glyphicon glyphicon-pencil"></span>글쓰기
+		</button>
+	</div>
+</div>
+<div>
+
 </div>
 </div>
 </div>
@@ -266,6 +324,7 @@ if(bbslist ==null || bbslist.size() == 0){
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> 
 <!-- Include all compiled plugins (below), or include individual files as needed --> 
 <script type="text/javascript" src="js/bootstrap.js"></script> 
+
 <script type="text/javascript" src="js/SmoothScroll.js"></script> 
 <script type="text/javascript" src="js/jquery.isotope.js"></script> 
 <script src="js/owl.carousel.js"></script> 
@@ -283,7 +342,12 @@ if(bbslist ==null || bbslist.size() == 0){
         });
         
         $("#writeBtn").click(function(){
-        	location.href="bbswrite.jsp";
+        	location.href="userbbswrite.jsp";
+        });
+        $("#searchBtn").click(function(){
+        	var search = $("#searchStr").val();
+        	var choice = $("#choice").val();
+        	location.href="userbbs.jsp?search="+ search + "&choice="+ choice;
         });
     });
 </script> 
