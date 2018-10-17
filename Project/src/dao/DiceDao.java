@@ -23,7 +23,7 @@ private static DiceDao diceDao = new DiceDao();
 
 
 	@Override
-	public boolean diceAdd(String id, int curpoint) { // 금액 입력하고 배팅 버튼 누르면(1) dice 테이블에 신규 행 추가 . 레코드 없으면 insert, 있으면 CURPOINT만 업데이트됨.
+	public boolean diceAdd(String id, int curpoint) { // 처음 진입시 dice 테이블에 신규 행 추가/업데이트 . 레코드 없으면 insert, 있으면 CURPOINT만 업데이트됨.
 
 		int count = 0;
 		String sql = " MERGE INTO DICE USING DUAL ON(ID = ?) WHEN MATCHED THEN "
